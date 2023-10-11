@@ -4,7 +4,6 @@ import au.edu.cqu.se.hms.App;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.services.AuthenticationService;
 import au.edu.cqu.se.hms.utils.UIUtils;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,9 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 /**
