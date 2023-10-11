@@ -1,6 +1,7 @@
 package au.edu.cqu.se.hms;
 
 import au.edu.cqu.se.hms.models.Migration;
+import au.edu.cqu.se.hms.utils.Queries;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,15 +20,20 @@ public class App extends Application {
     private static Scene scene;
 
     private static final List<Migration> migrations = new ArrayList<>();
+    static {
+        migrations.add(new Migration(1, Queries.CREATE_USER));
+        migrations.add(new Migration(2, Queries.INSERT_ADMIN));
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("signin"), 600, 400);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
