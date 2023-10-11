@@ -49,6 +49,14 @@ public class AdminPortalController implements Initializable {
     private Pane doctorListContainer;
     @FXML
     private Pane saveDoctorCotaniner;
+    @FXML
+    private Pane assistantListContainer;
+    @FXML
+    private Pane addAssistantContainer;
+    @FXML
+    private Pane addAdminContainer;
+    @FXML
+    private Pane adminListContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -77,15 +85,20 @@ public class AdminPortalController implements Initializable {
     private void handleDoctorMenu(ActionEvent event) {
         showDoctorContainer();
     }
-    
+
     @FXML
     private void handleAddDoctor(ActionEvent event) {
         showAddDoctorContainer();
     }
-    
+
     @FXML
     private void handleDoctorBackBtn(ActionEvent event) {
         showDoctorListContainer();
+    }
+
+    @FXML
+    private void handleSaveDoctorBtn(ActionEvent event) {
+        // Save Doctor Information to database
     }
 
     private void showDoctorContainer() {
@@ -96,15 +109,15 @@ public class AdminPortalController implements Initializable {
         doctorContainer.setVisible(true);
         assistantContainer.setVisible(false);
         adminContainer.setVisible(false);
-        
+
         showDoctorListContainer();
     }
-    
+
     private void showDoctorListContainer() {
         saveDoctorCotaniner.setVisible(false);
         doctorListContainer.setVisible(true);
     }
-    
+
     private void showAddDoctorContainer() {
         saveDoctorCotaniner.setVisible(true);
         doctorListContainer.setVisible(false);
@@ -115,6 +128,21 @@ public class AdminPortalController implements Initializable {
         showAssistantContainer();
     }
 
+    @FXML
+    private void handleAddAssistant(ActionEvent event) {
+        showAddAssistantContainer();
+    }
+
+    @FXML
+    private void handleAssistantBackBtn(ActionEvent event) {
+        showAssistantListContainer();
+    }
+
+    @FXML
+    private void handleSaveAssistant(ActionEvent event) {
+        // Save the Assistant information to database
+    }
+
     private void showAssistantContainer() {
         doctorMenu.setStyle(unSelectedMenuStyle);
         assistantMenu.setStyle(selectedMenuStyle);
@@ -123,11 +151,38 @@ public class AdminPortalController implements Initializable {
         doctorContainer.setVisible(false);
         assistantContainer.setVisible(true);
         adminContainer.setVisible(false);
+
+        showAssistantListContainer();
+    }
+
+    private void showAssistantListContainer() {
+        addAssistantContainer.setVisible(false);
+        assistantListContainer.setVisible(true);
+    }
+
+    private void showAddAssistantContainer() {
+        addAssistantContainer.setVisible(true);
+        assistantListContainer.setVisible(false);
     }
 
     @FXML
     private void handleAdminMenu(ActionEvent event) {
         showAdminContainer();
+    }
+
+    @FXML
+    private void handleAddAdmin(ActionEvent event) {
+        showAddAdminContainer();
+    }
+
+    @FXML
+    private void handleAdminBackBtn(ActionEvent event) {
+        showAdminListContainer();
+    }
+
+    @FXML
+    private void handleSaveAdmin(ActionEvent event) {
+        // save admin information to database
     }
 
     private void showAdminContainer() {
@@ -138,13 +193,18 @@ public class AdminPortalController implements Initializable {
         doctorContainer.setVisible(false);
         assistantContainer.setVisible(false);
         adminContainer.setVisible(true);
+
+        showAdminListContainer();
     }
 
-    @FXML
-    private void handleAddAssistant(ActionEvent event) {
+    private void showAdminListContainer() {
+        addAdminContainer.setVisible(false);
+        adminListContainer.setVisible(true);
     }
 
-    @FXML
-    private void handleAddAdmin(ActionEvent event) {
+    private void showAddAdminContainer() {
+        addAdminContainer.setVisible(true);
+        adminListContainer.setVisible(false);
     }
+
 }
