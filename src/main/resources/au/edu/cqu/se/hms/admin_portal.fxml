@@ -18,190 +18,187 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fff; -fx-width: 600px; -fx-height: 600px;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="au.edu.cqu.se.hms.controllers.AdminPortalController">
-   <children>
-      <Pane fx:id="sidebarPane" prefHeight="400.0" prefWidth="147.0" style="-fx-background-color: #eee;">
-         <children>
-            <Label fx:id="nameLbl" layoutX="5.0" layoutY="12.0" style="-fx-font-size: 16; -fx-background-color: #efe; -fx-background-radius: 35;" text="Admin Name">
-               <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-               </padding>
-            </Label>
-            <Label layoutY="67.0" lineSpacing="1.0" prefHeight="40.0" prefWidth="148.0" style="-fx-text-fill: #333; -fx-font-weight: bold; -fx-font-size: 18;" text="Menu" textAlignment="CENTER">
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Separator layoutY="108.0" prefHeight="3.0" prefWidth="147.0" />
-            <Hyperlink fx:id="doctorMenu" layoutY="108.0" onAction="#handleDoctorMenu" prefHeight="24.0" prefWidth="148.0" style="-fx-text-fill: #eee; -fx-font-size: 15px; -fx-background-color: #546e7a; -fx-border-color: transparent; -fx-underline: false;" text="Doctor">
-               <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-               </padding>
-            </Hyperlink>
-            <Separator layoutX="-1.0" layoutY="148.0" prefHeight="3.0" prefWidth="148.0" />
-            <Hyperlink fx:id="assistantMenu" layoutY="148.0" onAction="#handleAssistantMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Assistant">
-               <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-               </padding>
-            </Hyperlink>
-            <Separator layoutY="187.0" prefHeight="3.0" prefWidth="148.0" />
-            <Hyperlink fx:id="adminMenu" layoutX="-1.0" layoutY="187.0" onAction="#handleAdminMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Administrator">
-               <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-               </padding>
-            </Hyperlink>
-            <Separator layoutX="-1.0" layoutY="229.0" prefHeight="3.0" prefWidth="148.0" />
-            <Separator layoutX="1.0" layoutY="65.0" prefHeight="3.0" prefWidth="147.0" />
-            <Hyperlink fx:id="specializationMenu" layoutX="1.0" layoutY="230.0" onAction="#handleSpecializationMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Specialization">
-               <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-               </padding>
-            </Hyperlink>
-            <Separator layoutX="1.0" layoutY="272.0" prefHeight="3.0" prefWidth="148.0" />
-         </children>
-      </Pane>
-      <Pane layoutX="147.0" prefHeight="55.0" prefWidth="453.0" style="-fx-background-color: #546e7a; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.0, 0.0, 0.5, 0.0);">
-         <children>
-            <Label layoutX="6.0" layoutY="16.0" style="-fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-size: 20px;" text="Health Link" textFill="WHITE">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="389.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #fff; -fx-text-fill: #333;" text="Logout" />
-         </children>
-      </Pane>
-      <Pane fx:id="doctorContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
-         <children>
-            <Pane fx:id="doctorListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
-               <children>
-                  <Button layoutX="349.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddDoctor" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Doctor" />
-               </children>
-            </Pane>
-            <Pane fx:id="saveDoctorCotaniner" prefHeight="326.0" prefWidth="438.0" visible="false">
-               <children>
-                  <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Doctor" />
-                  <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
-                  <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
-                  <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
-                  <TextField layoutX="73.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
-                  <TextField layoutX="285.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
-                  <TextField layoutX="73.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
-                  <TextField layoutX="76.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
-                  <TextField layoutX="295.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
-                  <RadioButton layoutX="75.0" layoutY="129.0" mnemonicParsing="false" text="Male" />
-                  <RadioButton layoutX="133.0" layoutY="129.0" mnemonicParsing="false" text="Female" />
-                  <RadioButton layoutX="205.0" layoutY="129.0" mnemonicParsing="false" text="Others" />
-                  <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
-                  <Text layoutX="218.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
-                  <Text layoutX="5.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-                  <Text layoutX="219.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-                  <Text layoutX="5.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender" />
-                  <Text layoutX="8.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
-                  <Text layoutX="220.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
-                  <PasswordField layoutX="286.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
-                  <DatePicker layoutX="76.0" layoutY="209.0" prefHeight="26.0" prefWidth="118.0" />
-                  <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
-                  <Text layoutX="220.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specialization" />
-                  <MenuButton layoutX="301.0" layoutY="209.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Select Specialization">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
-                  </MenuButton>
-               </children>
-            </Pane>
-         </children></Pane>
-      <Pane fx:id="assistantContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
-         <children>
-            <Pane fx:id="assistantListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
-               <children>
-                  <Button layoutX="333.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddAssistant" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Assistant" />
-               </children>
-            </Pane>
-            <Pane fx:id="addAssistantContainer" prefHeight="326.0" prefWidth="438.0">
-               <children>
-                  <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Assistant" />
-                  <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
-                  <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
-                  <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
-                  <TextField layoutX="73.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
-                  <TextField layoutX="285.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
-                  <TextField layoutX="73.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
-                  <TextField layoutX="76.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
-                  <TextField layoutX="295.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
-                  <RadioButton layoutX="75.0" layoutY="129.0" mnemonicParsing="false" text="Male" />
-                  <RadioButton layoutX="133.0" layoutY="129.0" mnemonicParsing="false" text="Female" />
-                  <RadioButton layoutX="205.0" layoutY="129.0" mnemonicParsing="false" text="Others" />
-                  <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
-                  <Text layoutX="218.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
-                  <Text layoutX="5.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-                  <Text layoutX="219.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-                  <Text layoutX="5.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender" />
-                  <Text layoutX="8.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
-                  <Text layoutX="220.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
-                  <PasswordField layoutX="286.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
-                  <DatePicker layoutX="76.0" layoutY="209.0" prefHeight="26.0" prefWidth="116.0" />
-                  <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
-                  <Text layoutX="223.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report To:" />
-                  <MenuButton layoutX="292.0" layoutY="209.0" mnemonicParsing="false" text="Select Doctor">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
-                  </MenuButton>
-               </children>
-            </Pane>
-         </children>
-      </Pane>
-      <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
-         <children>
-            <Pane fx:id="adminListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
-               <children>
-                  <Button layoutX="351.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAddAdmin" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Admin" />
-               </children>
-            </Pane>
-            <Pane fx:id="addAdminContainer" prefHeight="326.0" prefWidth="438.0">
-               <children>
-                  <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Administrator" />
-                  <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
-                  <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
-                  <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
-               </children>
-            </Pane>
-         </children>
-      </Pane>
-      <Pane fx:id="specializationContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
-          <children>
-            <Pane fx:id="specializationListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
-               <children>
-                  <Button layoutX="306.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddSpecialization" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Specialization" />
-                  <TableView fx:id="specialityTableView" layoutX="9.0" layoutY="49.0" prefHeight="232.0" prefWidth="421.0">
-                    <columns>
-                      <TableColumn fx:id="specialityIDCol" prefWidth="75.0" text="ID" />
-                      <TableColumn fx:id="specialityNameCol" prefWidth="263.0" text="Speciality" />
-                        <TableColumn fx:id="specialityActionCol" editable="false" minWidth="0.0" prefWidth="82.0" resizable="false" sortable="false" text="Action" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="specialityPrevBtn" layoutX="227.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSpecialityPrevBtn" text="&lt;" />
-                  <Button fx:id="specialityNextBtn" layoutX="377.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSpecialityNextBtn" text="&gt;" />
-                  <Label fx:id="specialityPaginationLbl" layoutX="280.0" layoutY="297.0" prefHeight="18.0" prefWidth="98.0" style="-fx-alignment: center;" text="1 of 1 pages" />
-               </children>
-            </Pane>
-            <Pane fx:id="addSpecializationContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
-               <children>
-                  <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Specialization" />
-                  <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
-                  <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveSpecialization" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
-                  <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleSpecializationBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
-                  <Label layoutX="16.0" layoutY="48.0" style="-fx-font-size: 16; -fx-text-fill: #333;" text="Specialization" />
-                  <TextField fx:id="specializationFld" layoutX="18.0" layoutY="76.0" prefHeight="37.0" prefWidth="312.0" style="-fx-text-fill: #555; -fx-border-color: #ccc;" />
-                  <Separator layoutY="267.0" prefHeight="3.0" prefWidth="438.0" />
-               </children>
-            </Pane>
-         </children>
-      </Pane>
-   </children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"  maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fff; -fx-width: 600px; -fx-height: 600px;" xmlns="http://javafx.com/javafx/19" fx:controller="au.edu.cqu.se.hms.controllers.AdminPortalController">
+    <children>
+        <Pane fx:id="sidebarPane" prefHeight="400.0" prefWidth="147.0" style="-fx-background-color: #eee;">
+            <children>
+                <Label fx:id="nameLbl" layoutX="5.0" layoutY="12.0" style="-fx-font-size: 16; -fx-background-color: #efe; -fx-background-radius: 35;" text="Admin Name">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                </Label>
+                <Label layoutY="67.0" lineSpacing="1.0" prefHeight="40.0" prefWidth="148.0" style="-fx-text-fill: #333; -fx-font-weight: bold; -fx-font-size: 18;" text="Menu" textAlignment="CENTER">
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <Separator layoutY="108.0" prefHeight="3.0" prefWidth="147.0" />
+                <Hyperlink fx:id="doctorMenu" layoutY="108.0" onAction="#handleDoctorMenu" prefHeight="24.0" prefWidth="148.0" style="-fx-text-fill: #eee; -fx-font-size: 15px; -fx-background-color: #546e7a; -fx-border-color: transparent; -fx-underline: false;" text="Doctor">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                </Hyperlink>
+                <Separator layoutX="-1.0" layoutY="148.0" prefHeight="3.0" prefWidth="148.0" />
+                <Hyperlink fx:id="assistantMenu" layoutY="148.0" onAction="#handleAssistantMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Assistant">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                </Hyperlink>
+                <Separator layoutY="187.0" prefHeight="3.0" prefWidth="148.0" />
+                <Hyperlink fx:id="adminMenu" layoutX="-1.0" layoutY="187.0" onAction="#handleAdminMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Administrator">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                </Hyperlink>
+                <Separator layoutX="-1.0" layoutY="229.0" prefHeight="3.0" prefWidth="148.0" />
+                <Separator layoutX="1.0" layoutY="65.0" prefHeight="3.0" prefWidth="147.0" />
+                <Hyperlink fx:id="specializationMenu" layoutX="1.0" layoutY="230.0" onAction="#handleSpecializationMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Specialization">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                </Hyperlink>
+                <Separator layoutX="1.0" layoutY="272.0" prefHeight="3.0" prefWidth="148.0" />
+            </children>
+        </Pane>
+        <Pane layoutX="147.0" prefHeight="55.0" prefWidth="453.0" style="-fx-background-color: #546e7a; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.0, 0.0, 0.5, 0.0);">
+            <children>
+                <Label layoutX="6.0" layoutY="16.0" style="-fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-size: 20px;" text="Health Link" textFill="WHITE">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Label>
+                <Button layoutX="389.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #fff; -fx-text-fill: #333;" text="Logout" />
+            </children>
+        </Pane>
+        <Pane fx:id="doctorContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+            <children>
+                <Pane fx:id="doctorListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+                    <children>
+                        <Button layoutX="349.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddDoctor" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Doctor" />
+                    </children>
+                </Pane>
+                <Pane fx:id="saveDoctorCotaniner" prefHeight="326.0" prefWidth="438.0" visible="false">
+                    <children>
+                        <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Doctor" />
+                        <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
+                        <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveDoctorBtn" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
+                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                        <TextField fx:id="fName"  layoutX="73.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField fx:id="lName"  layoutX="285.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField fx:id="email" layoutX="73.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField fx:id="contactNumber" layoutX="76.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField fx:id="address" layoutX="295.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
+                        <RadioButton fx:id="male" layoutX="75.0" layoutY="129.0" mnemonicParsing="false" text="Male" />
+                        <RadioButton fx:id="female" layoutX="133.0" layoutY="129.0" mnemonicParsing="false" text="Female" />
+                        <RadioButton fx:id="other" layoutX="205.0" layoutY="129.0" mnemonicParsing="false" text="Others" />
+                        <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
+                        <Text layoutX="218.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
+                        <Text layoutX="5.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+                        <Text layoutX="219.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+                        <Text layoutX="5.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender" />
+                        <Text layoutX="8.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
+                        <Text layoutX="220.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
+                        <PasswordField fx:id="password" layoutX="286.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
+                        <DatePicker fx:id="dateOfBirth" layoutX="76.0" layoutY="209.0" prefHeight="26.0" prefWidth="118.0" />
+                        <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
+                        <Text layoutX="220.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specialization" />
+                        <MenuButton fx:id="specialization" layoutX="301.0" layoutY="209.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" />
+                   
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+        <Pane fx:id="assistantContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+            <children>
+                <Pane fx:id="assistantListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+                    <children>
+                        <Button layoutX="333.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddAssistant" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Assistant" />
+                    </children>
+                </Pane>
+                <Pane fx:id="addAssistantContainer" prefHeight="326.0" prefWidth="438.0">
+                    <children>
+                        <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Assistant" />
+                        <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
+                        <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
+                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                        <TextField layoutX="73.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField layoutX="285.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField layoutX="73.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField layoutX="76.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField layoutX="295.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
+                        <RadioButton layoutX="75.0" layoutY="129.0" mnemonicParsing="false" text="Male" />
+                        <RadioButton layoutX="133.0" layoutY="129.0" mnemonicParsing="false" text="Female" />
+                        <RadioButton layoutX="205.0" layoutY="129.0" mnemonicParsing="false" text="Others" />
+                        <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
+                        <Text layoutX="218.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
+                        <Text layoutX="5.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+                        <Text layoutX="219.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+                        <Text layoutX="5.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender" />
+                        <Text layoutX="8.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
+                        <Text layoutX="220.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
+                        <PasswordField layoutX="286.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
+                        <DatePicker layoutX="76.0" layoutY="209.0" prefHeight="26.0" prefWidth="116.0" />
+                        <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
+                        <Text layoutX="223.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report To:" />
+                        <MenuButton layoutX="292.0" layoutY="209.0" mnemonicParsing="false" text="Select Doctor">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Action 1" />
+                                <MenuItem mnemonicParsing="false" text="Action 2" />
+                            </items>
+                        </MenuButton>
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+        <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
+            <children>
+                <Pane fx:id="adminListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+                    <children>
+                        <Button layoutX="351.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAddAdmin" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Admin" />
+                    </children>
+                </Pane>
+                <Pane fx:id="addAdminContainer" prefHeight="326.0" prefWidth="438.0">
+                    <children>
+                        <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Administrator" />
+                        <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
+                        <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
+                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+        <Pane fx:id="specializationContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
+            <children>
+                <Pane fx:id="specializationListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+                    <children>
+                        <Button layoutX="306.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddSpecialization" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Specialization" />
+                        <TableView fx:id="specialityTableView" layoutX="9.0" layoutY="49.0" prefHeight="232.0" prefWidth="421.0">
+                            <columns>
+                                <TableColumn fx:id="specialityIDCol" prefWidth="75.0" text="ID" />
+                                <TableColumn fx:id="specialityNameCol" prefWidth="263.0" text="Speciality" />
+                                <TableColumn fx:id="specialityActionCol" editable="false" minWidth="0.0" prefWidth="82.0" resizable="false" sortable="false" text="Action" />
+                            </columns>
+                        </TableView>
+                        <Button fx:id="specialityPrevBtn" layoutX="227.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSpecialityPrevBtn" text="&lt;" />
+                        <Button fx:id="specialityNextBtn" layoutX="377.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSpecialityNextBtn" text="&gt;" />
+                        <Label fx:id="specialityPaginationLbl" layoutX="280.0" layoutY="297.0" prefHeight="18.0" prefWidth="98.0" style="-fx-alignment: center;" text="1 of 1 pages" />
+                    </children>
+                </Pane>
+                <Pane fx:id="addSpecializationContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+                    <children>
+                        <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Specialization" />
+                        <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
+                        <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveSpecialization" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
+                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleSpecializationBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                        <Label layoutX="16.0" layoutY="48.0" style="-fx-font-size: 16; -fx-text-fill: #333;" text="Specialization" />
+                        <TextField fx:id="specializationFld" layoutX="18.0" layoutY="76.0" prefHeight="37.0" prefWidth="312.0" style="-fx-text-fill: #555; -fx-border-color: #ccc;" />
+                        <Separator layoutY="267.0" prefHeight="3.0" prefWidth="438.0" />
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+    </children>
 </AnchorPane>

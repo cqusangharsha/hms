@@ -1,6 +1,7 @@
 package au.edu.cqu.se.hms.daos;
 
 import au.edu.cqu.se.hms.enums.Role;
+import au.edu.cqu.se.hms.models.Specialization;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.utils.DBConnection;
 import java.sql.Connection;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
  * @author sangharshachaulagain
  */
 public class UserDao {
-    
+
     private final DBConnection dbConnection;
     private static UserDao instance;
 
@@ -27,7 +28,7 @@ public class UserDao {
         }
         return instance;
     }
-    
+
     public boolean signup(User user) {
         Connection connection = dbConnection.getConnection();
         String signupQuery = "INSERT INTO users (firstName, lastName, dateOfBirth, gender, contactNumber, email, password, address, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -45,13 +46,14 @@ public class UserDao {
             preparedStatement.setString(9, user.getRole().getValue());
 
             int rowsAffected = preparedStatement.executeUpdate();
+
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    
+
     public User login(String email, String password) {
         Connection connection = dbConnection.getConnection();
         String loginQuery = "SELECT * FROM users WHERE email = ? AND password = ?";
@@ -82,5 +84,23 @@ public class UserDao {
 
         return null;
     }
-    
+
+    public User getUserByEmail(String email) {
+        Connection connection = dbConnection.getConnection();
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String fName = resultSet.getString("firstName");
+                return new User(id, fName);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Specialization not found
+    }
+
 }

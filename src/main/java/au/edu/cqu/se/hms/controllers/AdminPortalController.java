@@ -1,7 +1,11 @@
 package au.edu.cqu.se.hms.controllers;
 
 import au.edu.cqu.se.hms.App;
+import au.edu.cqu.se.hms.daos.DoctorDao;
 import au.edu.cqu.se.hms.daos.SpecializationDao;
+import au.edu.cqu.se.hms.daos.UserDao;
+import au.edu.cqu.se.hms.enums.Role;
+import au.edu.cqu.se.hms.models.Doctor;
 import au.edu.cqu.se.hms.models.Specialization;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.services.AuthenticationService;
@@ -19,8 +23,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -40,6 +49,9 @@ public class AdminPortalController implements Initializable {
 
     private AuthenticationService authService;
     private SpecializationDao specializationDao;
+
+    private DoctorDao doctorDao;
+    private UserDao userDao;
 
     private final ObservableList<Specialization> observableSpecializationList = FXCollections.observableArrayList();
     private int specializationListPage = 0;
@@ -98,10 +110,50 @@ public class AdminPortalController implements Initializable {
     @FXML
     private Label specialityPaginationLbl;
 
+    @FXML
+    private TextField fName;
+
+    @FXML
+    private TextField lName;
+
+    @FXML
+    private TextField email;
+
+    @FXML
+    private PasswordField password;
+
+    @FXML
+    private TextField address;
+
+    @FXML
+    private TextField contactNumber;
+
+    @FXML
+    private RadioButton male;
+    @FXML
+    private RadioButton female;
+
+    @FXML
+    private RadioButton other;
+
+    @FXML
+    private DatePicker dateOfBirth;
+
+    @FXML
+    private MenuButton reportsTo;
+
+    @FXML
+    private MenuButton specialization;
+
+    private char gender;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
         specializationDao = SpecializationDao.getInstance();
+        doctorDao = DoctorDao.getInstance();
+
+        userDao = UserDao.getInstance();
 
         User user = authService.getCurrentUser();
         if (user == null) {
@@ -114,10 +166,11 @@ public class AdminPortalController implements Initializable {
         }
         nameLbl.setText("Male".equals(user.getGender()) ? "Mr. " + user.getLastName() : "Mrs. " + user.getLastName());
         nameLbl.layoutXProperty().bind(sidebarPane.widthProperty().subtract(nameLbl.widthProperty()).divide(2));
-        
+
         displaySpecializationTable();
-        
+
         showDoctorContainer();
+
     }
 
     @FXML
@@ -142,7 +195,54 @@ public class AdminPortalController implements Initializable {
 
     @FXML
     private void handleSaveDoctorBtn(ActionEvent event) {
-        // Save Doctor Information to database
+
+        if (!isAddDoctorFormValid()) {
+            UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
+            return;
+        } else {
+            Doctor doctor = new Doctor();
+            doctor.setFirstName(fName.getText());
+
+            doctor.setLastName(lName.getText());
+            doctor.setAddress(address.getText());
+            doctor.setContactNumber(contactNumber.getText());
+            doctor.setEmail(email.getText());
+            doctor.setPassword(password.getText());
+
+            java.sql.Date date = java.sql.Date.valueOf(dateOfBirth.getValue());
+            doctor.setDateOfBirth(date);
+
+            if (male.isSelected()) {
+                doctor.setGender(male.getText());
+            } else if (female.isSelected()) {
+                doctor.setGender(female.getText());
+            } else if (other.isSelected()) {
+                doctor.setGender(other.getText());
+            }
+            doctor.setSpecialization(specialization.getText());
+            doctor.setRole(Role.DOCTOR);
+            if (userDao.signup(doctor)) {
+                userDao.getUserByEmail(doctor.getEmail());
+                doctor.setDoctorId(userDao.getUserByEmail(doctor.getEmail()).getId());
+
+                doctorDao.addDoctor(doctor);
+            }
+
+            clearNewForm();
+            showDoctorContainer();
+        }
+    }
+
+    private void clearNewForm() {
+        fName.setText("");
+        lName.setText("");
+        address.setText("");
+        contactNumber.setText("");
+        email.setText("");
+        dateOfBirth.setValue(null);
+        password.setText("");
+        specialization.setText("");
+
     }
 
     private void showDoctorContainer() {
@@ -162,6 +262,25 @@ public class AdminPortalController implements Initializable {
     private void showAddDoctorContainer() {
         saveDoctorCotaniner.setVisible(true);
         doctorListContainer.setVisible(false);
+        for (Specialization specialist : specializationDao.getAllSpecializations()) {
+            MenuItem menuItem = new MenuItem(specialist.getName());
+            menuItem.setOnAction(e -> {
+                specialization.setText(menuItem.getText());
+            });
+            specialization.getItems().add(menuItem);
+        }
+    }
+
+    private boolean isAddDoctorFormValid() {
+        return !StringUtils.isEmpty(fName.getText().trim())
+                && !StringUtils.isEmpty(lName.getText().trim())
+                && !StringUtils.isEmpty(address.getText().trim())
+                && !StringUtils.isEmpty(contactNumber.getText().trim())
+                && !StringUtils.isEmpty(password.getText().trim())
+                && (!StringUtils.isEmpty(male.getText().trim()) || !StringUtils.isEmpty(female.getText().trim()) || !StringUtils.isEmpty(other.getText().trim()))
+                && !StringUtils.isEmpty(email.getText().trim())
+                && !StringUtils.isEmpty(specialization.getText().trim())
+                && !StringUtils.isEmpty(((TextField) dateOfBirth.getEditor()).getText());
     }
 
     @FXML
@@ -319,7 +438,7 @@ public class AdminPortalController implements Initializable {
         };
         specialityActionCol.setCellFactory(cellFactory);
     }
-    
+
     private void refreshSpeciailzationTable() {
         observableSpecializationList.clear();
         List<Specialization> specializationList;
@@ -329,8 +448,8 @@ public class AdminPortalController implements Initializable {
 
         handleSpecializationPaginationView();
     }
-    
-     @FXML
+
+    @FXML
     private void handleSpecialityPrevBtn(ActionEvent event) {
         specializationListPage -= 1;
         refreshSpeciailzationTable();
@@ -341,11 +460,11 @@ public class AdminPortalController implements Initializable {
         specializationListPage += 1;
         refreshSpeciailzationTable();
     }
-    
+
     private void handleSpecializationPaginationView() {
         List<Specialization> totalSpecialization;
         totalSpecialization = specializationDao.getAllSpecializations();
-        
+
         if (totalSpecialization.isEmpty()) {
             specialityPaginationLbl.setVisible(false);
             specialityPrevBtn.setVisible(false);
