@@ -35,6 +35,10 @@ public class DoctorPortalController implements Initializable {
     private Hyperlink appointmentMenu;
     @FXML
     private Hyperlink patientMenu;
+    @FXML
+    private Pane appointmentContainer;
+    @FXML
+    private Pane patientContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -51,6 +55,8 @@ public class DoctorPortalController implements Initializable {
         }
         nameLbl.setText("Dr. " + user.getLastName());
         nameLbl.layoutXProperty().bind(sidebarPane.widthProperty().subtract(nameLbl.widthProperty()).divide(2));
+        showAppointmentContainer();
+
     }
 
     @FXML
@@ -61,6 +67,7 @@ public class DoctorPortalController implements Initializable {
     private void showAppointmentContainer() {
         hideAllContainer();
         appointmentMenu.setStyle(selectedMenuStyle);
+        appointmentContainer.setVisible(true);
     }
 
     @FXML
@@ -72,6 +79,7 @@ public class DoctorPortalController implements Initializable {
     private void showPatientContainer() {
         hideAllContainer();
         patientMenu.setStyle(selectedMenuStyle);
+        patientContainer.setVisible(true);
     }
 
     @FXML
@@ -82,5 +90,8 @@ public class DoctorPortalController implements Initializable {
     private void hideAllContainer() {
         patientMenu.setStyle(unSelectedMenuStyle);
         appointmentMenu.setStyle(unSelectedMenuStyle);
+
+        patientContainer.setVisible(false);
+        appointmentContainer.setVisible(false);
     }
 }
