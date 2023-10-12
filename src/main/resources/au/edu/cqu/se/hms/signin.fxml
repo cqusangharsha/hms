@@ -17,11 +17,11 @@
       <Label layoutX="261.0" layoutY="90.0" style="-fx-text-fill: #555;" text="Login to continue" />
       <TextField fx:id="emailFld" layoutX="112.0" layoutY="152.0" prefHeight="37.0" prefWidth="398.0" promptText="Email" style="-fx-text-fill: #555; -fx-background-color: #eee;" text="admin@healthlink.com" />
       <PasswordField fx:id="passwordFld" layoutX="112.0" layoutY="212.0" prefHeight="37.0" prefWidth="398.0" promptText="Password" style="-fx-text-fill: #555; -fx-background-color: #eee;" text="admin" />
-      <Button fx:id="exitBtn" layoutX="112.0" layoutY="273.0" mnemonicParsing="false" onAction="#onExitBtnClick" prefHeight="30.0" prefWidth="194.0" style="-fx-background-color: #42b72a; -fx-text-fill: #ffffff;" text="Exit">
+      <Button fx:id="exitBtn" layoutX="112.0" layoutY="273.0" mnemonicParsing="false" onAction="#onExitBtnClick" prefHeight="30.0" prefWidth="194.0" style="-fx-background-color: #9be5aa; -fx-text-fill: #546e7a #546e7a; -fx-border-color: #546e7a #546e7a;" text="Exit">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Button>
-      <Button fx:id="loginBtn" layoutX="316.0" layoutY="273.0" mnemonicParsing="false" onAction="#onLoginBtnClick" prefHeight="30.0" prefWidth="194.0" style="-fx-background-color: #1877f2; -fx-text-fill: #ffffff;" text="Login" />
-      <Label layoutX="117.0" layoutY="331.0" prefHeight="17.0" prefWidth="398.0" text="Forget Password? Please Contact Administrator to reset your Password" textAlignment="CENTER" textFill="#c91414" />
+      <Button fx:id="loginBtn" layoutX="316.0" layoutY="273.0" mnemonicParsing="false" onAction="#onLoginBtnClick" prefHeight="30.0" prefWidth="194.0" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #ffffff;" text="Login" />
+      <Label layoutX="117.0" layoutY="331.0" prefHeight="17.0" prefWidth="398.0" text="Forget Password? Please Contact Administrator to reset your Password" textAlignment="CENTER" textFill="#9e4548" />
    </children>
 </AnchorPane>

@@ -1,19 +1,33 @@
 package au.edu.cqu.se.hms.controllers;
 
 import au.edu.cqu.se.hms.App;
+import au.edu.cqu.se.hms.daos.SpecializationDao;
+import au.edu.cqu.se.hms.models.Specialization;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.services.AuthenticationService;
+import au.edu.cqu.se.hms.utils.StringUtils;
 import au.edu.cqu.se.hms.utils.UIUtils;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.util.Callback;
 
 /**
  *
@@ -25,6 +39,12 @@ public class AdminPortalController implements Initializable {
     private final String unSelectedMenuStyle = "-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;";
 
     private AuthenticationService authService;
+    private SpecializationDao specializationDao;
+
+    private final ObservableList<Specialization> observableSpecializationList = FXCollections.observableArrayList();
+    private int specializationListPage = 0;
+    private final int speciailzationListPageSize = 5;
+
     @FXML
     private Label nameLbl;
     @FXML
@@ -53,10 +73,35 @@ public class AdminPortalController implements Initializable {
     private Pane addAdminContainer;
     @FXML
     private Pane adminListContainer;
+    @FXML
+    private Hyperlink specializationMenu;
+    @FXML
+    private Pane specializationListContainer;
+    @FXML
+    private Pane addSpecializationContainer;
+    @FXML
+    private Pane specializationContainer;
+    @FXML
+    private TextField specializationFld;
+    @FXML
+    private TableView<Specialization> specialityTableView;
+    @FXML
+    private TableColumn<Specialization, Integer> specialityIDCol;
+    @FXML
+    private TableColumn<Specialization, String> specialityNameCol;
+    @FXML
+    private TableColumn<Specialization, String> specialityActionCol;
+    @FXML
+    private Button specialityPrevBtn;
+    @FXML
+    private Button specialityNextBtn;
+    @FXML
+    private Label specialityPaginationLbl;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
+        specializationDao = SpecializationDao.getInstance();
 
         User user = authService.getCurrentUser();
         if (user == null) {
@@ -69,6 +114,9 @@ public class AdminPortalController implements Initializable {
         }
         nameLbl.setText("Male".equals(user.getGender()) ? "Mr. " + user.getLastName() : "Mrs. " + user.getLastName());
         nameLbl.layoutXProperty().bind(sidebarPane.widthProperty().subtract(nameLbl.widthProperty()).divide(2));
+        
+        displaySpecializationTable();
+        
         showDoctorContainer();
     }
 
@@ -98,13 +146,10 @@ public class AdminPortalController implements Initializable {
     }
 
     private void showDoctorContainer() {
-        doctorMenu.setStyle(selectedMenuStyle);
-        assistantMenu.setStyle(unSelectedMenuStyle);
-        adminMenu.setStyle(unSelectedMenuStyle);
+        hideAllContainer();
 
+        doctorMenu.setStyle(selectedMenuStyle);
         doctorContainer.setVisible(true);
-        assistantContainer.setVisible(false);
-        adminContainer.setVisible(false);
 
         showDoctorListContainer();
     }
@@ -140,13 +185,10 @@ public class AdminPortalController implements Initializable {
     }
 
     private void showAssistantContainer() {
-        doctorMenu.setStyle(unSelectedMenuStyle);
-        assistantMenu.setStyle(selectedMenuStyle);
-        adminMenu.setStyle(unSelectedMenuStyle);
+        hideAllContainer();
 
-        doctorContainer.setVisible(false);
+        assistantMenu.setStyle(selectedMenuStyle);
         assistantContainer.setVisible(true);
-        adminContainer.setVisible(false);
 
         showAssistantListContainer();
     }
@@ -182,12 +224,9 @@ public class AdminPortalController implements Initializable {
     }
 
     private void showAdminContainer() {
-        doctorMenu.setStyle(unSelectedMenuStyle);
-        assistantMenu.setStyle(unSelectedMenuStyle);
-        adminMenu.setStyle(selectedMenuStyle);
+        hideAllContainer();
 
-        doctorContainer.setVisible(false);
-        assistantContainer.setVisible(false);
+        adminMenu.setStyle(selectedMenuStyle);
         adminContainer.setVisible(true);
 
         showAdminListContainer();
@@ -201,6 +240,153 @@ public class AdminPortalController implements Initializable {
     private void showAddAdminContainer() {
         addAdminContainer.setVisible(true);
         adminListContainer.setVisible(false);
+    }
+
+    @FXML
+    private void handleSpecializationMenu(ActionEvent event) {
+        showSpecializationContainer();
+    }
+
+    @FXML
+    private void handleAddSpecialization(ActionEvent event) {
+        showAddSpecializationContainer();
+    }
+
+    @FXML
+    private void handleSpecializationBackBtn(ActionEvent event) {
+        showSpecializationListContainer();
+    }
+
+    @FXML
+    private void handleSaveSpecialization(ActionEvent event) {
+        if (!isAddSpecializaitonFormValid()) {
+            UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        String specialization = specializationFld.getText();
+        specializationDao.addSpecialization(new Specialization(specialization));
+
+        clearAddSpecializationForm();
+        showSpecializationListContainer();
+    }
+
+    private void showSpecializationContainer() {
+        hideAllContainer();
+
+        specializationMenu.setStyle(selectedMenuStyle);
+        specializationContainer.setVisible(true);
+
+        showSpecializationListContainer();
+    }
+
+    private void showSpecializationListContainer() {
+        refreshSpeciailzationTable();
+        addSpecializationContainer.setVisible(false);
+        specializationListContainer.setVisible(true);
+    }
+
+    private void showAddSpecializationContainer() {
+        clearAddSpecializationForm();
+        addSpecializationContainer.setVisible(true);
+        specializationListContainer.setVisible(false);
+    }
+
+    private void displaySpecializationTable() {
+        specialityIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        specialityNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        Callback<TableColumn<Specialization, String>, TableCell<Specialization, String>> cellFactory = (TableColumn<Specialization, String> p) -> {
+            final TableCell<Specialization, String> cell = new TableCell<Specialization, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+
+                    } else {
+                        Button btn = new Button("Edit");
+                        btn.setOnAction((event) -> {
+//                            showEditSpecializationContainer(getTableRow().getItem());
+                            System.out.println("Show Edit Container");
+                        });
+                        setGraphic(btn);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        };
+        specialityActionCol.setCellFactory(cellFactory);
+    }
+    
+    private void refreshSpeciailzationTable() {
+        observableSpecializationList.clear();
+        List<Specialization> specializationList;
+        specializationList = specializationDao.getAllSpecializations(specializationListPage, speciailzationListPageSize);
+        observableSpecializationList.addAll(specializationList);
+        specialityTableView.setItems(observableSpecializationList);
+
+        handleSpecializationPaginationView();
+    }
+    
+     @FXML
+    private void handleSpecialityPrevBtn(ActionEvent event) {
+        specializationListPage -= 1;
+        refreshSpeciailzationTable();
+    }
+
+    @FXML
+    private void handleSpecialityNextBtn(ActionEvent event) {
+        specializationListPage += 1;
+        refreshSpeciailzationTable();
+    }
+    
+    private void handleSpecializationPaginationView() {
+        List<Specialization> totalSpecialization;
+        totalSpecialization = specializationDao.getAllSpecializations();
+        
+        if (totalSpecialization.isEmpty()) {
+            specialityPaginationLbl.setVisible(false);
+            specialityPrevBtn.setVisible(false);
+            specialityNextBtn.setVisible(false);
+        } else {
+            specialityPaginationLbl.setVisible(true);
+            specialityPrevBtn.setVisible(true);
+            specialityNextBtn.setVisible(true);
+        }
+        specialityPaginationLbl.setText((specializationListPage + 1) + " of " + (((totalSpecialization.size() - 1) / speciailzationListPageSize) + 1) + " pages");
+        if (specializationListPage <= 0) {
+            specialityPrevBtn.setDisable(true);
+        } else {
+            specialityPrevBtn.setDisable(false);
+        }
+
+        if ((specializationListPage + 1) * speciailzationListPageSize >= totalSpecialization.size()) {
+            specialityNextBtn.setDisable(true);
+        } else {
+            specialityNextBtn.setDisable(false);
+        }
+    }
+
+    private boolean isAddSpecializaitonFormValid() {
+        return !StringUtils.isEmpty(specializationFld.getText().trim());
+    }
+
+    private void clearAddSpecializationForm() {
+        specializationFld.setText("");
+    }
+
+    private void hideAllContainer() {
+        doctorMenu.setStyle(unSelectedMenuStyle);
+        assistantMenu.setStyle(unSelectedMenuStyle);
+        adminMenu.setStyle(unSelectedMenuStyle);
+        specializationMenu.setStyle(unSelectedMenuStyle);
+
+        doctorContainer.setVisible(false);
+        assistantContainer.setVisible(false);
+        adminContainer.setVisible(false);
+        specializationContainer.setVisible(false);
     }
 
 }

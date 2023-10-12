@@ -20,11 +20,17 @@ public class Queries {
                                                  address VARCHAR(255),
                                                  role ENUM('ADMIN', 'DOCTOR', 'ASSISTANCE') NOT NULL
                                              )""";
-    
+
     public static final String INSERT_ADMIN = """
                                                INSERT INTO users (firstName, lastName, dateOfBirth, gender, contactNumber, email, password, address, role)
                                                VALUES ('HealthLink', 'Admin', '1990-01-01', 'Male', '0458987654', 'admin@healthlink.com', 'admin', 'NSW', 'ADMIN');
                                                """;
 
+    public static final String CREATE_SPECIALIZATION = """
+                                                        CREATE TABLE specializations (
+                                                            id INT AUTO_INCREMENT PRIMARY KEY,
+                                                            name VARCHAR(255) NOT NULL
+                                                        )
+                                                        """;
 
 }

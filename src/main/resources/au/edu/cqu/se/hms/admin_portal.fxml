@@ -5,6 +5,9 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -46,6 +49,12 @@
             </Hyperlink>
             <Separator layoutX="-1.0" layoutY="229.0" prefHeight="3.0" prefWidth="148.0" />
             <Separator layoutX="1.0" layoutY="65.0" prefHeight="3.0" prefWidth="147.0" />
+            <Hyperlink fx:id="specializationMenu" layoutX="1.0" layoutY="230.0" onAction="#handleSpecializationMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Specialization">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </Hyperlink>
+            <Separator layoutX="1.0" layoutY="272.0" prefHeight="3.0" prefWidth="148.0" />
          </children>
       </Pane>
       <Pane layoutX="147.0" prefHeight="55.0" prefWidth="453.0" style="-fx-background-color: #546e7a; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.0, 0.0, 0.5, 0.0);">
@@ -91,7 +100,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+      <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
          <children>
             <Pane fx:id="adminListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
                <children>
@@ -104,6 +113,36 @@
                   <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
                   <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
                   <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="specializationContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+          <children>
+            <Pane fx:id="specializationListContainer" prefHeight="326.0" prefWidth="438.0">
+               <children>
+                  <Button layoutX="306.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddSpecialization" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Specialization" />
+                  <TableView fx:id="specialityTableView" layoutX="9.0" layoutY="49.0" prefHeight="232.0" prefWidth="421.0">
+                    <columns>
+                      <TableColumn fx:id="specialityIDCol" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="specialityNameCol" prefWidth="263.0" text="Speciality" />
+                        <TableColumn fx:id="specialityActionCol" editable="false" minWidth="0.0" prefWidth="82.0" resizable="false" sortable="false" text="Action" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="specialityPrevBtn" layoutX="227.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSpecialityPrevBtn" text="&lt;" />
+                  <Button fx:id="specialityNextBtn" layoutX="377.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSpecialityNextBtn" text="&gt;" />
+                  <Label fx:id="specialityPaginationLbl" layoutX="280.0" layoutY="297.0" prefHeight="18.0" prefWidth="98.0" style="-fx-alignment: center;" text="1 of 1 pages" />
+               </children>
+            </Pane>
+            <Pane fx:id="addSpecializationContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+               <children>
+                  <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Specialization" />
+                  <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
+                  <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveSpecialization" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
+                  <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleSpecializationBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                  <Label layoutX="16.0" layoutY="48.0" style="-fx-font-size: 16; -fx-text-fill: #333;" text="Specialization" />
+                  <TextField fx:id="specializationFld" layoutX="18.0" layoutY="76.0" prefHeight="37.0" prefWidth="312.0" style="-fx-text-fill: #555; -fx-border-color: #ccc;" />
+                  <Separator layoutY="267.0" prefHeight="3.0" prefWidth="438.0" />
                </children>
             </Pane>
          </children>

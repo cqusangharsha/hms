@@ -23,6 +23,7 @@ public class App extends Application {
     static {
         migrations.add(new Migration(1, Queries.CREATE_USER));
         migrations.add(new Migration(2, Queries.INSERT_ADMIN));
+        migrations.add(new Migration(3, Queries.CREATE_SPECIALIZATION));
     }
 
     @Override
