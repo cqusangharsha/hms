@@ -7,13 +7,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author sangharshachaulagain
  */
 public class UserDao {
-    
+
     private final DBConnection dbConnection;
     private static UserDao instance;
 
@@ -27,7 +29,7 @@ public class UserDao {
         }
         return instance;
     }
-    
+
     public boolean signup(User user) {
         Connection connection = dbConnection.getConnection();
         String signupQuery = "INSERT INTO users (firstName, lastName, dateOfBirth, gender, contactNumber, email, password, address, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -51,7 +53,7 @@ public class UserDao {
             return false;
         }
     }
-    
+
     public User login(String email, String password) {
         Connection connection = dbConnection.getConnection();
         String loginQuery = "SELECT * FROM users WHERE email = ? AND password = ?";
@@ -82,5 +84,51 @@ public class UserDao {
 
         return null;
     }
-    
+
+    public List<User> getUsersByRole(Role role) {
+        return getUsersByRole(role, 0, 0);
+    }
+
+    public List<User> getUsersByRole(Role role, int page, int pageSize) {
+        Connection connection = dbConnection.getConnection();
+        String getUsersByRoleQuery = "SELECT * FROM users WHERE role = ?";
+        if (pageSize != 0) {
+            getUsersByRoleQuery += " LIMIT ?, ?";
+        }
+        List<User> users = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(getUsersByRoleQuery);
+            preparedStatement.setString(1, role.getValue());
+
+            if (pageSize != 0) {
+                preparedStatement.setInt(2, getOffset(page, pageSize));
+                preparedStatement.setInt(3, pageSize);
+
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setFirstName(resultSet.getString("firstName"));
+                user.setLastName(resultSet.getString("lastName"));
+                user.setDateOfBirth(resultSet.getDate("dateOfBirth"));
+                user.setGender(resultSet.getString("gender"));
+                user.setContactNumber(resultSet.getString("contactNumber"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setAddress(resultSet.getString("address"));
+                user.setRole(Role.fromValue(resultSet.getString("role")));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    private int getOffset(int page, int pageSize) {
+        return page * pageSize;
+    }
 }
