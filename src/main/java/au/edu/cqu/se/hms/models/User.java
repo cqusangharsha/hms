@@ -20,7 +20,9 @@ public class User {
     private String address;
     private Role role;
 
-    public User() {
+    public User(int id, String firstName) {
+        this.id = id;
+        this.firstName = firstName;
     }
 
     public User(int id, String firstName, String lastName, Date dateOfBirth, String gender, String contactNumber, String email, String password, String address, Role role) {
@@ -48,7 +50,9 @@ public class User {
         this.role = role;
     }
 
-    
+    public User() {
+    }
+
     /**
      * @return the id
      */

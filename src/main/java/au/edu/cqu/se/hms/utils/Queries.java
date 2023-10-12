@@ -33,4 +33,22 @@ public class Queries {
                                                         )
                                                         """;
 
+    public static final String CREATE_DOCTOR = """
+                                                        CREATE TABLE doctor (
+                                                            id INT AUTO_INCREMENT PRIMARY KEY,
+                                                            user_id INT,
+                                                            specialization VARCHAR(255),
+                                                            FOREIGN KEY (user_id) REFERENCES users(id)
+                                                        )
+                                                        """;
+
+    public static final String CREATE_ASSISTANT = """
+                                                        CREATE TABLE assistant (
+                                                            id INT AUTO_INCREMENT PRIMARY KEY, 
+                                                            user_id INT,
+                                                            reports VARCHAR(255),
+                                                            FOREIGN KEY (user_id) REFERENCES users(id)
+                                                        )
+                                                        """;
+
 }

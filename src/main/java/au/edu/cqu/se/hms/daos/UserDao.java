@@ -47,6 +47,7 @@ public class UserDao {
             preparedStatement.setString(9, user.getRole().getValue());
 
             int rowsAffected = preparedStatement.executeUpdate();
+
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,12 +121,30 @@ public class UserDao {
                 user.setAddress(resultSet.getString("address"));
                 user.setRole(Role.fromValue(resultSet.getString("role")));
                 users.add(user);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return users; // Returns the list of users (might be empty if no users are found)
+    }
 
-        return users;
+    public User getUserByEmail(String email) {
+        Connection connection = dbConnection.getConnection();
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String fName = resultSet.getString("firstName");
+                return new User(id, fName);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Specialization not found
     }
 
     private int getOffset(int page, int pageSize) {
