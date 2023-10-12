@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -101,6 +103,27 @@ public class UserDao {
             e.printStackTrace();
         }
         return null; // Specialization not found
+    }
+
+    public List<User> getUsersByRole(String role) {
+        Connection connection = dbConnection.getConnection();
+        String sql = "SELECT * FROM users WHERE role = ?";
+        List<User> users = new ArrayList<>();
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, role);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String fName = resultSet.getString("firstName");
+                users.add(new User(id, fName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users; // Returns the list of users (might be empty if no users are found)
     }
 
 }

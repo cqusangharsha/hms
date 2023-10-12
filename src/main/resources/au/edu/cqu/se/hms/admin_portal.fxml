@@ -122,16 +122,16 @@
                     <children>
                         <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Assistant" />
                         <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
-                        <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
+                        <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAssistant" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
                         <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
-                        <TextField layoutX="73.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
-                        <TextField layoutX="285.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
-                        <TextField layoutX="73.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
-                        <TextField layoutX="76.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
-                        <TextField layoutX="295.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
-                        <RadioButton layoutX="75.0" layoutY="129.0" mnemonicParsing="false" text="Male" />
-                        <RadioButton layoutX="133.0" layoutY="129.0" mnemonicParsing="false" text="Female" />
-                        <RadioButton layoutX="205.0" layoutY="129.0" mnemonicParsing="false" text="Others" />
+                        <TextField fx:id="assitFName" layoutX="73.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField fx:id="assitLName" layoutX="285.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField fx:id="assistEmail" layoutX="73.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField fx:id="assistAddress" layoutX="76.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
+                        <TextField fx:id="assistContact" layoutX="295.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
+                        <RadioButton fx:id="assistMale" layoutX="75.0" layoutY="129.0" mnemonicParsing="false" text="Male" />
+                        <RadioButton fx:id="assistFemale" layoutX="133.0" layoutY="129.0" mnemonicParsing="false" text="Female" />
+                        <RadioButton fx:id="assistOther" layoutX="205.0" layoutY="129.0" mnemonicParsing="false" text="Others" />
                         <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
                         <Text layoutX="218.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
                         <Text layoutX="5.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
@@ -139,15 +139,12 @@
                         <Text layoutX="5.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender" />
                         <Text layoutX="8.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
                         <Text layoutX="220.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
-                        <PasswordField layoutX="286.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
-                        <DatePicker layoutX="76.0" layoutY="209.0" prefHeight="26.0" prefWidth="116.0" />
+                        <PasswordField fx:id="assistPass" layoutX="286.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
+                        <DatePicker fx:id="assistDateOfBirth" layoutX="76.0" layoutY="209.0" prefHeight="26.0" prefWidth="116.0" />
                         <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
                         <Text layoutX="223.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report To:" />
-                        <MenuButton layoutX="292.0" layoutY="209.0" mnemonicParsing="false" text="Select Doctor">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Action 1" />
-                                <MenuItem mnemonicParsing="false" text="Action 2" />
-                            </items>
+                        <MenuButton fx:id="reportsTo" layoutX="292.0" layoutY="209.0" mnemonicParsing="false" text="Select Doctor">
+                           
                         </MenuButton>
                     </children>
                 </Pane>

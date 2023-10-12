@@ -1,10 +1,12 @@
 package au.edu.cqu.se.hms.controllers;
 
 import au.edu.cqu.se.hms.App;
+import au.edu.cqu.se.hms.daos.AssistantDao;
 import au.edu.cqu.se.hms.daos.DoctorDao;
 import au.edu.cqu.se.hms.daos.SpecializationDao;
 import au.edu.cqu.se.hms.daos.UserDao;
 import au.edu.cqu.se.hms.enums.Role;
+import au.edu.cqu.se.hms.models.Assistant;
 import au.edu.cqu.se.hms.models.Doctor;
 import au.edu.cqu.se.hms.models.Specialization;
 import au.edu.cqu.se.hms.models.User;
@@ -52,6 +54,7 @@ public class AdminPortalController implements Initializable {
 
     private DoctorDao doctorDao;
     private UserDao userDao;
+    private AssistantDao assistantDao;
 
     private final ObservableList<Specialization> observableSpecializationList = FXCollections.observableArrayList();
     private int specializationListPage = 0;
@@ -112,32 +115,62 @@ public class AdminPortalController implements Initializable {
 
     @FXML
     private TextField fName;
+    
+    @FXML
+    private TextField assitFName;
 
     @FXML
     private TextField lName;
+    
+    @FXML
+    private TextField assitLName;
 
     @FXML
     private TextField email;
+    
+      @FXML
+    private TextField assistEmail;
 
     @FXML
     private PasswordField password;
+    
+     @FXML
+    private PasswordField assistPass;
 
     @FXML
     private TextField address;
+    
+      @FXML
+    private TextField assistAddress;
 
     @FXML
     private TextField contactNumber;
+    
+      @FXML
+    private TextField assistContact;
 
     @FXML
     private RadioButton male;
+    
+    @FXML
+    private RadioButton assistMale;
     @FXML
     private RadioButton female;
+    
+     @FXML
+    private RadioButton assistFemale;
 
     @FXML
     private RadioButton other;
+    
+        @FXML
+    private RadioButton assistOther;
 
     @FXML
     private DatePicker dateOfBirth;
+    
+    @FXML
+    private DatePicker assistDateOfBirth;
 
     @FXML
     private MenuButton reportsTo;
@@ -145,13 +178,13 @@ public class AdminPortalController implements Initializable {
     @FXML
     private MenuButton specialization;
 
-    private char gender;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
         specializationDao = SpecializationDao.getInstance();
         doctorDao = DoctorDao.getInstance();
+        assistantDao = AssistantDao.getInstance();
 
         userDao = UserDao.getInstance();
 
@@ -244,6 +277,18 @@ public class AdminPortalController implements Initializable {
         specialization.setText("");
 
     }
+    
+     private void clearNewAssistForm() {
+        fName.setText("");
+        lName.setText("");
+        address.setText("");
+        contactNumber.setText("");
+        email.setText("");
+        dateOfBirth.setValue(null);
+        password.setText("");
+        specialization.setText("");
+
+    }
 
     private void showDoctorContainer() {
         hideAllContainer();
@@ -282,6 +327,18 @@ public class AdminPortalController implements Initializable {
                 && !StringUtils.isEmpty(specialization.getText().trim())
                 && !StringUtils.isEmpty(((TextField) dateOfBirth.getEditor()).getText());
     }
+    
+     private boolean isAddAssistantFormValid() {
+        return !StringUtils.isEmpty(assitFName.getText().trim())
+                && !StringUtils.isEmpty(assitLName.getText().trim())
+                && !StringUtils.isEmpty(assistAddress.getText().trim())
+                && !StringUtils.isEmpty(assistContact.getText().trim())
+                && !StringUtils.isEmpty(assistPass.getText().trim())
+                && (!StringUtils.isEmpty(assistMale.getText().trim()) || !StringUtils.isEmpty(assistFemale.getText().trim()) || !StringUtils.isEmpty(assistOther.getText().trim()))
+                && !StringUtils.isEmpty(assistEmail.getText().trim())
+                && !StringUtils.isEmpty(reportsTo.getText().trim())
+                && !StringUtils.isEmpty(((TextField) assistDateOfBirth.getEditor()).getText());
+    }
 
     @FXML
     private void handleAssistantMenu(ActionEvent event) {
@@ -300,14 +357,58 @@ public class AdminPortalController implements Initializable {
 
     @FXML
     private void handleSaveAssistant(ActionEvent event) {
-        // Save the Assistant information to database
+       
+        if (!isAddAssistantFormValid()) {
+            UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
+            return;
+        } else {
+            Assistant assist = new Assistant();
+            assist.setFirstName(assitFName.getText());
+
+            assist.setLastName(assitLName.getText());
+            assist.setAddress(assistAddress.getText());
+            assist.setContactNumber(assistContact.getText());
+            assist.setEmail(assistEmail.getText());
+            assist.setPassword(assistPass.getText());
+
+            java.sql.Date date = java.sql.Date.valueOf(assistDateOfBirth.getValue());
+            assist.setDateOfBirth(date);
+
+            if (assistMale.isSelected()) {
+                assist.setGender(assistMale.getText());
+            } else if (assistFemale.isSelected()) {
+                assist.setGender(assistFemale.getText());
+            } else if (assistOther.isSelected()) {
+                assist.setGender(assistOther.getText());
+            }
+            assist.setReportsTo(reportsTo.getText());
+            assist.setRole(Role.ASSISTANT);
+            if (userDao.signup(assist)) {
+                userDao.getUserByEmail(assist.getEmail());
+                assist.setAssistantId(userDao.getUserByEmail(assist.getEmail()).getId());
+
+                assistantDao.addAssistant(assist);
+            }
+
+            clearNewAssistForm();
+            showAssistantContainer();
+        }
     }
+    
 
     private void showAssistantContainer() {
         hideAllContainer();
 
         assistantMenu.setStyle(selectedMenuStyle);
         assistantContainer.setVisible(true);
+        
+          for (User doctor : userDao.getUsersByRole(Role.DOCTOR.getValue())) {
+            MenuItem menuItem = new MenuItem(doctor.getFirstName());
+            menuItem.setOnAction(e -> {
+                reportsTo.setText(menuItem.getText());
+            });
+            reportsTo.getItems().add(menuItem);
+        }
 
         showAssistantListContainer();
     }
