@@ -57,15 +57,18 @@ public class SignInController implements Initializable {
         }
 
         String redirectPortal = null;
-        
+
         switch (user.getRole()) {
-            case ADMIN -> redirectPortal = "admin_portal";
+            case ADMIN ->
+                redirectPortal = "admin_portal";
+            case DOCTOR ->
+                redirectPortal = "doctor_portal";
             default -> {
                 UIUtils.alert("Contact Administrator", "Your Role is not set. Please contact administrator.", Alert.AlertType.ERROR);
                 return;
             }
         }
-        
+
         try {
             App.setRoot(redirectPortal);
         } catch (IOException e) {
