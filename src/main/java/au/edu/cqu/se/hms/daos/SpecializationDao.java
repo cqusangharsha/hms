@@ -31,7 +31,7 @@ public class SpecializationDao {
 
     public void addSpecialization(Specialization specialization) {
         String sql = "INSERT INTO specializations (name) VALUES (?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, specialization.getName());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -41,7 +41,7 @@ public class SpecializationDao {
 
     public void updateSpecialization(Specialization specialization) {
         String sql = "UPDATE specializations SET name = ? WHERE id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, specialization.getName());
             preparedStatement.setInt(2, specialization.getId());
             preparedStatement.executeUpdate();
@@ -52,7 +52,7 @@ public class SpecializationDao {
 
     public void deleteSpecialization(int specializationId) {
         String sql = "DELETE FROM specializations WHERE id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, specializationId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -62,7 +62,7 @@ public class SpecializationDao {
 
     public Specialization getSpecializationById(int specializationId) {
         String sql = "SELECT * FROM specializations WHERE id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, specializationId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -86,7 +86,7 @@ public class SpecializationDao {
         if (pageSize != 0) {
             sql += " LIMIT ?, ?";
         }
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             if (pageSize != 0) {
                 preparedStatement.setInt(1, getOffset(page, pageSize));
                 preparedStatement.setInt(2, pageSize);
