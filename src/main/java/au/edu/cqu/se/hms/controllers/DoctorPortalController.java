@@ -1,8 +1,6 @@
 package au.edu.cqu.se.hms.controllers;
 
 import au.edu.cqu.se.hms.App;
-import au.edu.cqu.se.hms.daos.SpecializationDao;
-import au.edu.cqu.se.hms.daos.UserDao;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.services.AuthenticationService;
 import au.edu.cqu.se.hms.utils.UIUtils;
@@ -16,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -38,7 +37,15 @@ public class DoctorPortalController implements Initializable {
     @FXML
     private Pane appointmentContainer;
     @FXML
-    private Pane patientContainer;
+    private Pane patientListContainer;
+    @FXML
+    private Pane patientInfoContainer;
+    @FXML
+    private Text patientNameLbl;
+    @FXML
+    private Pane medicalHistoryContainer;
+    @FXML
+    private Label medicalHistoryLbl;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,25 +80,37 @@ public class DoctorPortalController implements Initializable {
     @FXML
     private void handlePatientMenu(ActionEvent event) {
         hideAllContainer();
-        showPatientContainer();
+        showPatientListContainer();
     }
 
-    private void showPatientContainer() {
+    private void showPatientListContainer() {
         hideAllContainer();
         patientMenu.setStyle(selectedMenuStyle);
-        patientContainer.setVisible(true);
+        patientListContainer.setVisible(true);
     }
 
     @FXML
     private void handleLogout(ActionEvent event) {
         UIUtils.logout();
     }
+    
+    private void showPatientInfoContainer() {
+        hideAllContainer();
+        patientInfoContainer.setVisible(true);
+    }
+    
+    private void showMedicalHistoryContainer() {
+        hideAllContainer();
+        medicalHistoryContainer.setVisible(true);
+    }
 
     private void hideAllContainer() {
         patientMenu.setStyle(unSelectedMenuStyle);
         appointmentMenu.setStyle(unSelectedMenuStyle);
 
-        patientContainer.setVisible(false);
+        patientListContainer.setVisible(false);
         appointmentContainer.setVisible(false);
+        patientInfoContainer.setVisible(false);
+        medicalHistoryContainer.setVisible(false);
     }
 }
