@@ -60,6 +60,7 @@ public class SignInController implements Initializable {
         
         switch (user.getRole()) {
             case ADMIN -> redirectPortal = "admin_portal";
+            case  ASSISTANT-> redirectPortal = "assistant_portal";
             default -> {
                 UIUtils.alert("Contact Administrator", "Your Role is not set. Please contact administrator.", Alert.AlertType.ERROR);
                 return;

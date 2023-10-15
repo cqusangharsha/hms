@@ -50,5 +50,19 @@ public class Queries {
                                                             FOREIGN KEY (user_id) REFERENCES users(id)
                                                         )
                                                         """;
+    
+    
+      public static final String CREATE_PATIENT = """
+                                                         CREATE TABLE patient (
+                                                                                                         id INT AUTO_INCREMENT PRIMARY KEY,
+                                                                                                         patientName VARCHAR(255) NOT NULL,
+                                                                                                         dateOfBirth DATE,
+                                                                                                         gender VARCHAR(10),
+                                                                                                         contactNumber VARCHAR(20),
+                                                                                                         email VARCHAR(255) UNIQUE NOT NULL,
+                                                                                                         address VARCHAR(255),
+                                                                                                         doctor VARCHAR(255),
+                                                                                                         visitReason varchar(255))
+                                                        """;
 
 }

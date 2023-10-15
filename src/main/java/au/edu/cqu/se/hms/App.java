@@ -26,6 +26,7 @@ public class App extends Application {
         migrations.add(new Migration(3, Queries.CREATE_SPECIALIZATION));
          migrations.add(new Migration(4, Queries.CREATE_DOCTOR));
          migrations.add(new Migration(5, Queries.CREATE_ASSISTANT));
+           migrations.add(new Migration(6, Queries.CREATE_PATIENT));
     }
 
     @Override
