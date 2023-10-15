@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package au.edu.cqu.se.hms.models;
 
 /**
@@ -9,17 +5,34 @@ package au.edu.cqu.se.hms.models;
  * @author sudeep_sharma
  */
 public class Doctor extends User {
+    private int Id;
 
-    private int doctorId;
+    private int userId;
 
     private String specialization;
 
-    public int getDoctorId() {
-        return doctorId;
+    public Doctor() {
     }
 
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
+    public Doctor(int doctorId, String specialization) {
+        this.Id = doctorId;
+        this.specialization = specialization;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int Id) {
+        this.Id = Id;
+    }
+    
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getSpecialization() {

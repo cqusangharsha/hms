@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package au.edu.cqu.se.hms.models;
 
-import au.edu.cqu.se.hms.enums.Role;
 import java.util.Date;
 
 /**

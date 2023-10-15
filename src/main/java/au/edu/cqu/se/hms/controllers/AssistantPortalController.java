@@ -163,7 +163,6 @@ public class AssistantPortalController implements Initializable {
         nameLbl.layoutXProperty().bind(sidebarPane.widthProperty().subtract(nameLbl.widthProperty()).divide(2));
 
         showPatientContainer();
-
     }
 
     @FXML
@@ -212,11 +211,9 @@ public class AssistantPortalController implements Initializable {
         }
 
         patient.setVisitReason(reasonVisit.getText());
-
         userDao.getUserByEmail(availableDoctors.getText());
 
         patient.setDoctor(availableDoctors.getText());
-
         patientDao.addPatient(patient);
 
         clearNewForm();
