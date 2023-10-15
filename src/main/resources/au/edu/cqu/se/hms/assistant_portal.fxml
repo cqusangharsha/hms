@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
@@ -46,7 +46,7 @@
                     </padding>
                 </Hyperlink>
                 <Separator layoutY="187.0" prefHeight="3.0" prefWidth="148.0" />
-                <Hyperlink fx:id="adminMenu" layoutX="-1.0" layoutY="187.0" onAction="#handleAdminMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Records">
+                <Hyperlink fx:id="adminMenu" layoutX="-1.0" layoutY="187.0" onAction="#handleAdminMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Patients Billing">
                     <padding>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                     </padding>
@@ -103,58 +103,56 @@
                 </Pane>
             </children>
         </Pane>
-        <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
+        <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
             <children>
-                <Pane fx:id="adminListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+                <Pane fx:id="appointmentListContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
-                        <Button layoutX="351.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAddAdmin" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="View Records" />
+                        <Button layoutX="351.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAddAppointment" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="View Records" visible="false" />
                     </children>
                 </Pane>
                 <Pane fx:id="addAdminContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
-                        <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Administrator" />
+                        <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Billing management" />
                         <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
-                        <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
-                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                        <Button layoutX="302.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleSaveAppointment" prefHeight="31.0" prefWidth="89.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Generate" />
+                        <Button layoutX="365.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                  <Text layoutX="9.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patients Contact" />
+                  <TextField layoutX="111.0" layoutY="39.0" />
                     </children>
                 </Pane>
             </children>
         </Pane>
-        <Pane fx:id="assistantContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+        <Pane fx:id="assistantContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
             <children>
                 <Pane fx:id="assistantListContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
                         <Button layoutX="303.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleAddAssistant" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Make Appointment" />
                     </children>
                 </Pane>
-                <Pane fx:id="addAssistantContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+                <Pane fx:id="addAssistantContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
-                        <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Assistant" />
-                        <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
+                        <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Appointment" />
+                        <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" visible="false" />
                         <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAssistant" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
                         <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
-                        <TextField fx:id="assitFName" layoutX="73.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
-                        <TextField fx:id="assitLName" layoutX="285.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
-                        <TextField fx:id="assistEmail" layoutX="73.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
-                        <TextField fx:id="assistAddress" layoutX="76.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
-                        <TextField fx:id="assistContact" layoutX="295.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
-                        <RadioButton fx:id="assistMale" layoutX="75.0" layoutY="129.0" mnemonicParsing="false" text="Male" />
-                        <RadioButton fx:id="assistFemale" layoutX="133.0" layoutY="129.0" mnemonicParsing="false" text="Female" />
-                        <RadioButton fx:id="assistOther" layoutX="205.0" layoutY="129.0" mnemonicParsing="false" text="Others" />
-                        <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
-                        <Text layoutX="218.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
-                        <Text layoutX="5.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-                        <Text layoutX="219.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-                        <Text layoutX="5.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender" />
-                        <Text layoutX="8.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
-                        <Text layoutX="220.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
-                        <PasswordField fx:id="assistPass" layoutX="286.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
-                        <DatePicker fx:id="assistDateOfBirth" layoutX="76.0" layoutY="209.0" prefHeight="26.0" prefWidth="116.0" />
-                        <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
-                        <Text layoutX="223.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report To:" />
-                        <MenuButton fx:id="reportsTo" layoutX="292.0" layoutY="209.0" mnemonicParsing="false" text="Select Doctor">
+                        <TextField fx:id="assitFName" layoutX="130.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
+                        <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name" />
+                        <Text layoutX="7.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reason for visit" />
+                        <Text layoutX="13.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <MenuButton fx:id="reportsTo" layoutX="133.0" layoutY="161.0" mnemonicParsing="false" text="Select Doctor">
                            
                         </MenuButton>
+                  <DatePicker layoutX="129.0" layoutY="79.0" />
+                  <Text layoutX="5.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Date" />
+                  <Text layoutX="6.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Doctor" />
+                  <TextArea layoutX="133.0" layoutY="205.0" prefHeight="55.0" prefWidth="185.0" />
+                  <Text layoutX="6.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Time" />
+                  <MenuButton layoutX="129.0" layoutY="117.0" mnemonicParsing="false" text="MenuButton">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                  </MenuButton>
                     </children>
                 </Pane>
             </children>

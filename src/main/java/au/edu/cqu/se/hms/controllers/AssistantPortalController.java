@@ -87,9 +87,9 @@ public class AssistantPortalController implements Initializable {
     @FXML
     private Pane addAssistantContainer;
     @FXML
-    private Pane addAdminContainer;
+    private Pane addAppointmentContainer;
     @FXML
-    private Pane adminListContainer;
+    private Pane appointmentListContainer;
 
     @FXML
     private TextField fName;
@@ -402,7 +402,7 @@ public class AssistantPortalController implements Initializable {
     }
 
     @FXML
-    private void handleAddAdmin(ActionEvent event) {
+    private void handleAddAppointment(ActionEvent event) {
         showAddAdminContainer();
     }
 
@@ -412,7 +412,7 @@ public class AssistantPortalController implements Initializable {
     }
 
     @FXML
-    private void handleSaveAdmin(ActionEvent event) {
+    private void handleSaveAppointment(ActionEvent event) {
         // save admin information to database
     }
 
@@ -426,13 +426,13 @@ public class AssistantPortalController implements Initializable {
     }
 
     private void showAdminListContainer() {
-        addAdminContainer.setVisible(false);
-        adminListContainer.setVisible(true);
+        addAppointmentContainer.setVisible(false);
+        appointmentListContainer.setVisible(true);
     }
 
     private void showAddAdminContainer() {
-        addAdminContainer.setVisible(true);
-        adminListContainer.setVisible(false);
+        addAppointmentContainer.setVisible(true);
+        appointmentListContainer.setVisible(false);
     }
 
     private void hideAllContainer() {
