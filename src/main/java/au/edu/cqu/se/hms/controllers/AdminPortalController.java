@@ -15,6 +15,8 @@ import au.edu.cqu.se.hms.utils.StringUtils;
 import au.edu.cqu.se.hms.utils.UIUtils;
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
@@ -32,13 +34,12 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
 
 /**
  *
@@ -51,14 +52,17 @@ public class AdminPortalController implements Initializable {
 
     private AuthenticationService authService;
     private SpecializationDao specializationDao;
-
-    private DoctorDao doctorDao;
     private UserDao userDao;
+    private DoctorDao doctorDao;
     private AssistantDao assistantDao;
 
     private final ObservableList<Specialization> observableSpecializationList = FXCollections.observableArrayList();
     private int specializationListPage = 0;
     private final int speciailzationListPageSize = 5;
+
+    private final ObservableList<User> observableAdminList = FXCollections.observableArrayList();
+    private int adminListPage = 0;
+    private final int adminListPageSize = 5;
 
     @FXML
     private Label nameLbl;
@@ -105,70 +109,108 @@ public class AdminPortalController implements Initializable {
     @FXML
     private TableColumn<Specialization, String> specialityNameCol;
     @FXML
-    private TableColumn<Specialization, String> specialityActionCol;
-    @FXML
     private Button specialityPrevBtn;
     @FXML
     private Button specialityNextBtn;
     @FXML
     private Label specialityPaginationLbl;
+    @FXML
+    private ToggleGroup adminGenderToggle;
+    @FXML
+    private TextField adminFirstNameTF;
+    @FXML
+    private TextField adminLastNameTF;
+    @FXML
+    private TextField adminEmailTF;
+    @FXML
+    private TextField adminPhoneTF;
+    @FXML
+    private TextField adminAddressTF;
+    @FXML
+    private RadioButton adminMaleRB;
+    @FXML
+    private RadioButton adminFemaleRB;
+    @FXML
+    private RadioButton adminOtherRB;
+    @FXML
+    private PasswordField adminPasswordFld;
+    @FXML
+    private DatePicker adminDoBFld;
+    @FXML
+    private TableView<User> adminTableView;
+    @FXML
+    private TableColumn<User, Integer> adminIDCol;
+    @FXML
+    private TableColumn<User, String> adminNameCol;
+    @FXML
+    private TableColumn<User, String> adminGenderCol;
+    @FXML
+    private TableColumn<User, String> adminPhoneCol;
+    @FXML
+    private TableColumn<User, String> adminAddressCol;
+    @FXML
+    private Button adminPrevBtn;
+    @FXML
+    private Button adminNextBtn;
+    @FXML
+    private Label adminPaginationLbl;
 
     @FXML
     private TextField fName;
-    
+
     @FXML
     private TextField assitFName;
 
     @FXML
     private TextField lName;
-    
+
     @FXML
     private TextField assitLName;
 
     @FXML
     private TextField email;
-    
-      @FXML
+
+    @FXML
     private TextField assistEmail;
 
     @FXML
     private PasswordField password;
-    
-     @FXML
+
+    @FXML
     private PasswordField assistPass;
 
     @FXML
     private TextField address;
-    
-      @FXML
+
+    @FXML
     private TextField assistAddress;
 
     @FXML
     private TextField contactNumber;
-    
-      @FXML
+
+    @FXML
     private TextField assistContact;
 
     @FXML
     private RadioButton male;
-    
+
     @FXML
     private RadioButton assistMale;
     @FXML
     private RadioButton female;
-    
-     @FXML
+
+    @FXML
     private RadioButton assistFemale;
 
     @FXML
     private RadioButton other;
-    
-        @FXML
+
+    @FXML
     private RadioButton assistOther;
 
     @FXML
     private DatePicker dateOfBirth;
-    
+
     @FXML
     private DatePicker assistDateOfBirth;
 
@@ -178,14 +220,12 @@ public class AdminPortalController implements Initializable {
     @FXML
     private MenuButton specialization;
 
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
         specializationDao = SpecializationDao.getInstance();
         doctorDao = DoctorDao.getInstance();
         assistantDao = AssistantDao.getInstance();
-
         userDao = UserDao.getInstance();
 
         User user = authService.getCurrentUser();
@@ -199,8 +239,8 @@ public class AdminPortalController implements Initializable {
         }
         nameLbl.setText("Male".equals(user.getGender()) ? "Mr. " + user.getLastName() : "Mrs. " + user.getLastName());
         nameLbl.layoutXProperty().bind(sidebarPane.widthProperty().subtract(nameLbl.widthProperty()).divide(2));
-
         displaySpecializationTable();
+        displayAdminTable();
 
         showDoctorContainer();
 
@@ -221,7 +261,6 @@ public class AdminPortalController implements Initializable {
         showAddDoctorContainer();
     }
 
-    @FXML
     private void handleDoctorBackBtn(ActionEvent event) {
         showDoctorListContainer();
     }
@@ -232,38 +271,38 @@ public class AdminPortalController implements Initializable {
         if (!isAddDoctorFormValid()) {
             UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
             return;
-        } else {
-            Doctor doctor = new Doctor();
-            doctor.setFirstName(fName.getText());
-
-            doctor.setLastName(lName.getText());
-            doctor.setAddress(address.getText());
-            doctor.setContactNumber(contactNumber.getText());
-            doctor.setEmail(email.getText());
-            doctor.setPassword(password.getText());
-
-            java.sql.Date date = java.sql.Date.valueOf(dateOfBirth.getValue());
-            doctor.setDateOfBirth(date);
-
-            if (male.isSelected()) {
-                doctor.setGender(male.getText());
-            } else if (female.isSelected()) {
-                doctor.setGender(female.getText());
-            } else if (other.isSelected()) {
-                doctor.setGender(other.getText());
-            }
-            doctor.setSpecialization(specialization.getText());
-            doctor.setRole(Role.DOCTOR);
-            if (userDao.signup(doctor)) {
-                userDao.getUserByEmail(doctor.getEmail());
-                doctor.setDoctorId(userDao.getUserByEmail(doctor.getEmail()).getId());
-
-                doctorDao.addDoctor(doctor);
-            }
-
-            clearNewForm();
-            showDoctorContainer();
         }
+
+        Doctor doctor = new Doctor();
+        doctor.setFirstName(fName.getText());
+
+        doctor.setLastName(lName.getText());
+        doctor.setAddress(address.getText());
+        doctor.setContactNumber(contactNumber.getText());
+        doctor.setEmail(email.getText());
+        doctor.setPassword(password.getText());
+
+        java.sql.Date date = java.sql.Date.valueOf(dateOfBirth.getValue());
+        doctor.setDateOfBirth(date);
+
+        if (male.isSelected()) {
+            doctor.setGender(male.getText());
+        } else if (female.isSelected()) {
+            doctor.setGender(female.getText());
+        } else if (other.isSelected()) {
+            doctor.setGender(other.getText());
+        }
+        doctor.setSpecialization(specialization.getText());
+        doctor.setRole(Role.DOCTOR);
+        if (userDao.signup(doctor)) {
+            userDao.getUserByEmail(doctor.getEmail());
+            doctor.setDoctorId(userDao.getUserByEmail(doctor.getEmail()).getId());
+
+            doctorDao.addDoctor(doctor);
+        }
+
+        clearNewForm();
+        showDoctorContainer();
     }
 
     private void clearNewForm() {
@@ -277,8 +316,8 @@ public class AdminPortalController implements Initializable {
         specialization.setText("");
 
     }
-    
-     private void clearNewAssistForm() {
+
+    private void clearNewAssistForm() {
         fName.setText("");
         lName.setText("");
         address.setText("");
@@ -327,8 +366,8 @@ public class AdminPortalController implements Initializable {
                 && !StringUtils.isEmpty(specialization.getText().trim())
                 && !StringUtils.isEmpty(((TextField) dateOfBirth.getEditor()).getText());
     }
-    
-     private boolean isAddAssistantFormValid() {
+
+    private boolean isAddAssistantFormValid() {
         return !StringUtils.isEmpty(assitFName.getText().trim())
                 && !StringUtils.isEmpty(assitLName.getText().trim())
                 && !StringUtils.isEmpty(assistAddress.getText().trim())
@@ -350,59 +389,56 @@ public class AdminPortalController implements Initializable {
         showAddAssistantContainer();
     }
 
-    @FXML
     private void handleAssistantBackBtn(ActionEvent event) {
         showAssistantListContainer();
     }
 
     @FXML
     private void handleSaveAssistant(ActionEvent event) {
-       
+
         if (!isAddAssistantFormValid()) {
             UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
             return;
-        } else {
-            Assistant assist = new Assistant();
-            assist.setFirstName(assitFName.getText());
-
-            assist.setLastName(assitLName.getText());
-            assist.setAddress(assistAddress.getText());
-            assist.setContactNumber(assistContact.getText());
-            assist.setEmail(assistEmail.getText());
-            assist.setPassword(assistPass.getText());
-
-            java.sql.Date date = java.sql.Date.valueOf(assistDateOfBirth.getValue());
-            assist.setDateOfBirth(date);
-
-            if (assistMale.isSelected()) {
-                assist.setGender(assistMale.getText());
-            } else if (assistFemale.isSelected()) {
-                assist.setGender(assistFemale.getText());
-            } else if (assistOther.isSelected()) {
-                assist.setGender(assistOther.getText());
-            }
-            assist.setReportsTo(reportsTo.getText());
-            assist.setRole(Role.ASSISTANT);
-            if (userDao.signup(assist)) {
-                userDao.getUserByEmail(assist.getEmail());
-                assist.setAssistantId(userDao.getUserByEmail(assist.getEmail()).getId());
-
-                assistantDao.addAssistant(assist);
-            }
-
-            clearNewAssistForm();
-            showAssistantContainer();
         }
+        Assistant assist = new Assistant();
+        assist.setFirstName(assitFName.getText());
+
+        assist.setLastName(assitLName.getText());
+        assist.setAddress(assistAddress.getText());
+        assist.setContactNumber(assistContact.getText());
+        assist.setEmail(assistEmail.getText());
+        assist.setPassword(assistPass.getText());
+
+        java.sql.Date date = java.sql.Date.valueOf(assistDateOfBirth.getValue());
+        assist.setDateOfBirth(date);
+
+        if (assistMale.isSelected()) {
+            assist.setGender(assistMale.getText());
+        } else if (assistFemale.isSelected()) {
+            assist.setGender(assistFemale.getText());
+        } else if (assistOther.isSelected()) {
+            assist.setGender(assistOther.getText());
+        }
+        assist.setReportsTo(reportsTo.getText());
+        assist.setRole(Role.ASSISTANT);
+        if (userDao.signup(assist)) {
+            userDao.getUserByEmail(assist.getEmail());
+            assist.setAssistantId(userDao.getUserByEmail(assist.getEmail()).getId());
+
+            assistantDao.addAssistant(assist);
+        }
+
+        clearNewAssistForm();
+        showAssistantContainer();
     }
-    
 
     private void showAssistantContainer() {
         hideAllContainer();
 
         assistantMenu.setStyle(selectedMenuStyle);
         assistantContainer.setVisible(true);
-        
-          for (User doctor : userDao.getUsersByRole(Role.DOCTOR.getValue())) {
+        reportsTo.getItems().clear();
+        for (User doctor : userDao.getUsersByRole(Role.DOCTOR)) {
             MenuItem menuItem = new MenuItem(doctor.getFirstName());
             menuItem.setOnAction(e -> {
                 reportsTo.setText(menuItem.getText());
@@ -440,7 +476,37 @@ public class AdminPortalController implements Initializable {
 
     @FXML
     private void handleSaveAdmin(ActionEvent event) {
-        // save admin information to database
+        if (!isAddAdminFormValid()) {
+            UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
+            return;
+        }
+        userDao.signup(
+                new User(adminFirstNameTF.getText(),
+                        adminLastNameTF.getText(),
+                        Date.from(
+                                adminDoBFld.getValue()
+                                        .atStartOfDay(ZoneId.systemDefault())
+                                        .toInstant()
+                        ), ((RadioButton) adminGenderToggle.getSelectedToggle()).getText(),
+                        adminPhoneTF.getText(),
+                        adminEmailTF.getText(),
+                        adminPasswordFld.getText(),
+                        adminAddressTF.getText(),
+                        Role.ADMIN)
+        );
+        clearAdminForm();
+        showAdminListContainer();
+    }
+
+    private boolean isAddAdminFormValid() {
+        return !StringUtils.isEmpty(adminFirstNameTF.getText().trim())
+                && !StringUtils.isEmpty(adminLastNameTF.getText().trim())
+                && !StringUtils.isEmpty(adminEmailTF.getText().trim())
+                && !StringUtils.isEmpty(adminPasswordFld.getText().trim())
+                && !StringUtils.isEmpty(adminPhoneTF.getText().trim())
+                && !StringUtils.isEmpty(adminAddressTF.getText().trim())
+                && adminDoBFld.getValue() != null
+                && adminGenderToggle.getSelectedToggle() != null;
     }
 
     private void showAdminContainer() {
@@ -453,13 +519,87 @@ public class AdminPortalController implements Initializable {
     }
 
     private void showAdminListContainer() {
+        refreshAdminTable();
         addAdminContainer.setVisible(false);
         adminListContainer.setVisible(true);
     }
 
     private void showAddAdminContainer() {
+        clearAdminForm();
         addAdminContainer.setVisible(true);
         adminListContainer.setVisible(false);
+    }
+
+    private void displayAdminTable() {
+        adminIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        adminNameCol.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getFirstName() + " " + cellData.getValue().getLastName())
+        );
+        adminGenderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        adminPhoneCol.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
+        adminAddressCol.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
+    }
+
+    private void refreshAdminTable() {
+        observableAdminList.clear();
+        List<User> userList;
+        userList = userDao.getUsersByRole(Role.ADMIN, adminListPage, adminListPageSize);
+        observableAdminList.addAll(userList);
+        adminTableView.setItems(observableAdminList);
+
+        handleAdminPaginationView();
+    }
+
+    private void handleAdminPaginationView() {
+        List<User> totalAdmin;
+        totalAdmin = userDao.getUsersByRole(Role.ADMIN);
+
+        if (totalAdmin.isEmpty()) {
+            adminPaginationLbl.setVisible(false);
+            adminPrevBtn.setVisible(false);
+            adminNextBtn.setVisible(false);
+        } else {
+            adminPaginationLbl.setVisible(true);
+            adminPrevBtn.setVisible(true);
+            adminNextBtn.setVisible(true);
+        }
+        adminPaginationLbl.setText((adminListPage + 1) + " of " + (((totalAdmin.size() - 1) / adminListPageSize) + 1) + " pages");
+        if (adminListPage <= 0) {
+            adminPrevBtn.setDisable(true);
+        } else {
+            adminPrevBtn.setDisable(false);
+        }
+
+        if ((adminListPage + 1) * adminListPageSize >= totalAdmin.size()) {
+            adminNextBtn.setDisable(true);
+        } else {
+            adminNextBtn.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void handleAdminPrevBtn(ActionEvent event) {
+        adminListPage -= 1;
+        refreshAdminTable();
+    }
+
+    @FXML
+    private void handleAdminNextBtn(ActionEvent event) {
+        adminListPage += 1;
+        refreshAdminTable();
+    }
+
+    private void clearAdminForm() {
+        adminFirstNameTF.setText("");
+        adminLastNameTF.setText("");
+        adminEmailTF.setText("");
+        adminPasswordFld.setText("");
+        adminPhoneTF.setText("");
+        adminAddressTF.setText("");
+        adminDoBFld.setValue(null);
+        if (adminGenderToggle.getSelectedToggle() != null) {
+            ((RadioButton) adminGenderToggle.getSelectedToggle()).setSelected(false);
+        }
     }
 
     @FXML
@@ -515,29 +655,6 @@ public class AdminPortalController implements Initializable {
     private void displaySpecializationTable() {
         specialityIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         specialityNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        Callback<TableColumn<Specialization, String>, TableCell<Specialization, String>> cellFactory = (TableColumn<Specialization, String> p) -> {
-            final TableCell<Specialization, String> cell = new TableCell<Specialization, String>() {
-                @Override
-                public void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                        setText(null);
-
-                    } else {
-                        Button btn = new Button("Edit");
-                        btn.setOnAction((event) -> {
-//                            showEditSpecializationContainer(getTableRow().getItem());
-                            System.out.println("Show Edit Container");
-                        });
-                        setGraphic(btn);
-                        setText(null);
-                    }
-                }
-            };
-            return cell;
-        };
-        specialityActionCol.setCellFactory(cellFactory);
     }
 
     private void refreshSpeciailzationTable() {

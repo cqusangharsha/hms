@@ -1,7 +1,6 @@
 package au.edu.cqu.se.hms.controllers;
 
 import au.edu.cqu.se.hms.App;
-import au.edu.cqu.se.hms.daos.UserDao;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.services.AuthenticationService;
 import au.edu.cqu.se.hms.utils.UIUtils;
@@ -13,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -57,16 +55,20 @@ public class SignInController implements Initializable {
         }
 
         String redirectPortal = null;
-        
+
         switch (user.getRole()) {
-            case ADMIN -> redirectPortal = "admin_portal";
-            case  ASSISTANT-> redirectPortal = "assistant_portal";
+            case ADMIN ->
+                redirectPortal = "admin_portal";
+            case DOCTOR ->
+                redirectPortal = "doctor_portal";
+            case ASSISTANT ->
+                redirectPortal = "assistant_portal";
             default -> {
                 UIUtils.alert("Contact Administrator", "Your Role is not set. Please contact administrator.", Alert.AlertType.ERROR);
                 return;
             }
         }
-        
+
         try {
             App.setRoot(redirectPortal);
         } catch (IOException e) {

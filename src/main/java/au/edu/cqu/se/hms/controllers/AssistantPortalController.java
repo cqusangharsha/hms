@@ -1,35 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package au.edu.cqu.se.hms.controllers;
 
 import au.edu.cqu.se.hms.App;
 import au.edu.cqu.se.hms.daos.AssistantDao;
 import au.edu.cqu.se.hms.daos.DoctorDao;
 import au.edu.cqu.se.hms.daos.PatientDao;
-import au.edu.cqu.se.hms.daos.SpecializationDao;
 import au.edu.cqu.se.hms.daos.UserDao;
 import au.edu.cqu.se.hms.enums.Role;
 import au.edu.cqu.se.hms.models.Assistant;
-import au.edu.cqu.se.hms.models.Doctor;
 import au.edu.cqu.se.hms.models.Patient;
-import au.edu.cqu.se.hms.models.Specialization;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.services.AuthenticationService;
 import au.edu.cqu.se.hms.utils.StringUtils;
 import au.edu.cqu.se.hms.utils.UIUtils;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -37,14 +26,9 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
 
 /**
  *
@@ -208,40 +192,35 @@ public class AssistantPortalController implements Initializable {
         if (!isAddPatientFormValid()) {
             UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
             return;
-        } else {
-            Patient patient = new Patient();
-            patient.setPatientName(fName.getText());
-
-            patient.setAddress(address.getText());
-            patient.setContactNumber(contactNumber.getText());
-            patient.setEmail(email.getText());
-
-            java.sql.Date date = java.sql.Date.valueOf(dateOfBirth.getValue());
-            patient.setDateOfBirth(date);
-
-            if (male.isSelected()) {
-                patient.setGender(male.getText());
-            } else if (female.isSelected()) {
-                patient.setGender(female.getText());
-            } else if (other.isSelected()) {
-                patient.setGender(other.getText());
-            }
-
-            patient.setVisitReason(reasonVisit.getText());
-
-            userDao.getUserByEmail(availableDoctors.getText());
-            
-         
-          
-            patient.setDoctor(availableDoctors.getText());
-
-            
-           
-            patientDao.addPatient(patient);
-
-            clearNewForm();
-            showPatientListContainer();
         }
+        Patient patient = new Patient();
+        patient.setPatientName(fName.getText());
+
+        patient.setAddress(address.getText());
+        patient.setContactNumber(contactNumber.getText());
+        patient.setEmail(email.getText());
+
+        java.sql.Date date = java.sql.Date.valueOf(dateOfBirth.getValue());
+        patient.setDateOfBirth(date);
+
+        if (male.isSelected()) {
+            patient.setGender(male.getText());
+        } else if (female.isSelected()) {
+            patient.setGender(female.getText());
+        } else if (other.isSelected()) {
+            patient.setGender(other.getText());
+        }
+
+        patient.setVisitReason(reasonVisit.getText());
+
+        userDao.getUserByEmail(availableDoctors.getText());
+
+        patient.setDoctor(availableDoctors.getText());
+
+        patientDao.addPatient(patient);
+
+        clearNewForm();
+        showPatientListContainer();
     }
 
     private void clearNewForm() {
@@ -251,7 +230,6 @@ public class AssistantPortalController implements Initializable {
         contactNumber.setText("");
         email.setText("");
         dateOfBirth.setValue(null);
-
 
     }
 
@@ -272,7 +250,7 @@ public class AssistantPortalController implements Initializable {
         patientMenu.setStyle(selectedMenuStyle);
         patientContainer.setVisible(true);
 
-        for (User doctor : userDao.getUsersByRole(Role.DOCTOR.getValue())) {
+        for (User doctor : userDao.getUsersByRole(Role.DOCTOR)) {
             MenuItem menuItem = new MenuItem(doctor.getFirstName());
             menuItem.setOnAction(e -> {
                 availableDoctors.setText(menuItem.getText());
@@ -337,36 +315,35 @@ public class AssistantPortalController implements Initializable {
         if (!isAddAssistantFormValid()) {
             UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
             return;
-        } else {
-            Assistant assist = new Assistant();
-            assist.setFirstName(assitFName.getText());
-
-            assist.setLastName(assitLName.getText());
-            assist.setAddress(assistAddress.getText());
-            assist.setContactNumber(assistContact.getText());
-            assist.setEmail(assistEmail.getText());
-            assist.setPassword(assistPass.getText());
-
-            java.sql.Date date = java.sql.Date.valueOf(assistDateOfBirth.getValue());
-            assist.setDateOfBirth(date);
-
-            if (assistMale.isSelected()) {
-                assist.setGender(assistMale.getText());
-            } else if (assistFemale.isSelected()) {
-                assist.setGender(assistFemale.getText());
-            } else if (assistOther.isSelected()) {
-                assist.setGender(assistOther.getText());
-            }
-            assist.setReportsTo(availableDoctors.getText());
-            assist.setRole(Role.ASSISTANT);
-            userDao.getUserByEmail(assist.getEmail());
-            assist.setAssistantId(userDao.getUserByEmail(assist.getEmail()).getId());
-
-            assistantDao.addAssistant(assist);
-
-            clearNewAssistForm();
-            showAssistantContainer();
         }
+        Assistant assist = new Assistant();
+        assist.setFirstName(assitFName.getText());
+
+        assist.setLastName(assitLName.getText());
+        assist.setAddress(assistAddress.getText());
+        assist.setContactNumber(assistContact.getText());
+        assist.setEmail(assistEmail.getText());
+        assist.setPassword(assistPass.getText());
+
+        java.sql.Date date = java.sql.Date.valueOf(assistDateOfBirth.getValue());
+        assist.setDateOfBirth(date);
+
+        if (assistMale.isSelected()) {
+            assist.setGender(assistMale.getText());
+        } else if (assistFemale.isSelected()) {
+            assist.setGender(assistFemale.getText());
+        } else if (assistOther.isSelected()) {
+            assist.setGender(assistOther.getText());
+        }
+        assist.setReportsTo(availableDoctors.getText());
+        assist.setRole(Role.ASSISTANT);
+        userDao.getUserByEmail(assist.getEmail());
+        assist.setAssistantId(userDao.getUserByEmail(assist.getEmail()).getId());
+
+        assistantDao.addAssistant(assist);
+
+        clearNewAssistForm();
+        showAssistantContainer();
     }
 
     private void showAssistantContainer() {
@@ -375,7 +352,7 @@ public class AssistantPortalController implements Initializable {
         assistantMenu.setStyle(selectedMenuStyle);
         assistantContainer.setVisible(true);
 
-        for (User doctor : userDao.getUsersByRole(Role.DOCTOR.getValue())) {
+        for (User doctor : userDao.getUsersByRole(Role.DOCTOR)) {
             MenuItem menuItem = new MenuItem(doctor.getFirstName());
             menuItem.setOnAction(e -> {
                 availableDoctors.setText(menuItem.getText());

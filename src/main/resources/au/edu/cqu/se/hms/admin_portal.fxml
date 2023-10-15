@@ -13,10 +13,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"  maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fff; -fx-width: 600px; -fx-height: 600px;" xmlns="http://javafx.com/javafx/19" fx:controller="au.edu.cqu.se.hms.controllers.AdminPortalController">
     <children>
@@ -106,12 +108,11 @@
                         <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
                         <Text layoutX="220.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specialization" />
                         <MenuButton fx:id="specialization" layoutX="301.0" layoutY="209.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" />
-                   
                     </children>
                 </Pane>
             </children>
         </Pane>
-        <Pane fx:id="assistantContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+        <Pane fx:id="assistantContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
             <children>
                 <Pane fx:id="assistantListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
                     <children>
@@ -144,23 +145,56 @@
                         <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
                         <Text layoutX="223.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report To:" />
                         <MenuButton fx:id="reportsTo" layoutX="292.0" layoutY="209.0" mnemonicParsing="false" text="Select Doctor">
-                           
                         </MenuButton>
                     </children>
                 </Pane>
             </children>
         </Pane>
-        <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
+        <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
             <children>
-                <Pane fx:id="adminListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
+                <Pane fx:id="adminListContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
                         <Button layoutX="351.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAddAdmin" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Add Admin" />
+                        <TableView fx:id="adminTableView" layoutX="9.0" layoutY="49.0" prefHeight="232.0" prefWidth="421.0">
+                            <columns>
+                                <TableColumn fx:id="adminIDCol" prefWidth="48.0" text="ID" />
+                                <TableColumn fx:id="adminNameCol" prefWidth="107.0" text="Name" />
+                                <TableColumn fx:id="adminGenderCol" prefWidth="53.0" text="Gender" />
+                                <TableColumn fx:id="adminPhoneCol" prefWidth="107.0" text="Contact" />
+                                <TableColumn fx:id="adminAddressCol" prefWidth="105.0" text="Address" />
+                            </columns>
+                        </TableView>
+                        <Button fx:id="adminPrevBtn" layoutX="227.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleAdminPrevBtn" text="&lt;" />
+                        <Button fx:id="adminNextBtn" layoutX="377.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleAdminNextBtn" text="&gt;" />
+                        <Label fx:id="adminPaginationLbl" layoutX="280.0" layoutY="297.0" prefHeight="18.0" prefWidth="98.0" style="-fx-alignment: center;" text="1 of 1 pages" />
                     </children>
                 </Pane>
-                <Pane fx:id="addAdminContainer" prefHeight="326.0" prefWidth="438.0">
+                <Pane fx:id="addAdminContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
                     <children>
                         <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Add Administrator" />
                         <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
+                        <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
+                        <TextField fx:id="adminFirstNameTF" layoutX="73.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
+                        <Text layoutX="218.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
+                        <TextField fx:id="adminLastNameTF" layoutX="285.0" layoutY="44.0" prefHeight="26.0" prefWidth="114.0" />
+                        <Text layoutX="5.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+                        <TextField fx:id="adminEmailTF" layoutX="73.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
+                        <Text layoutX="219.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+                        <PasswordField fx:id="adminPasswordFld" layoutX="286.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
+                        <Text layoutX="5.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender" />
+                        <RadioButton fx:id="adminMaleRB" layoutX="75.0" layoutY="129.0" mnemonicParsing="false" text="Male">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="adminGenderToggle" />
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="adminFemaleRB" layoutX="133.0" layoutY="129.0" mnemonicParsing="false" text="Female" toggleGroup="$adminGenderToggle" />
+                        <RadioButton fx:id="adminOtherRB" layoutX="205.0" layoutY="129.0" mnemonicParsing="false" text="Others" toggleGroup="$adminGenderToggle" />
+                        <Text layoutX="8.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
+                        <TextField fx:id="adminPhoneTF" layoutX="76.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
+                        <Text layoutX="220.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
+                        <TextField fx:id="adminAddressTF" layoutX="295.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
+                        <Text layoutX="6.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DOB" />
+                        <DatePicker fx:id="adminDoBFld" layoutX="76.0" layoutY="209.0" prefHeight="26.0" prefWidth="118.0" />
                         <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAdmin" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
                         <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" onAction="#handleAdminBackBtn" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
                     </children>
@@ -176,7 +210,6 @@
                             <columns>
                                 <TableColumn fx:id="specialityIDCol" prefWidth="75.0" text="ID" />
                                 <TableColumn fx:id="specialityNameCol" prefWidth="263.0" text="Speciality" />
-                                <TableColumn fx:id="specialityActionCol" editable="false" minWidth="0.0" prefWidth="82.0" resizable="false" sortable="false" text="Action" />
                             </columns>
                         </TableView>
                         <Button fx:id="specialityPrevBtn" layoutX="227.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSpecialityPrevBtn" text="&lt;" />

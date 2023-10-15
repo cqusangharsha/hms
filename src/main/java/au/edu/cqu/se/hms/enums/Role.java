@@ -5,7 +5,8 @@ package au.edu.cqu.se.hms.enums;
  * @author sangharshachaulagain
  */
 public enum Role {
-    ADMIN("ADMIN"), DOCTOR("ADMIN"), ASSISTANT("ASSISTANCE");
+
+    ADMIN("ADMIN"), DOCTOR("DOCTOR"), ASSISTANT("ASSISTANCE");
 
     private final String value;
 

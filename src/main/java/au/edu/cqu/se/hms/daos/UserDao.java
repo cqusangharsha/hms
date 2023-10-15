@@ -1,7 +1,6 @@
 package au.edu.cqu.se.hms.daos;
 
 import au.edu.cqu.se.hms.enums.Role;
-import au.edu.cqu.se.hms.models.Specialization;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.utils.DBConnection;
 import java.sql.Connection;
@@ -87,10 +86,53 @@ public class UserDao {
         return null;
     }
 
+    public List<User> getUsersByRole(Role role) {
+        return getUsersByRole(role, 0, 0);
+    }
+
+    public List<User> getUsersByRole(Role role, int page, int pageSize) {
+        Connection connection = dbConnection.getConnection();
+        String getUsersByRoleQuery = "SELECT * FROM users WHERE role = ?";
+        if (pageSize != 0) {
+            getUsersByRoleQuery += " LIMIT ?, ?";
+        }
+        List<User> users = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(getUsersByRoleQuery);
+            preparedStatement.setString(1, role.getValue());
+
+            if (pageSize != 0) {
+                preparedStatement.setInt(2, getOffset(page, pageSize));
+                preparedStatement.setInt(3, pageSize);
+
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setFirstName(resultSet.getString("firstName"));
+                user.setLastName(resultSet.getString("lastName"));
+                user.setDateOfBirth(resultSet.getDate("dateOfBirth"));
+                user.setGender(resultSet.getString("gender"));
+                user.setContactNumber(resultSet.getString("contactNumber"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setAddress(resultSet.getString("address"));
+                user.setRole(Role.fromValue(resultSet.getString("role")));
+                users.add(user);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users; // Returns the list of users (might be empty if no users are found)
+    }
+
     public User getUserByEmail(String email) {
         Connection connection = dbConnection.getConnection();
         String sql = "SELECT * FROM users WHERE email = ?";
-        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -105,25 +147,7 @@ public class UserDao {
         return null; // Specialization not found
     }
 
-    public List<User> getUsersByRole(String role) {
-        Connection connection = dbConnection.getConnection();
-        String sql = "SELECT * FROM users WHERE role = ?";
-        List<User> users = new ArrayList<>();
-
-        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, role);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String fName = resultSet.getString("firstName");
-                users.add(new User(id, fName));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return users; // Returns the list of users (might be empty if no users are found)
+    private int getOffset(int page, int pageSize) {
+        return page * pageSize;
     }
-
 }

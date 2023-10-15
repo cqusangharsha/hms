@@ -38,6 +38,18 @@ public class User {
         this.role = role;
     }
 
+    public User(String firstName, String lastName, Date dateOfBirth, String gender, String contactNumber, String email, String password, String address, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.role = role;
+    }
+
     public User() {
     }
 
