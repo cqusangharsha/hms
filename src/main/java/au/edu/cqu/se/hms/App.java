@@ -20,12 +20,13 @@ public class App extends Application {
     private static Scene scene;
 
     private static final List<Migration> migrations = new ArrayList<>();
+
     static {
         migrations.add(new Migration(1, Queries.CREATE_USER));
         migrations.add(new Migration(2, Queries.INSERT_ADMIN));
         migrations.add(new Migration(3, Queries.CREATE_SPECIALIZATION));
-         migrations.add(new Migration(4, Queries.CREATE_DOCTOR));
-         migrations.add(new Migration(5, Queries.CREATE_ASSISTANT));
+        migrations.add(new Migration(4, Queries.CREATE_DOCTOR));
+        migrations.add(new Migration(5, Queries.CREATE_ASSISTANT));
     }
 
     @Override

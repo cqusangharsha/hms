@@ -7,6 +7,7 @@ import java.sql.*;
  * @author sangharshachaulagain
  */
 public class DBConnection {
+
     private String dbHost = "localhost";
     private int dbPort = 3306;
     private String dbUsername = "root";
@@ -16,7 +17,7 @@ public class DBConnection {
     private Connection con = null;
 
     private static DBConnection dbConnection = null;
-    
+
     /**
      * Private constructor to create a single instance of the database
      * connection. This constructor initializes the connection to the MySQL

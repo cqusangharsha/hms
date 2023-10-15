@@ -1,13 +1,9 @@
 package au.edu.cqu.se.hms.daos;
 
-import au.edu.cqu.se.hms.enums.Role;
 import au.edu.cqu.se.hms.models.Assistant;
-import au.edu.cqu.se.hms.models.Doctor;
-import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.utils.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**

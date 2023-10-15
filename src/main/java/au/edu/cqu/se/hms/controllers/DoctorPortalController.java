@@ -93,12 +93,12 @@ public class DoctorPortalController implements Initializable {
     private void handleLogout(ActionEvent event) {
         UIUtils.logout();
     }
-    
+
     private void showPatientInfoContainer() {
         hideAllContainer();
         patientInfoContainer.setVisible(true);
     }
-    
+
     private void showMedicalHistoryContainer() {
         hideAllContainer();
         medicalHistoryContainer.setVisible(true);

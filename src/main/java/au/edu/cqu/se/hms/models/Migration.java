@@ -8,18 +8,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * The `Migration` class represents a database schema migration record,
- * which stores information about database schema changes, such as the migration
+ * The `Migration` class represents a database schema migration record, which
+ * stores information about database schema changes, such as the migration
  * script and its unique identifier. It provides methods to execute a migration
  * and maintain a history of applied migrations.
  *
- * This class encapsulates the functionality to interact with the
- * "migration" table in the database.
+ * This class encapsulates the functionality to interact with the "migration"
+ * table in the database.
  *
  * @author sangharshachaulagain
  */
 public class Migration {
-    
+
     private int id;
     private String script;
 
@@ -31,7 +31,7 @@ public class Migration {
 
         this.id = id;
         this.script = script;
-        
+
     }
 
     /**
@@ -82,7 +82,7 @@ public class Migration {
         }
     }
 
-     /**
+    /**
      * Executes a database schema migration script if it has not already been
      * applied and records it in the history table.
      *
@@ -105,7 +105,7 @@ public class Migration {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Checks if a migration query with a specified version has been applied by
      * querying the migrations table.
@@ -125,8 +125,8 @@ public class Migration {
             }
         }
     }
-    
-     /**
+
+    /**
      * Records a migration query and its version in the database schema record
      * table for future reference.
      *
@@ -143,5 +143,5 @@ public class Migration {
             preparedStatement.executeUpdate();
         }
     }
-    
+
 }
