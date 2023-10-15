@@ -53,16 +53,27 @@ public class Queries {
     
     
       public static final String CREATE_PATIENT = """
-                                                         CREATE TABLE patient (
-                                                                                                         id INT AUTO_INCREMENT PRIMARY KEY,
-                                                                                                         patientName VARCHAR(255) NOT NULL,
-                                                                                                         dateOfBirth DATE,
-                                                                                                         gender VARCHAR(10),
-                                                                                                         contactNumber VARCHAR(20),
-                                                                                                         email VARCHAR(255) UNIQUE NOT NULL,
-                                                                                                         address VARCHAR(255),
-                                                                                                         doctor VARCHAR(255),
-                                                                                                         visitReason varchar(255))
+                                                        CREATE TABLE patient (
+                                                            id INT AUTO_INCREMENT PRIMARY KEY,
+                                                            patientName VARCHAR(255) NOT NULL,
+                                                            dateOfBirth DATE,
+                                                            gender VARCHAR(10),
+                                                            contactNumber VARCHAR(20),
+                                                            email VARCHAR(255) UNIQUE NOT NULL,
+                                                            address VARCHAR(255),
+                                                            doctor VARCHAR(255),
+                                                            visitReason varchar(255))
                                                         """;
+    public static String CREATE_PATIENT_MEDICAL_HISTORY = """
+                                                          CREATE TABLE patient_medical_histories (
+                                                              id INT AUTO_INCREMENT PRIMARY KEY,
+                                                              date DATE NOT NULL,
+                                                              patient_id INT NOT NULL,
+                                                              doctor_id INT NOT NULL,
+                                                              diagnosis TEXT NOT NULL,
+                                                              FOREIGN KEY (patient_id) REFERENCES patient(id),
+                                                              FOREIGN KEY (doctor_id) REFERENCES doctor(id)
+                                                           );
+                                                          """;
 
 }

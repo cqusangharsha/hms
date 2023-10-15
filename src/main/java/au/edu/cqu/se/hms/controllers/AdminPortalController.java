@@ -296,7 +296,7 @@ public class AdminPortalController implements Initializable {
         doctor.setRole(Role.DOCTOR);
         if (userDao.signup(doctor)) {
             userDao.getUserByEmail(doctor.getEmail());
-            doctor.setDoctorId(userDao.getUserByEmail(doctor.getEmail()).getId());
+            doctor.setId(userDao.getUserByEmail(doctor.getEmail()).getId());
 
             doctorDao.addDoctor(doctor);
         }

@@ -4,6 +4,7 @@ import au.edu.cqu.se.hms.models.Doctor;
 import au.edu.cqu.se.hms.utils.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import java.sql.SQLException;
 
@@ -35,7 +36,7 @@ public class DoctorDao {
         try {
 
             PreparedStatement doctorStatement = connection.prepareStatement(doctorQuery);
-            doctorStatement.setInt(1, doctor.getDoctorId());
+            doctorStatement.setInt(1, doctor.getId());
             doctorStatement.setString(2, doctor.getSpecialization());
             int rowsAffectedDoctor = doctorStatement.executeUpdate();
 
@@ -43,6 +44,29 @@ public class DoctorDao {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    
+    public Doctor findDoctorByUserId(int userId) {
+        Connection connection = dbConnection.getConnection();
+        String query = "SELECT * FROM doctor WHERE user_id = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                int doctorId = resultSet.getInt("id");
+                String specialization = resultSet.getString("specialization");
+                return new Doctor(doctorId, specialization);
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
