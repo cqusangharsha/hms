@@ -61,6 +61,8 @@ public class SignInController implements Initializable {
                 redirectPortal = "admin_portal";
             case DOCTOR ->
                 redirectPortal = "doctor_portal";
+            case ASSISTANT ->
+                redirectPortal = "assistant_portal";
             default -> {
                 UIUtils.alert("Contact Administrator", "Your Role is not set. Please contact administrator.", Alert.AlertType.ERROR);
                 return;
