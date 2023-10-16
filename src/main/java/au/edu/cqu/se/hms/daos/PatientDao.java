@@ -1,5 +1,6 @@
 package au.edu.cqu.se.hms.daos;
 
+import au.edu.cqu.se.hms.enums.Role;
 import au.edu.cqu.se.hms.models.Patient;
 import au.edu.cqu.se.hms.utils.DBConnection;
 import java.sql.Connection;
@@ -54,9 +55,8 @@ public class PatientDao {
             return false;
         }
     }
-    
-    
-      public boolean addAppointment(Patient patient) {
+
+    public boolean addAppointment(Patient patient) {
         Connection connection = dbConnection.getConnection();
 
         String appointmentQuery = "INSERT INTO appointment (patientName, selectedDate, selectedTime, doctor,  visitReason)\n"
@@ -119,8 +119,47 @@ public class PatientDao {
 
         return patients;
     }
-    
-    
+
+    public List<Patient> getPatientBill(String patientName) {
+        List<Patient> patients = new ArrayList<>();
+        Connection connection = dbConnection.getConnection();
+        String query = "SELECT s.name,s.checkupCost,a.doctor,a.visitReason\n"
+                + "FROM specializations s\n"
+                + "JOIN doctor d ON s.name = d.specialization\n"
+                + "JOIN users u ON d.id = u.id AND u.role = ? \n"
+                + "JOIN appointment a ON u.firstName = a.doctor\n"
+                + "WHERE a.patientName = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, Role.DOCTOR.getValue());
+             statement.setString(2, patientName);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+               System.out.println("Inside while");
+                String ptName = resultSet.getString("name");                
+                String cost = resultSet.getString("checkupCost");
+                String doctor = resultSet.getString("doctor");
+                String visitReason = resultSet.getString("visitReason");
+
+                Patient patient = new Patient();
+             
+                patient.setPatientName(ptName);
+               
+                patient.setTotalCost(cost);
+                patient.setDoctor(doctor);
+                patient.setVisitReason(visitReason);
+                 System.out.println("Cost"+cost);
+                patients.add(patient);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return patients;
+    }
+
     public List<Patient> getAllPatient() {
         List<Patient> patients = new ArrayList<>();
         Connection connection = dbConnection.getConnection();
@@ -160,4 +199,5 @@ public class PatientDao {
 
         return patients;
     }
+
 }

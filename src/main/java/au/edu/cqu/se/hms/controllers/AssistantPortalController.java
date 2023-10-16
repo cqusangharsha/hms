@@ -14,7 +14,10 @@ import au.edu.cqu.se.hms.utils.StringUtils;
 import au.edu.cqu.se.hms.utils.UIUtils;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,9 +29,13 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -41,10 +48,8 @@ public class AssistantPortalController implements Initializable {
 
     private AuthenticationService authService;
 
-   
     private UserDao userDao;
     private PatientDao patientDao;
-  
 
     @FXML
     private Label nameLbl;
@@ -54,7 +59,7 @@ public class AssistantPortalController implements Initializable {
     private Hyperlink patientMenu;
 
     @FXML
-    private Hyperlink adminMenu;
+    private Hyperlink billingMenu;
 
     @FXML
     private Hyperlink appointmentMenu;
@@ -63,7 +68,7 @@ public class AssistantPortalController implements Initializable {
     @FXML
     private Pane appointmentContainer;
     @FXML
-    private Pane adminContainer;
+    private Pane billingContainer;
     @FXML
     private Pane patientListContainer;
     @FXML
@@ -79,12 +84,8 @@ public class AssistantPortalController implements Initializable {
     @FXML
     private TextField fName;
 
-    
-
     @FXML
     private TextField email;
-
-   
 
     @FXML
     private TextField address;
@@ -122,11 +123,26 @@ public class AssistantPortalController implements Initializable {
     @FXML
     private DatePicker selectedate;
 
+    @FXML
+    private Text billingText;
+
+    @FXML
+    private TextField checkPatient;
+    @FXML
+    private TableView<Patient> table;
+
+    @FXML
+    private TableColumn<Patient, String> doc;
+    
+    @FXML
+    private TableColumn<Patient, String> visit;
+
+    @FXML
+    private TableColumn<Patient, String> cost;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
-
-    
 
         userDao = UserDao.getInstance();
         patientDao = PatientDao.getInstance();
@@ -230,7 +246,7 @@ public class AssistantPortalController implements Initializable {
 
         patientMenu.setStyle(selectedMenuStyle);
         patientContainer.setVisible(true);
-       
+
         showPatientListContainer();
 
     }
@@ -280,7 +296,7 @@ public class AssistantPortalController implements Initializable {
         patient.setSelectedTime(selectedTime.getText());
         patient.setDoctor(availableDoctors.getText());
         patient.setVisitReason(reasonApointment.getText());
-        
+
         patientDao.addAppointment(patient);
 
         clearNewAssistForm();
@@ -292,8 +308,8 @@ public class AssistantPortalController implements Initializable {
 
         appointmentMenu.setStyle(selectedMenuStyle);
         appointmentContainer.setVisible(true);
-        
-         availableDoctors.getItems().clear();
+
+        availableDoctors.getItems().clear();
         for (User doctor : userDao.getUsersByRole(Role.DOCTOR)) {
             MenuItem menuItem = new MenuItem(doctor.getFirstName());
             menuItem.setOnAction(e -> {
@@ -301,9 +317,8 @@ public class AssistantPortalController implements Initializable {
             });
             availableDoctors.getItems().add(menuItem);
         }
-        
-        
-         patientName.getItems().clear();
+
+        patientName.getItems().clear();
         for (Patient patient : patientDao.getAllPatient()) {
             MenuItem menuItem = new MenuItem(patient.getPatientName());
             menuItem.setOnAction(e -> {
@@ -311,12 +326,11 @@ public class AssistantPortalController implements Initializable {
             });
             patientName.getItems().add(menuItem);
         }
-        
-         for (int i = 9; i <= 17; i++) {
+
+        for (int i = 9; i <= 17; i++) {
             String timeLabel = i < 12 ? i + ":00 AM" : (i == 12 ? "12:00 PM" : (i - 12) + ":00 PM");
             MenuItem menuItem = new MenuItem(timeLabel);
-            
-           
+
             menuItem.setOnAction(e -> {
                 selectedTime.setText(menuItem.getText());
             });
@@ -338,8 +352,8 @@ public class AssistantPortalController implements Initializable {
     }
 
     @FXML
-    private void handleAdminMenu(ActionEvent event) {
-        showAdminContainer();
+    private void handleBillingMenu(ActionEvent event) {
+        showBillingContainer();
     }
 
     @FXML
@@ -348,25 +362,69 @@ public class AssistantPortalController implements Initializable {
     }
 
     @FXML
-    private void handleAdminBackBtn(ActionEvent event) {
-        showAdminListContainer();
+    private void handleBillingBackBtn(ActionEvent event) {
+        showBillingListContainer();
     }
 
+    /**
+     * @FXML private void handleSaveBilling(ActionEvent event) {
+     *
+     * TableView<Patient> table = new TableView<>();
+     *
+     * List<Patient> dataList =
+     * patientDao.getPatientBill(checkPatient.getText());
+     * ObservableList<Patient> data =
+     * FXCollections.observableArrayList(dataList);
+     *
+     * TableColumn<Patient, String> ptName = new TableColumn<>("Patient Name");
+     * ptName.setCellValueFactory(new PropertyValueFactory<>("name"));
+     *
+     * TableColumn<Patient, String> cost = new TableColumn<>("Cost");
+     * cost.setCellValueFactory(new PropertyValueFactory<>("cost"));
+     *
+     * table.getColumns().addAll(ptName, cost); table.setItems(data);
+     *
+     * System.out.println("Cost" + cost);
+     *
+     * }*
+     */
     @FXML
     private void handleSaveBilling(ActionEvent event) {
-        // save admin information to database
+
+        
+        if (doc.getCellValueFactory() == null) {
+            doc.setCellValueFactory(new PropertyValueFactory<>("doctor"));
+        }
+        
+        if (visit.getCellValueFactory() == null) {
+            visit.setCellValueFactory(new PropertyValueFactory<>("visitReason"));
+        }
+
+        if (cost.getCellValueFactory() == null) {
+            cost.setCellValueFactory(new PropertyValueFactory<>("totalCost"));
+        }
+
+        List<Patient> dataList = patientDao.getPatientBill(checkPatient.getText());
+        ObservableList<Patient> data = FXCollections.observableArrayList(dataList);
+
+        table.setItems(data);
+
+        // If you want to print the data for debugging:
+        for (Patient patient : data) {
+            System.out.println("Name: " + patient.getPatientName() + ", Cost: " + patient.getTotalCost());
+        }
     }
 
-    private void showAdminContainer() {
+    private void showBillingContainer() {
         hideAllContainer();
 
-        adminMenu.setStyle(selectedMenuStyle);
-        adminContainer.setVisible(true);
+        billingMenu.setStyle(selectedMenuStyle);
+        billingContainer.setVisible(true);
 
-        showAdminListContainer();
+        showBillingListContainer();
     }
 
-    private void showAdminListContainer() {
+    private void showBillingListContainer() {
         addAppointmentContainer.setVisible(false);
         billingListContainer.setVisible(true);
     }
@@ -379,11 +437,11 @@ public class AssistantPortalController implements Initializable {
     private void hideAllContainer() {
         patientMenu.setStyle(unSelectedMenuStyle);
 
-        adminMenu.setStyle(unSelectedMenuStyle);
+        billingMenu.setStyle(unSelectedMenuStyle);
 
         patientContainer.setVisible(false);
         appointmentContainer.setVisible(false);
-        adminContainer.setVisible(false);
+        billingContainer.setVisible(false);
 
     }
 

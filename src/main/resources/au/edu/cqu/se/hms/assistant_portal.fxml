@@ -8,6 +8,8 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -45,7 +47,7 @@
                     </padding>
                 </Hyperlink>
                 <Separator layoutY="187.0" prefHeight="3.0" prefWidth="148.0" />
-                <Hyperlink fx:id="adminMenu" layoutX="-1.0" layoutY="187.0" onAction="#handleAdminMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Patients Billing">
+                <Hyperlink fx:id="billingMenu" layoutX="-1.0" layoutY="187.0" onAction="#handleBillingMenu" prefHeight="38.0" prefWidth="148.0" style="-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;" text="Patients Billing">
                     <padding>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                     </padding>
@@ -65,19 +67,19 @@
                 <Button layoutX="389.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #fff; -fx-text-fill: #333;" text="Logout" />
             </children>
         </Pane>
-        <Pane fx:id="patientContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+        <Pane fx:id="patientContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
             <children>
-                <Pane fx:id="patientListContainer" prefHeight="326.0" prefWidth="438.0">
+                <Pane fx:id="patientListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
                     <children>
                         <Button layoutX="325.0" layoutY="4.0" mnemonicParsing="false" onAction="#handleAddPatient" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Register Patient" />
                     </children>
                 </Pane>
-                <Pane fx:id="savePatientCotaniner" prefHeight="326.0" prefWidth="438.0">
+                <Pane fx:id="savePatientCotaniner" prefHeight="326.0" prefWidth="438.0" visible="false">
                     <children>
                         <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Register New Patient" />
                         <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
                         <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSavePatientBtn" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
-                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false"  prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
                         <TextField fx:id="fName" layoutX="89.0" layoutY="45.0" prefHeight="26.0" prefWidth="114.0" />
                         <TextField fx:id="email" layoutX="89.0" layoutY="87.0" prefHeight="26.0" prefWidth="114.0" />
                         <TextField fx:id="contactNumber" layoutX="92.0" layoutY="163.0" prefHeight="26.0" prefWidth="114.0" />
@@ -102,34 +104,42 @@
                 </Pane>
             </children>
         </Pane>
-        <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+        <Pane fx:id="billingContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
             <children>
                 <Pane fx:id="billingListContainer" prefHeight="326.0" prefWidth="438.0" />
                 <Pane fx:id="addBillingContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
                         <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Billing management" />
-                        <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" />
-                        <Button layoutX="302.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleSaveBilling" prefHeight="31.0" prefWidth="89.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Generate" />
-                        <Button layoutX="365.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false"  prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                        <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" visible="false" />
+                        <Button layoutX="302.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleSaveBilling" prefHeight="31.0" prefWidth="89.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Generate" wrapText="true" />
+                        <Button layoutX="365.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
                   <Text layoutX="9.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patients Contact" />
-                  <TextField layoutX="111.0" layoutY="39.0" />
+                  <TextField fx:id="checkPatient" layoutX="111.0" layoutY="39.0" />
+                 
+                  <TableView fx:id="table" layoutX="84.0" layoutY="84.0" prefHeight="200.0" prefWidth="238.0">
+                    <columns>
+                      <TableColumn fx:id="doc" prefWidth="75.0" text="Doctor" />
+                      <TableColumn fx:id="visit" prefWidth="75.0" text="Visit Reason" />
+                      <TableColumn fx:id="cost" prefWidth="75.0" text="Cost(in AUD)" />
+                    </columns>
+                  </TableView>
                     </children>
                 </Pane>
             </children>
         </Pane>
-        <Pane fx:id="appointmentContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
+        <Pane fx:id="appointmentContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
             <children>
-                <Pane fx:id="appointmentListContainer" prefHeight="326.0" prefWidth="438.0">
+                <Pane fx:id="appointmentListContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
                     <children>
                         <Button layoutX="303.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleAddAppointment" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Make Appointment" />
                     </children>
                 </Pane>
-                <Pane fx:id="addAppointmentContainer" prefHeight="326.0" prefWidth="438.0">
+                <Pane fx:id="addAppointmentContainer" prefHeight="326.0" prefWidth="438.0" visible="false">
                     <children>
                         <Label layoutX="5.0" layoutY="6.0" style="-fx-text-fill: #333; -fx-font-size: 15px; -fx-font-weight: 900;" text="Appointment" />
                         <Separator layoutY="30.0" prefHeight="3.0" prefWidth="438.0" visible="false" />
                         <Button layoutX="371.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSaveAppointment" prefHeight="31.0" prefWidth="56.0" style="-fx-background-color: #546e7a; -fx-text-fill: #fff;" text="Save" />
-                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false"  prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
+                        <Button layoutX="309.0" layoutY="281.0" minWidth="53.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: #42b72a; -fx-text-fill: #fff;" text="Back" />
                        
                         <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name" />
                         <Text layoutX="7.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reason for visit" />

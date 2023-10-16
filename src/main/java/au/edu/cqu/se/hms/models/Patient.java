@@ -19,6 +19,7 @@ public class Patient {
     private String visitReason;
     private Date selectedDate;
     private String selectedTime;
+    private String totalCost;
 
     public int getId() {
         return id;
@@ -111,6 +112,14 @@ public class Patient {
 
     public void setSelectedTime(String selectedTime) {
         this.selectedTime = selectedTime;
+    }
+
+    public String getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(String totalCost) {
+        this.totalCost = totalCost;
     }
     
     
