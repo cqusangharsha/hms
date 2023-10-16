@@ -3,11 +3,13 @@ package au.edu.cqu.se.hms.controllers;
 import au.edu.cqu.se.hms.App;
 import au.edu.cqu.se.hms.daos.AssistantDao;
 import au.edu.cqu.se.hms.daos.DoctorDao;
+import au.edu.cqu.se.hms.daos.PatientDao;
 import au.edu.cqu.se.hms.daos.SpecializationDao;
 import au.edu.cqu.se.hms.daos.UserDao;
 import au.edu.cqu.se.hms.enums.Role;
 import au.edu.cqu.se.hms.models.Assistant;
 import au.edu.cqu.se.hms.models.Doctor;
+import au.edu.cqu.se.hms.models.Patient;
 import au.edu.cqu.se.hms.models.Specialization;
 import au.edu.cqu.se.hms.models.User;
 import au.edu.cqu.se.hms.services.AuthenticationService;
@@ -17,7 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -25,6 +29,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -55,6 +60,7 @@ public class AdminPortalController implements Initializable {
     private UserDao userDao;
     private DoctorDao doctorDao;
     private AssistantDao assistantDao;
+       private PatientDao patientDao;
 
     private final ObservableList<Doctor> observableDoctorList = FXCollections.observableArrayList();
     
@@ -98,6 +104,9 @@ public class AdminPortalController implements Initializable {
     private Pane adminListContainer;
     @FXML
     private Hyperlink specializationMenu;
+    
+    @FXML
+    private Hyperlink analyticsMenu;
     @FXML
     private Pane specializationListContainer;
     @FXML
@@ -106,7 +115,7 @@ public class AdminPortalController implements Initializable {
     private Pane specializationContainer;
     @FXML
     private TextField specializationFld;
-     @FXML
+    @FXML
     private TextField specializationCost;
     @FXML
     private TableView<Specialization> specialityTableView;
@@ -160,6 +169,13 @@ public class AdminPortalController implements Initializable {
     private Button adminNextBtn;
     @FXML
     private Label adminPaginationLbl;
+    
+    @FXML
+    private Pane analyticsListContainer;
+    @FXML
+    private Pane addAnalyticsContainer;
+    @FXML
+    private Pane analyticsContainer;
 
     @FXML
     private TextField fName;
@@ -246,6 +262,9 @@ public class AdminPortalController implements Initializable {
     @FXML
     private TableColumn<Assistant, String> adminAssistantContactCol;
 
+    @FXML
+    private PieChart doctorPieChart;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
@@ -253,6 +272,7 @@ public class AdminPortalController implements Initializable {
         doctorDao = DoctorDao.getInstance();
         assistantDao = AssistantDao.getInstance();
         userDao = UserDao.getInstance();
+        patientDao= PatientDao.getInstance();
 
         User user = authService.getCurrentUser();
         if (user == null) {
@@ -674,6 +694,11 @@ public class AdminPortalController implements Initializable {
     private void handleSpecializationMenu(ActionEvent event) {
         showSpecializationContainer();
     }
+    
+     @FXML
+    private void handleAnalyticsMenu(ActionEvent event) {
+        showAnalyticsContainer();
+    }
 
     @FXML
     private void handleAddSpecialization(ActionEvent event) {
@@ -693,8 +718,8 @@ public class AdminPortalController implements Initializable {
         }
 
         String specialization = specializationFld.getText();
-         String cost = specializationCost.getText();
-        specializationDao.addSpecialization(new Specialization(specialization,cost));
+        String cost = specializationCost.getText();
+        specializationDao.addSpecialization(new Specialization(specialization, cost));
 
         clearAddSpecializationForm();
         showSpecializationListContainer();
@@ -708,11 +733,26 @@ public class AdminPortalController implements Initializable {
 
         showSpecializationListContainer();
     }
+    
+    private void showAnalyticsContainer() {
+        hideAllContainer();
+
+        analyticsMenu.setStyle(selectedMenuStyle);
+        analyticsContainer.setVisible(true);
+
+        showAnalyticsListContainer();
+    }
 
     private void showSpecializationListContainer() {
         refreshSpeciailzationTable();
         addSpecializationContainer.setVisible(false);
         specializationListContainer.setVisible(true);
+    }
+    
+    private void showAnalyticsListContainer() {
+        
+        addAnalyticsContainer.setVisible(false);
+        analyticsListContainer.setVisible(true);
     }
 
     private void showAddSpecializationContainer() {
@@ -775,9 +815,39 @@ public class AdminPortalController implements Initializable {
         }
     }
 
+    @FXML
+    private TableView<Patient> appointmentTable;
+
+    @FXML
+    private TableColumn<Patient, String> patientNameColumn;
+
+    @FXML
+    private TableColumn<Patient, String> doctorColumn;
+
+    @FXML
+    public void loadAppointmentsToPieChart() {
+        List<Patient> appointments = patientDao.getAppointments();
+        Map<String, Integer> doctorCount = new HashMap<>();
+
+        for (Patient appointment : appointments) {
+            doctorCount.put(appointment.getDoctor(), doctorCount.getOrDefault(appointment.getDoctor(), 0) + 1);
+            System.out.println("Doctor"+ appointment.getDoctor());
+        }
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        for (Map.Entry<String, Integer> entry : doctorCount.entrySet()) {
+            pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+        }
+        System.out.println(pieChartData);
+        doctorPieChart.setData(pieChartData);
+        doctorPieChart.setTitle("Appointments per Doctor");
+        doctorPieChart.layout();
+    }
+
     private boolean isAddSpecializaitonFormValid() {
-        return !StringUtils.isEmpty(specializationFld.getText().trim()) && 
-                !StringUtils.isEmpty(specializationCost.getText().trim());
+        return !StringUtils.isEmpty(specializationFld.getText().trim())
+                && !StringUtils.isEmpty(specializationCost.getText().trim());
     }
 
     private void clearAddSpecializationForm() {
@@ -790,11 +860,13 @@ public class AdminPortalController implements Initializable {
         assistantMenu.setStyle(unSelectedMenuStyle);
         adminMenu.setStyle(unSelectedMenuStyle);
         specializationMenu.setStyle(unSelectedMenuStyle);
+        analyticsMenu.setStyle(unSelectedMenuStyle);
 
         doctorContainer.setVisible(false);
         assistantContainer.setVisible(false);
         adminContainer.setVisible(false);
         specializationContainer.setVisible(false);
+        analyticsContainer.setVisible(false);
     }
 
 }
