@@ -11,7 +11,7 @@ public class DBConnection {
     private String dbHost = "localhost";
     private int dbPort = 3306;
     private String dbUsername = "root";
-    private String dbPassword = "password";
+    private String dbPassword = "root";
     private String dbName = "hms_db";
 
     private Connection con = null;

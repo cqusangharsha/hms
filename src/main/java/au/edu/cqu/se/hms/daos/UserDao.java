@@ -85,6 +85,36 @@ public class UserDao {
 
         return null;
     }
+    
+    public User findUserByID(int id) {
+        Connection connection = dbConnection.getConnection();
+        String loginQuery = "SELECT * FROM users WHERE id = ?;";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(loginQuery);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setFirstName(resultSet.getString("firstName"));
+                user.setLastName(resultSet.getString("lastName"));
+                user.setDateOfBirth(resultSet.getDate("dateOfBirth"));
+                user.setGender(resultSet.getString("gender"));
+                user.setContactNumber(resultSet.getString("contactNumber"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setAddress(resultSet.getString("address"));
+                user.setRole(Role.fromValue(resultSet.getString("role")));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public List<User> getUsersByRole(Role role) {
         System.out.println("Inside first condition");
@@ -107,13 +137,9 @@ public class UserDao {
             if (pageSize != 0) {
                 preparedStatement.setInt(2, getOffset(page, pageSize));
                 preparedStatement.setInt(3, pageSize);
-                System.out.println("Inside third condition");
             }
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("has values"+resultSet.next());
             while (resultSet.next()) {
-                
-                 System.out.println("inside while");
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
                 user.setFirstName(resultSet.getString("firstName"));
@@ -126,7 +152,6 @@ public class UserDao {
                 user.setAddress(resultSet.getString("address"));
                 user.setRole(Role.fromValue(resultSet.getString("role")));
                 users.add(user);
-                System.out.println("First name"+ resultSet.getString("firstName") );
             }
         } catch (SQLException e) {
             e.printStackTrace();

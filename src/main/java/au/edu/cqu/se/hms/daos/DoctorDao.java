@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,6 +30,30 @@ public class DoctorDao {
         return instance;
     }
 
+    public List<Doctor> findAll() {
+        List<Doctor> doctorList = new ArrayList<>();
+        Connection connection = dbConnection.getConnection();
+        String query = "SELECT * FROM doctor;";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int doctorId = resultSet.getInt("id");
+                String specialization = resultSet.getString("specialization");
+                Doctor doctor = new Doctor(doctorId, specialization);
+                doctor.setUserId(resultSet.getInt("user_id"));
+                doctorList.add(doctor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return doctorList;
+
+    }
+
     public boolean addDoctor(Doctor doctor) {
         Connection connection = dbConnection.getConnection();
 
@@ -46,7 +72,7 @@ public class DoctorDao {
             return false;
         }
     }
-    
+
     public Doctor findDoctorByUserId(int userId) {
         Connection connection = dbConnection.getConnection();
         String query = "SELECT * FROM doctor WHERE user_id = ?";
@@ -56,7 +82,7 @@ public class DoctorDao {
             statement.setInt(1, userId);
 
             ResultSet resultSet = statement.executeQuery();
-            
+
             if (resultSet.next()) {
                 int doctorId = resultSet.getInt("id");
                 String specialization = resultSet.getString("specialization");

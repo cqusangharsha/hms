@@ -29,8 +29,7 @@ public class Queries {
     public static final String CREATE_SPECIALIZATION = """
                                                         CREATE TABLE specializations (
                                                             id INT AUTO_INCREMENT PRIMARY KEY,
-                                                            name VARCHAR(255) NOT NULL,
-                                                       checkupCost VARCHAR(255) NOT NULL
+                                                            name VARCHAR(255) NOT NULL
                                                         )
                                                         """;
     
@@ -67,7 +66,6 @@ public class Queries {
                                                         )
                                                         """;
     
-    
       public static final String CREATE_PATIENT = """
                                                         CREATE TABLE patient (
                                                             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -80,6 +78,7 @@ public class Queries {
                                                             doctor VARCHAR(255),
                                                             visitReason varchar(255))
                                                         """;
+    
     public static String CREATE_PATIENT_MEDICAL_HISTORY = """
                                                           CREATE TABLE patient_medical_histories (
                                                               id INT AUTO_INCREMENT PRIMARY KEY,
@@ -92,15 +91,19 @@ public class Queries {
                                                            );
                                                           """;
     
-    
      public static String CREATE_PATIENT_APPOINTMENT = """
                                                           CREATE TABLE appointment (
-                                                                                                                      id INT AUTO_INCREMENT PRIMARY KEY,
-                                                                                                                      patientName VARCHAR(255) NOT NULL,
-                                                                                                                      selectedDate DATE,
-                                                                                                                      selectedTime VARCHAR(20),
-                                                                                                                      doctor VARCHAR(255),
-                                                                                                                      visitReason varchar(255));
+                                                                id INT AUTO_INCREMENT PRIMARY KEY,
+                                                                patientName VARCHAR(255) NOT NULL,
+                                                                selectedDate DATE,
+                                                                selectedTime VARCHAR(20),
+                                                                doctor VARCHAR(255),
+                                                                visitReason varchar(255));
                                                           """;
+     
+     public static String ADD_CHECKUP_COST_TO_SPECIALIZATION = """
+                                                               ALTER TABLE specializations 
+                                                               ADD COLUMN checkupCost VARCHAR(255) NOT NULL;
+                                                               """;
 
 }

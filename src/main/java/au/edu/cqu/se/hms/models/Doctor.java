@@ -1,5 +1,7 @@
 package au.edu.cqu.se.hms.models;
 
+import au.edu.cqu.se.hms.daos.UserDao;
+
 /**
  *
  * @author sudeep_sharma
@@ -8,8 +10,12 @@ public class Doctor extends User {
     private int Id;
 
     private int userId;
+    
+    private User user;
 
     private String specialization;
+    
+    private UserDao userDao = UserDao.getInstance();
 
     public Doctor() {
     }
@@ -32,6 +38,7 @@ public class Doctor extends User {
     }
 
     public void setUserId(int userId) {
+        this.user = userDao.findUserByID(userId);
         this.userId = userId;
     }
 
@@ -43,4 +50,11 @@ public class Doctor extends User {
         this.specialization = specialization;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    public User getUser() {
+        return this.user == null ? new User() : this.user;
+    }
 }

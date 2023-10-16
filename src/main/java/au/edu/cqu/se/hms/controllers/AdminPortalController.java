@@ -56,6 +56,10 @@ public class AdminPortalController implements Initializable {
     private DoctorDao doctorDao;
     private AssistantDao assistantDao;
 
+    private final ObservableList<Doctor> observableDoctorList = FXCollections.observableArrayList();
+    
+    private final ObservableList<Assistant> observableAssistantList = FXCollections.observableArrayList();
+    
     private final ObservableList<Specialization> observableSpecializationList = FXCollections.observableArrayList();
     private int specializationListPage = 0;
     private final int speciailzationListPageSize = 5;
@@ -221,6 +225,26 @@ public class AdminPortalController implements Initializable {
 
     @FXML
     private MenuButton specialization;
+    @FXML
+    private TableView<Doctor> adminDoctorTV;
+    @FXML
+    private TableColumn<Doctor, Integer> adminDoctorIdCol;
+    @FXML
+    private TableColumn<Doctor, String> adminDoctorNameCol;
+    @FXML
+    private TableColumn<Doctor, String> adminDoctorSpecilizationCol;
+    @FXML
+    private TableColumn<Doctor, String> adminDoctorContactCol;
+    @FXML
+    private TableView<Assistant> adminAssistantTV;
+    @FXML
+    private TableColumn<Assistant, Integer> adminAssistantIdCol;
+    @FXML
+    private TableColumn<Assistant, String> adminAssistantNameCol;
+    @FXML
+    private TableColumn<Assistant, String> adminAssistantReportsToCol;
+    @FXML
+    private TableColumn<Assistant, String> adminAssistantContactCol;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -241,6 +265,8 @@ public class AdminPortalController implements Initializable {
         }
         nameLbl.setText("Male".equals(user.getGender()) ? "Mr. " + user.getLastName() : "Mrs. " + user.getLastName());
         nameLbl.layoutXProperty().bind(sidebarPane.widthProperty().subtract(nameLbl.widthProperty()).divide(2));
+        displayDoctorTable();
+        displayAssistantTable();
         displaySpecializationTable();
         displayAdminTable();
 
@@ -263,6 +289,7 @@ public class AdminPortalController implements Initializable {
         showAddDoctorContainer();
     }
 
+    @FXML
     private void handleDoctorBackBtn(ActionEvent event) {
         showDoctorListContainer();
     }
@@ -341,10 +368,29 @@ public class AdminPortalController implements Initializable {
     }
 
     private void showDoctorListContainer() {
+        refreshDoctorTable();
         saveDoctorCotaniner.setVisible(false);
         doctorListContainer.setVisible(true);
     }
+    
+    
+    private void displayDoctorTable() {
+        adminDoctorIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        adminDoctorNameCol.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getUser().getFirstName() + " " + cellData.getValue().getUser().getLastName())
+        );
+        adminDoctorSpecilizationCol.setCellValueFactory(new PropertyValueFactory<>("specialization"));
+        adminDoctorContactCol.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getUser().getContactNumber())
+        );
+    }
 
+    private void refreshDoctorTable() {
+        observableDoctorList.clear();
+        observableDoctorList.addAll(doctorDao.findAll());
+        adminDoctorTV.setItems(observableDoctorList);
+    }
+    
     private void showAddDoctorContainer() {
         saveDoctorCotaniner.setVisible(true);
         doctorListContainer.setVisible(false);
@@ -391,6 +437,7 @@ public class AdminPortalController implements Initializable {
         showAddAssistantContainer();
     }
 
+    @FXML
     private void handleAssistantBackBtn(ActionEvent event) {
         showAssistantListContainer();
     }
@@ -452,8 +499,27 @@ public class AdminPortalController implements Initializable {
     }
 
     private void showAssistantListContainer() {
+        refreshAssistantTable();
         addAssistantContainer.setVisible(false);
         assistantListContainer.setVisible(true);
+    }
+    
+    
+    private void displayAssistantTable() {
+        adminAssistantIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        adminAssistantNameCol.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getUser().getFirstName() + " " + cellData.getValue().getUser().getLastName())
+        );
+        adminAssistantReportsToCol.setCellValueFactory(new PropertyValueFactory<>("reportsTo"));
+        adminAssistantContactCol.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getUser().getContactNumber())
+        );
+    }
+    
+    private void refreshAssistantTable() {
+        observableAssistantList.clear();
+        observableAssistantList.addAll(assistantDao.findAll());
+        adminAssistantTV.setItems(observableAssistantList);
     }
 
     private void showAddAssistantContainer() {
