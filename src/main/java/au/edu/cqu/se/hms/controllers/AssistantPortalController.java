@@ -41,10 +41,10 @@ public class AssistantPortalController implements Initializable {
 
     private AuthenticationService authService;
 
-    private DoctorDao doctorDao;
+   
     private UserDao userDao;
     private PatientDao patientDao;
-    private AssistantDao assistantDao;
+  
 
     @FXML
     private Label nameLbl;
@@ -52,14 +52,16 @@ public class AssistantPortalController implements Initializable {
     private Pane sidebarPane;
     @FXML
     private Hyperlink patientMenu;
-    @FXML
-    private Hyperlink assistantMenu;
+
     @FXML
     private Hyperlink adminMenu;
+
+    @FXML
+    private Hyperlink appointmentMenu;
     @FXML
     private Pane patientContainer;
     @FXML
-    private Pane assistantContainer;
+    private Pane appointmentContainer;
     @FXML
     private Pane adminContainer;
     @FXML
@@ -67,85 +69,64 @@ public class AssistantPortalController implements Initializable {
     @FXML
     private Pane savePatientCotaniner;
     @FXML
-    private Pane assistantListContainer;
-    @FXML
-    private Pane addAssistantContainer;
+    private Pane appointmentListContainer;
+
     @FXML
     private Pane addAppointmentContainer;
     @FXML
-    private Pane appointmentListContainer;
+    private Pane billingListContainer;
 
     @FXML
     private TextField fName;
 
-    @FXML
-    private TextField assitFName;
-
-    @FXML
-    private TextField lName;
-
-    @FXML
-    private TextField assitLName;
+    
 
     @FXML
     private TextField email;
 
-    @FXML
-    private TextField assistEmail;
-
-    @FXML
-    private PasswordField password;
-
-    @FXML
-    private PasswordField assistPass;
+   
 
     @FXML
     private TextField address;
 
     @FXML
-    private TextField assistAddress;
-
-    @FXML
     private TextField contactNumber;
-
-    @FXML
-    private TextField assistContact;
 
     @FXML
     private RadioButton male;
 
     @FXML
-    private RadioButton assistMale;
-    @FXML
     private RadioButton female;
-
-    @FXML
-    private RadioButton assistFemale;
 
     @FXML
     private RadioButton other;
 
     @FXML
-    private RadioButton assistOther;
-
-    @FXML
     private DatePicker dateOfBirth;
-
-    @FXML
-    private DatePicker assistDateOfBirth;
 
     @FXML
     private MenuButton availableDoctors;
 
     @FXML
+    private MenuButton selectedTime;
+
+    @FXML
+    private TextArea reasonApointment;
+
+    @FXML
     private TextArea reasonVisit;
+
+    @FXML
+    private MenuButton patientName;
+
+    @FXML
+    private DatePicker selectedate;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
 
-        doctorDao = DoctorDao.getInstance();
-        assistantDao = AssistantDao.getInstance();
+    
 
         userDao = UserDao.getInstance();
         patientDao = PatientDao.getInstance();
@@ -163,6 +144,11 @@ public class AssistantPortalController implements Initializable {
         nameLbl.layoutXProperty().bind(sidebarPane.widthProperty().subtract(nameLbl.widthProperty()).divide(2));
 
         showPatientContainer();
+    }
+
+    @FXML
+    private void handleAppointmentMenu(ActionEvent event) {
+        showAppointmentContainer();
     }
 
     @FXML
@@ -211,9 +197,9 @@ public class AssistantPortalController implements Initializable {
         }
 
         patient.setVisitReason(reasonVisit.getText());
-        userDao.getUserByEmail(availableDoctors.getText());
+        // userDao.getUserByEmail(availableDoctors.getText());
 
-        patient.setDoctor(availableDoctors.getText());
+        //   patient.setDoctor(availableDoctors.getText());
         patientDao.addPatient(patient);
 
         clearNewForm();
@@ -231,13 +217,11 @@ public class AssistantPortalController implements Initializable {
     }
 
     private void clearNewAssistForm() {
-        fName.setText("");
-        lName.setText("");
-        address.setText("");
-        contactNumber.setText("");
-        email.setText("");
-        dateOfBirth.setValue(null);
-        password.setText("");
+        patientName.setText("");
+        selectedate.setValue(null);
+        selectedTime.setText(null);
+        availableDoctors.setText(null);
+        reasonApointment.setText("");
 
     }
 
@@ -246,16 +230,9 @@ public class AssistantPortalController implements Initializable {
 
         patientMenu.setStyle(selectedMenuStyle);
         patientContainer.setVisible(true);
+       
+        showPatientListContainer();
 
-        for (User doctor : userDao.getUsersByRole(Role.DOCTOR)) {
-            MenuItem menuItem = new MenuItem(doctor.getFirstName());
-            menuItem.setOnAction(e -> {
-                availableDoctors.setText(menuItem.getText());
-            });
-            availableDoctors.getItems().add(menuItem);
-
-            showPatientListContainer();
-        }
     }
 
     private void showPatientListContainer() {
@@ -279,76 +256,44 @@ public class AssistantPortalController implements Initializable {
                 && !StringUtils.isEmpty(((TextField) dateOfBirth.getEditor()).getText());
     }
 
-    private boolean isAddAssistantFormValid() {
-        return !StringUtils.isEmpty(assitFName.getText().trim())
-                && !StringUtils.isEmpty(assitLName.getText().trim())
-                && !StringUtils.isEmpty(assistAddress.getText().trim())
-                && !StringUtils.isEmpty(assistContact.getText().trim())
-                && !StringUtils.isEmpty(assistPass.getText().trim())
-                && (!StringUtils.isEmpty(assistMale.getText().trim()) || !StringUtils.isEmpty(assistFemale.getText().trim()) || !StringUtils.isEmpty(assistOther.getText().trim()))
-                && !StringUtils.isEmpty(assistEmail.getText().trim())
-                && !StringUtils.isEmpty(availableDoctors.getText().trim())
-                && !StringUtils.isEmpty(((TextField) assistDateOfBirth.getEditor()).getText());
+    private boolean isAddAppointmentFormValid() {
+        return !StringUtils.isEmpty(patientName.getText().trim())
+                && !StringUtils.isEmpty(((TextField) selectedate.getEditor()).getText());
     }
 
     @FXML
     private void handleAssistantMenu(ActionEvent event) {
-        showAssistantContainer();
+        showAppointmentContainer();
     }
 
     @FXML
-    private void handleAddAssistant(ActionEvent event) {
-        showAddAssistantContainer();
-    }
+    private void handleSaveAppointment(ActionEvent event) {
 
-    @FXML
-    private void handleAssistantBackBtn(ActionEvent event) {
-        showAssistantListContainer();
-    }
-
-    @FXML
-    private void handleSaveAssistant(ActionEvent event) {
-
-        if (!isAddAssistantFormValid()) {
+        if (!isAddAppointmentFormValid()) {
             UIUtils.alert("Validation Error.", "Please enter the required field.", Alert.AlertType.ERROR);
             return;
         }
-        Assistant assist = new Assistant();
-        assist.setFirstName(assitFName.getText());
-
-        assist.setLastName(assitLName.getText());
-        assist.setAddress(assistAddress.getText());
-        assist.setContactNumber(assistContact.getText());
-        assist.setEmail(assistEmail.getText());
-        assist.setPassword(assistPass.getText());
-
-        java.sql.Date date = java.sql.Date.valueOf(assistDateOfBirth.getValue());
-        assist.setDateOfBirth(date);
-
-        if (assistMale.isSelected()) {
-            assist.setGender(assistMale.getText());
-        } else if (assistFemale.isSelected()) {
-            assist.setGender(assistFemale.getText());
-        } else if (assistOther.isSelected()) {
-            assist.setGender(assistOther.getText());
-        }
-        assist.setReportsTo(availableDoctors.getText());
-        assist.setRole(Role.ASSISTANT);
-        userDao.getUserByEmail(assist.getEmail());
-        assist.setAssistantId(userDao.getUserByEmail(assist.getEmail()).getId());
-
-        assistantDao.addAssistant(assist);
+        Patient patient = new Patient();
+        patient.setPatientName(patientName.getText());
+        java.sql.Date date = java.sql.Date.valueOf(selectedate.getValue());
+        patient.setSelectedDate(date);
+        patient.setSelectedTime(selectedTime.getText());
+        patient.setDoctor(availableDoctors.getText());
+        patient.setVisitReason(reasonApointment.getText());
+        
+        patientDao.addAppointment(patient);
 
         clearNewAssistForm();
-        showAssistantContainer();
+        showAppointmentContainer();
     }
 
-    private void showAssistantContainer() {
+    private void showAppointmentContainer() {
         hideAllContainer();
 
-        assistantMenu.setStyle(selectedMenuStyle);
-        assistantContainer.setVisible(true);
-
+        appointmentMenu.setStyle(selectedMenuStyle);
+        appointmentContainer.setVisible(true);
+        
+         availableDoctors.getItems().clear();
         for (User doctor : userDao.getUsersByRole(Role.DOCTOR)) {
             MenuItem menuItem = new MenuItem(doctor.getFirstName());
             menuItem.setOnAction(e -> {
@@ -356,18 +301,40 @@ public class AssistantPortalController implements Initializable {
             });
             availableDoctors.getItems().add(menuItem);
         }
+        
+        
+         patientName.getItems().clear();
+        for (Patient patient : patientDao.getAllPatient()) {
+            MenuItem menuItem = new MenuItem(patient.getPatientName());
+            menuItem.setOnAction(e -> {
+                patientName.setText(menuItem.getText());
+            });
+            patientName.getItems().add(menuItem);
+        }
+        
+         for (int i = 9; i <= 17; i++) {
+            String timeLabel = i < 12 ? i + ":00 AM" : (i == 12 ? "12:00 PM" : (i - 12) + ":00 PM");
+            MenuItem menuItem = new MenuItem(timeLabel);
+            
+           
+            menuItem.setOnAction(e -> {
+                selectedTime.setText(menuItem.getText());
+            });
 
-        showAssistantListContainer();
+            selectedTime.getItems().add(menuItem);
+        }
+
+        showAppointmentListContainer();
     }
 
-    private void showAssistantListContainer() {
-        addAssistantContainer.setVisible(false);
-        assistantListContainer.setVisible(true);
+    private void showAppointmentListContainer() {
+        addAppointmentContainer.setVisible(false);
+        appointmentListContainer.setVisible(true);
     }
 
     private void showAddAssistantContainer() {
-        addAssistantContainer.setVisible(true);
-        assistantListContainer.setVisible(false);
+        addAppointmentContainer.setVisible(true);
+        appointmentListContainer.setVisible(false);
     }
 
     @FXML
@@ -386,7 +353,7 @@ public class AssistantPortalController implements Initializable {
     }
 
     @FXML
-    private void handleSaveAppointment(ActionEvent event) {
+    private void handleSaveBilling(ActionEvent event) {
         // save admin information to database
     }
 
@@ -401,21 +368,21 @@ public class AssistantPortalController implements Initializable {
 
     private void showAdminListContainer() {
         addAppointmentContainer.setVisible(false);
-        appointmentListContainer.setVisible(true);
+        billingListContainer.setVisible(true);
     }
 
     private void showAddAdminContainer() {
         addAppointmentContainer.setVisible(true);
-        appointmentListContainer.setVisible(false);
+        billingListContainer.setVisible(false);
     }
 
     private void hideAllContainer() {
         patientMenu.setStyle(unSelectedMenuStyle);
-        assistantMenu.setStyle(unSelectedMenuStyle);
+
         adminMenu.setStyle(unSelectedMenuStyle);
 
         patientContainer.setVisible(false);
-        assistantContainer.setVisible(false);
+        appointmentContainer.setVisible(false);
         adminContainer.setVisible(false);
 
     }

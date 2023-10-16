@@ -17,6 +17,8 @@ public class Patient {
     private String address;
     private String doctor;
     private String visitReason;
+    private Date selectedDate;
+    private String selectedTime;
 
     public int getId() {
         return id;
@@ -91,6 +93,24 @@ public class Patient {
 
     public void setVisitReason(String visitReason) {
         this.visitReason = visitReason;
+    }
+
+    public Date getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(Date selectedDate) {
+        this.selectedDate = selectedDate;
+    }
+
+   
+
+    public String getSelectedTime() {
+        return selectedTime;
+    }
+
+    public void setSelectedTime(String selectedTime) {
+        this.selectedTime = selectedTime;
     }
     
     

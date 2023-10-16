@@ -33,8 +33,8 @@ public class PatientDao {
     public boolean addPatient(Patient patient) {
         Connection connection = dbConnection.getConnection();
 
-        String patientQuery = "INSERT INTO patient (patientName, dateOfBirth, gender, contactNumber, email, address, doctor, visitReason)\n"
-                + "VALUES(?,?,?,?,?,?,?,?)";
+        String patientQuery = "INSERT INTO patient (patientName, dateOfBirth, gender, contactNumber, email, address, visitReason)\n"
+                + "VALUES(?,?,?,?,?,?,?)";
 
         try {
 
@@ -45,11 +45,34 @@ public class PatientDao {
             prepStatement.setString(4, patient.getContactNumber());
             prepStatement.setString(5, patient.getEmail());
             prepStatement.setString(6, patient.getAddress());
-            prepStatement.setString(7, patient.getDoctor());
-            prepStatement.setString(8, patient.getVisitReason());
+            prepStatement.setString(7, patient.getVisitReason());
             int rowsAffectedPatient = prepStatement.executeUpdate();
 
             return rowsAffectedPatient > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    
+      public boolean addAppointment(Patient patient) {
+        Connection connection = dbConnection.getConnection();
+
+        String appointmentQuery = "INSERT INTO appointment (patientName, selectedDate, selectedTime, doctor,  visitReason)\n"
+                + "VALUES(?,?,?,?,?)";
+
+        try {
+
+            PreparedStatement prepStatement = connection.prepareStatement(appointmentQuery);
+            prepStatement.setString(1, patient.getPatientName());
+            prepStatement.setDate(2, new java.sql.Date(patient.getSelectedDate().getTime()));
+            prepStatement.setString(3, patient.getSelectedTime());
+            prepStatement.setString(4, patient.getDoctor());
+            prepStatement.setString(5, patient.getVisitReason());
+            int rowsAffectedAppointment = prepStatement.executeUpdate();
+
+            return rowsAffectedAppointment > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -59,11 +82,52 @@ public class PatientDao {
     public List<Patient> getPatientByDoctor(String doctorName) {
         List<Patient> patients = new ArrayList<>();
         Connection connection = dbConnection.getConnection();
-        String query = "SELECT * FROM patient WHERE doctor = ?";
+        String query = "SELECT * FROM patient WHERE patientName IN (Select patientName from appointment where doctor = ? )";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, doctorName);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String patientName = resultSet.getString("patientName");
+                Date dateOfBirth = resultSet.getDate("dateOfBirth");
+                String gender = resultSet.getString("gender");
+                String contactNumber = resultSet.getString("contactNumber");
+                String email = resultSet.getString("email");
+                String address = resultSet.getString("address");
+                String doctor = resultSet.getString("doctor");
+                String visitReason = resultSet.getString("visitReason");
+
+                Patient patient = new Patient();
+                patient.setId(id);
+                patient.setPatientName(patientName);
+                patient.setDateOfBirth(dateOfBirth);
+                patient.setGender(gender);
+                patient.setContactNumber(contactNumber);
+                patient.setEmail(email);
+                patient.setAddress(address);
+                patient.setDoctor(doctor);
+                patient.setVisitReason(visitReason);
+
+                patients.add(patient);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return patients;
+    }
+    
+    
+    public List<Patient> getAllPatient() {
+        List<Patient> patients = new ArrayList<>();
+        Connection connection = dbConnection.getConnection();
+        String query = "SELECT * FROM patient";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {

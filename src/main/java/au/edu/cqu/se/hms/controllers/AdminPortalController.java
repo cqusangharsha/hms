@@ -102,6 +102,8 @@ public class AdminPortalController implements Initializable {
     private Pane specializationContainer;
     @FXML
     private TextField specializationFld;
+     @FXML
+    private TextField specializationCost;
     @FXML
     private TableView<Specialization> specialityTableView;
     @FXML
@@ -625,7 +627,8 @@ public class AdminPortalController implements Initializable {
         }
 
         String specialization = specializationFld.getText();
-        specializationDao.addSpecialization(new Specialization(specialization));
+         String cost = specializationCost.getText();
+        specializationDao.addSpecialization(new Specialization(specialization,cost));
 
         clearAddSpecializationForm();
         showSpecializationListContainer();
@@ -707,11 +710,13 @@ public class AdminPortalController implements Initializable {
     }
 
     private boolean isAddSpecializaitonFormValid() {
-        return !StringUtils.isEmpty(specializationFld.getText().trim());
+        return !StringUtils.isEmpty(specializationFld.getText().trim()) && 
+                !StringUtils.isEmpty(specializationCost.getText().trim());
     }
 
     private void clearAddSpecializationForm() {
         specializationFld.setText("");
+        specializationCost.setText("");
     }
 
     private void hideAllContainer() {

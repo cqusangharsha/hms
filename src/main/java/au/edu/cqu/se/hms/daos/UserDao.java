@@ -87,7 +87,9 @@ public class UserDao {
     }
 
     public List<User> getUsersByRole(Role role) {
+        System.out.println("Inside first condition");
         return getUsersByRole(role, 0, 0);
+       
     }
 
     public List<User> getUsersByRole(Role role, int page, int pageSize) {
@@ -101,14 +103,17 @@ public class UserDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(getUsersByRoleQuery);
             preparedStatement.setString(1, role.getValue());
-
+            System.out.println("Inside second condition");
             if (pageSize != 0) {
                 preparedStatement.setInt(2, getOffset(page, pageSize));
                 preparedStatement.setInt(3, pageSize);
-
+                System.out.println("Inside third condition");
             }
             ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("has values"+resultSet.next());
             while (resultSet.next()) {
+                
+                 System.out.println("inside while");
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
                 user.setFirstName(resultSet.getString("firstName"));
@@ -121,7 +126,7 @@ public class UserDao {
                 user.setAddress(resultSet.getString("address"));
                 user.setRole(Role.fromValue(resultSet.getString("role")));
                 users.add(user);
-
+                System.out.println("First name"+ resultSet.getString("firstName") );
             }
         } catch (SQLException e) {
             e.printStackTrace();

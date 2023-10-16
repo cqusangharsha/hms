@@ -25,11 +25,14 @@ public class App extends Application {
         migrations.add(new Migration(1, Queries.CREATE_USER));
         migrations.add(new Migration(2, Queries.INSERT_ADMIN));
         migrations.add(new Migration(3, Queries.CREATE_SPECIALIZATION));
+          migrations.add(new Migration(12, Queries.INSERT_SPECIALIZATION));
         migrations.add(new Migration(4, Queries.CREATE_DOCTOR));
         migrations.add(new Migration(5, Queries.CREATE_ASSISTANT));
         migrations.add(new Migration(6, Queries.CREATE_PATIENT));
         
         migrations.add(new Migration(41, Queries.CREATE_PATIENT_MEDICAL_HISTORY));
+        
+         migrations.add(new Migration(11, Queries.CREATE_PATIENT_APPOINTMENT));
     }
 
     @Override

@@ -8,17 +8,20 @@ public class Specialization {
 
     private int id;
     private String name;
+    private String costCheckup;
 
     public Specialization() {
     }
 
-    public Specialization(String name) {
+    public Specialization(String name,String costCheckup) {
         this.name = name;
+        this.costCheckup = costCheckup;
     }
 
-    public Specialization(int id, String name) {
+    public Specialization(int id, String name,String costCheckup) {
         this.id = id;
         this.name = name;
+        this.costCheckup = costCheckup;
     }
 
     /**
@@ -47,6 +50,14 @@ public class Specialization {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCostCheckup() {
+        return costCheckup;
+    }
+
+    public void setCostCheckup(String costCheckup) {
+        this.costCheckup = costCheckup;
     }
 
     @Override

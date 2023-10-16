@@ -29,9 +29,25 @@ public class Queries {
     public static final String CREATE_SPECIALIZATION = """
                                                         CREATE TABLE specializations (
                                                             id INT AUTO_INCREMENT PRIMARY KEY,
-                                                            name VARCHAR(255) NOT NULL
+                                                            name VARCHAR(255) NOT NULL,
+                                                       checkupCost VARCHAR(255) NOT NULL
                                                         )
                                                         """;
+    
+      public static final String INSERT_SPECIALIZATION = """
+                                               INSERT INTO specializations (name, checkupCost) VALUES
+                                               ('General Practitioner/Family Medicine', 175), 
+                                               ('Pediatrician', 175), 
+                                               ('Cardiologist', 375), 
+                                               ('Dermatologist', 200), 
+                                               ('Orthopedist/Orthopedic Surgeon', 350), 
+                                               ('Obstetrician/Gynecologist', 350), 
+                                               ('Neurologist', 425), 
+                                               ('Endocrinologist', 375), 
+                                               ('Gastroenterologist', 375), 
+                                               ('Psychiatrist', 275);
+                                               """;
+
 
     public static final String CREATE_DOCTOR = """
                                                         CREATE TABLE doctor (
@@ -74,6 +90,17 @@ public class Queries {
                                                               FOREIGN KEY (patient_id) REFERENCES patient(id),
                                                               FOREIGN KEY (doctor_id) REFERENCES doctor(id)
                                                            );
+                                                          """;
+    
+    
+     public static String CREATE_PATIENT_APPOINTMENT = """
+                                                          CREATE TABLE appointment (
+                                                                                                                      id INT AUTO_INCREMENT PRIMARY KEY,
+                                                                                                                      patientName VARCHAR(255) NOT NULL,
+                                                                                                                      selectedDate DATE,
+                                                                                                                      selectedTime VARCHAR(20),
+                                                                                                                      doctor VARCHAR(255),
+                                                                                                                      visitReason varchar(255));
                                                           """;
 
 }

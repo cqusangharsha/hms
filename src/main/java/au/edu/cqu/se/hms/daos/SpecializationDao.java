@@ -30,9 +30,10 @@ public class SpecializationDao {
     }
 
     public void addSpecialization(Specialization specialization) {
-        String sql = "INSERT INTO specializations (name) VALUES (?)";
+        String sql = "INSERT INTO specializations (name,checkupCost) VALUES (?,?)";
         try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, specialization.getName());
+            preparedStatement.setString(2, specialization.getCostCheckup());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,7 +69,8 @@ public class SpecializationDao {
             if (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                return new Specialization(id, name);
+                String checkupCost = resultSet.getString("checkupCost");
+                return new Specialization(id, name,checkupCost);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,7 +98,8 @@ public class SpecializationDao {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                specializations.add(new Specialization(id, name));
+                 String checkupCost = resultSet.getString("checkupCost");
+                specializations.add(new Specialization(id, name,checkupCost));
             }
         } catch (SQLException e) {
             e.printStackTrace();
