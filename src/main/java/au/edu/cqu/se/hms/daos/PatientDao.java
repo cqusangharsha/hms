@@ -199,5 +199,42 @@ public class PatientDao {
 
         return patients;
     }
+    
+    
+       public List<Patient> getAppointments() {
+        List<Patient> patients = new ArrayList<>();
+        Connection connection = dbConnection.getConnection();
+        String query = "SELECT patientName,doctor FROM appointment";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                
+                String patientName = resultSet.getString("patientName");
+               
+                String doctor = resultSet.getString("doctor");
+               
+
+                Patient patient = new Patient();
+                
+                patient.setPatientName(patientName);
+               
+                patient.setDoctor(doctor);
+              
+
+                patients.add(patient);
+                System.out.println("Patient Name"+ patientName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return patients;
+    }
+    
+  
+    
 
 }
