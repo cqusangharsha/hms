@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fff; -fx-width: 600px; -fx-height: 600px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="au.edu.cqu.se.hms.controllers.AdminPortalController">
+<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fff; -fx-width: 600px; -fx-height: 600px;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="au.edu.cqu.se.hms.controllers.AdminPortalController">
     <children>
         <Pane fx:id="sidebarPane" prefHeight="400.0" prefWidth="147.0" style="-fx-background-color: #eee;">
             <children>
@@ -80,7 +80,7 @@
                 <Button layoutX="389.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #fff; -fx-text-fill: #333;" text="Logout" />
             </children>
         </Pane>
-        <Pane fx:id="doctorContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
+        <Pane fx:id="doctorContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
             <children>
                 <Pane fx:id="doctorListContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
@@ -171,7 +171,7 @@
                 </Pane>
             </children>
         </Pane>
-        <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
+        <Pane fx:id="adminContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
             <children>
                 <Pane fx:id="adminListContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
@@ -222,7 +222,7 @@
                 </Pane>
             </children>
         </Pane>
-        <Pane fx:id="specializationContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" visible="false">
+        <Pane fx:id="specializationContainer" layoutX="155.0" layoutY="65.0" prefHeight="326.0" prefWidth="438.0" style="-fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);">
             <children>
                 <Pane fx:id="specializationListContainer" prefHeight="326.0" prefWidth="438.0">
                     <children>
@@ -258,13 +258,14 @@
             <Pane fx:id="analyticsListContainer" layoutY="-7.0" prefHeight="326.0" prefWidth="438.0">
                <children>
                   <Button layoutX="309.0" layoutY="15.0" mnemonicParsing="false" onAction="#loadAppointmentsToPieChart" style="-fx-background-color: #546e7a #546e7a; -fx-text-fill: #fff;" text="Generate Analytics" />
-               </children>
-            </Pane>
-            <Pane fx:id="addAnalyticsContainer" layoutX="-8.0" layoutY="-12.0" prefHeight="326.0" prefWidth="438.0">
-               <children>
-                  <Separator layoutY="55.0" prefHeight="3.0" prefWidth="438.0" />
-                  <PieChart fx:id="doctorPieChart" layoutX="14.0" layoutY="59.0" prefHeight="165.0" prefWidth="191.0" />
-                  
+                  <PieChart fx:id="specializationPieChart" layoutY="15.0" prefHeight="189.0" prefWidth="305.0" />
+                  <PieChart fx:id="doctorPieChart" layoutX="238.0" layoutY="168.0" prefHeight="158.0" prefWidth="199.0" />
+                  <Pane fx:id="addAnalyticsContainer" layoutX="-97.0" layoutY="-88.0" prefHeight="326.0" prefWidth="438.0" visible="false">
+                     <children>
+                        <Separator layoutY="55.0" prefHeight="3.0" prefWidth="438.0" />
+                        
+                           </children>
+                  </Pane>
                </children>
             </Pane>
          </children>

@@ -264,6 +264,9 @@ public class AdminPortalController implements Initializable {
 
     @FXML
     private PieChart doctorPieChart;
+    
+     @FXML
+    private PieChart specializationPieChart;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -831,7 +834,7 @@ public class AdminPortalController implements Initializable {
 
         for (Patient appointment : appointments) {
             doctorCount.put(appointment.getDoctor(), doctorCount.getOrDefault(appointment.getDoctor(), 0) + 1);
-            System.out.println("Doctor"+ appointment.getDoctor());
+           
         }
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
@@ -839,10 +842,36 @@ public class AdminPortalController implements Initializable {
         for (Map.Entry<String, Integer> entry : doctorCount.entrySet()) {
             pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
         }
-        System.out.println(pieChartData);
+        loadSpecializationToPieChart();
+      //  System.out.println(pieChartData);
         doctorPieChart.setData(pieChartData);
-        doctorPieChart.setTitle("Appointments per Doctor");
+        doctorPieChart.setTitle("Doctor appoinments");
         doctorPieChart.layout();
+    }
+    
+    
+    @FXML
+    public void loadSpecializationToPieChart() {
+         List<Specialization> specializations = specializationDao.getAllSpecializations();
+
+    
+
+    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+    for (Specialization special : specializations) {
+       
+        pieChartData.add(new PieChart.Data(special.getName(), Double.parseDouble(special.getCostCheckup())));
+    }
+        System.out.println(pieChartData);
+   
+        specializationPieChart.setData(pieChartData);
+         specializationPieChart.setLabelLineLength(20); 
+        specializationPieChart.setLegendVisible(true);
+        specializationPieChart.setLabelsVisible(true);
+       
+        specializationPieChart.setTitle("Specialization Costs");
+        specializationPieChart.layout();
+    
     }
 
     private boolean isAddSpecializaitonFormValid() {

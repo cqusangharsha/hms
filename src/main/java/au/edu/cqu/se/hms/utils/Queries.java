@@ -104,6 +104,6 @@ public class Queries {
      public static String ADD_CHECKUP_COST_TO_SPECIALIZATION = """
                                                                ALTER TABLE specializations 
                                                                ADD COLUMN checkupCost VARCHAR(255) NOT NULL;
-                                                               """;
+                                                               """; 
 
 }
