@@ -16,7 +16,6 @@ import java.sql.Statement;
  * This class encapsulates the functionality to interact with the "migration"
  * table in the database.
  *
- * @author sangharshachaulagain
  */
 public class Migration {
 

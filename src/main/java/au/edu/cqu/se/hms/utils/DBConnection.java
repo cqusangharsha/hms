@@ -4,7 +4,10 @@ import java.sql.*;
 
 /**
  *
- * @author sangharshachaulagain
+ * Represents a database connection utility class, providing methods to establish, 
+ * manage, and close connections to a database. This class might implement the 
+ * singleton pattern to ensure there's only one instance of the database connection 
+ * throughout the application.
  */
 public class DBConnection {
 

@@ -15,6 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+/**
+ * This class serves as the controller for the Sign-In UI of the application.*
+ */
 public class SignInController implements Initializable {
 
     @FXML
@@ -28,16 +31,39 @@ public class SignInController implements Initializable {
 
     AuthenticationService authService = null;
 
+   /**
+     * This method is called by the FXMLLoader when the initialization is
+     * complete. It initializes the services, DAO instances, and sets up the
+     * initial view for the signin portal.
+     *
+     * @param url The location used to resolve relative paths for the root
+     * object, or null if the location is not known.
+     * @param rb The resources used to localize the root object, or null if the
+     * root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
     }
 
+    /**
+     * Handles the click event for the exit button. Exits the application when
+     * the exit button is clicked.
+     */
     @FXML
     private void onExitBtnClick(ActionEvent event) {
         System.exit(0);
     }
 
+    /**
+     * Handles the click event for the login button. 1. Validates the provided
+     * email and password. 2. If valid, the user is authenticated using the
+     * AuthenticationService. 3. Redirects the user to the appropriate portal
+     * based on their role (Admin, Doctor, or Assistant). 4. Displays error
+     * messages if any issue arises during the login process.
+     *
+     * @param event The action event representing the button click.
+     */
     @FXML
     private void onLoginBtnClick(ActionEvent event) {
         String email = emailFld.getText();

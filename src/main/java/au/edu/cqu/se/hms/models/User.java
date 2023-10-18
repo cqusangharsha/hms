@@ -5,10 +5,11 @@ import java.util.Date;
 
 /**
  *
- * @author sangharshachaulagain
+ * Model class for User
  */
 public class User {
 
+    //variables for User
     private int id;
     private String firstName;
     private String lastName;
@@ -20,6 +21,7 @@ public class User {
     private String address;
     private Role role;
 
+    //constructors for user
     public User(int id, String firstName) {
         this.id = id;
         this.firstName = firstName;
@@ -53,142 +55,83 @@ public class User {
     public User() {
     }
 
-    /**
-     * @return the id
-     */
+    //getter and setter methods for user
     public int getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * @return the firstName
-     */
     public String getFirstName() {
         return firstName;
     }
 
-    /**
-     * @param firstName the firstName to set
-     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    /**
-     * @return the lastName
-     */
     public String getLastName() {
         return lastName;
     }
 
-    /**
-     * @param lastName the lastName to set
-     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    /**
-     * @return the dateOfBirth
-     */
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    /**
-     * @param dateOfBirth the dateOfBirth to set
-     */
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    /**
-     * @return the gender
-     */
     public String getGender() {
         return gender;
     }
 
-    /**
-     * @param gender the gender to set
-     */
     public void setGender(String gender) {
         this.gender = gender;
     }
 
-    /**
-     * @return the contactNumber
-     */
     public String getContactNumber() {
         return contactNumber;
     }
 
-    /**
-     * @param contactNumber the contactNumber to set
-     */
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * @param email the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * @return the password
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * @param password the password to set
-     */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /**
-     * @return the address
-     */
     public String getAddress() {
         return address;
     }
 
-    /**
-     * @param address the address to set
-     */
     public void setAddress(String address) {
         this.address = address;
     }
 
-    /**
-     * @return the role
-     */
     public Role getRole() {
         return role;
     }
 
-    /**
-     * @param role the role to set
-     */
     public void setRole(Role role) {
         this.role = role;
     }

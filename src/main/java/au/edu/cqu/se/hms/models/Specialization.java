@@ -2,52 +2,43 @@ package au.edu.cqu.se.hms.models;
 
 /**
  *
- * @author sangharshachaulagain
+ * Model class for specialization
  */
 public class Specialization {
 
+    //variables for specialization
     private int id;
     private String name;
     private String costCheckup;
 
+    //constructors for specialization
     public Specialization() {
     }
 
-    public Specialization(String name,String costCheckup) {
+    public Specialization(String name, String costCheckup) {
         this.name = name;
         this.costCheckup = costCheckup;
     }
 
-    public Specialization(int id, String name,String costCheckup) {
+    public Specialization(int id, String name, String costCheckup) {
         this.id = id;
         this.name = name;
         this.costCheckup = costCheckup;
     }
 
-    /**
-     * @return the id
-     */
+    //all getter and setter methods
     public int getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }

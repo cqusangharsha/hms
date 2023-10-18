@@ -11,19 +11,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author sudeep_sharma
+/*
+ * This class provides the Data Access Object (DAO) functionalities specific to the 
+ * Patient model. It facilitates database operations like adding patients, fetching patient
+ * details, managing patient appointments, generating patient bills, and much more.
+ * 
  */
 public class PatientDao {
 
     private final DBConnection dbConnection;
     private static PatientDao instance;
 
+    /**
+     * Constructor initializing the DBConnection instance.
+     */
     public PatientDao() {
         dbConnection = DBConnection.getInstance();
     }
 
+    /**
+     * Returns a singleton instance of PatientDao. If an instance doesn't exist,
+     * it creates a new one.
+     *
+     * @return An instance of PatientDao.
+     */
     public static PatientDao getInstance() {
         if (instance == null) {
             instance = new PatientDao();
@@ -31,6 +42,12 @@ public class PatientDao {
         return instance;
     }
 
+    /**
+     * Inserts a new patient into the database.
+     *
+     * @param patient The Patient object to be inserted.
+     * @return true if the patient was added successfully, false otherwise.
+     */
     public boolean addPatient(Patient patient) {
         Connection connection = dbConnection.getConnection();
 
@@ -56,6 +73,12 @@ public class PatientDao {
         }
     }
 
+    /**
+     * Inserts a new appointment for a patient into the database.
+     *
+     * @param patient The Patient object holding the appointment details.
+     * @return true if the appointment was added successfully, false otherwise.
+     */
     public boolean addAppointment(Patient patient) {
         Connection connection = dbConnection.getConnection();
 
@@ -79,6 +102,12 @@ public class PatientDao {
         }
     }
 
+    /**
+     * Fetches a list of patients associated with a specific doctor.
+     *
+     * @param doctorName The name of the doctor.
+     * @return A list of Patient objects.
+     */
     public List<Patient> getPatientByDoctor(String doctorName) {
         List<Patient> patients = new ArrayList<>();
         Connection connection = dbConnection.getConnection();
@@ -120,6 +149,13 @@ public class PatientDao {
         return patients;
     }
 
+    /**
+     * Generates and retrieves a billing statement for a specific patient.
+     *
+     * @param patientName The name of the patient.
+     * @return A list of Patient objects, each holding a specific billing
+     * detail.
+     */
     public List<Patient> getPatientBill(String patientName) {
         List<Patient> patients = new ArrayList<>();
         Connection connection = dbConnection.getConnection();
@@ -133,24 +169,24 @@ public class PatientDao {
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, Role.DOCTOR.getValue());
-             statement.setString(2, patientName);
+            statement.setString(2, patientName);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-               System.out.println("Inside while");
-                String ptName = resultSet.getString("name");                
+                System.out.println("Inside while");
+                String ptName = resultSet.getString("name");
                 String cost = resultSet.getString("checkupCost");
                 String doctor = resultSet.getString("doctor");
                 String visitReason = resultSet.getString("visitReason");
 
                 Patient patient = new Patient();
-             
+
                 patient.setPatientName(ptName);
-               
+
                 patient.setTotalCost(cost);
                 patient.setDoctor(doctor);
                 patient.setVisitReason(visitReason);
-                 System.out.println("Cost"+cost);
+                System.out.println("Cost" + cost);
                 patients.add(patient);
             }
         } catch (SQLException e) {
@@ -160,6 +196,11 @@ public class PatientDao {
         return patients;
     }
 
+    /**
+     * Fetches all the patients from the database.
+     *
+     * @return A list of all Patient objects.
+     */
     public List<Patient> getAllPatient() {
         List<Patient> patients = new ArrayList<>();
         Connection connection = dbConnection.getConnection();
@@ -199,9 +240,13 @@ public class PatientDao {
 
         return patients;
     }
-    
-    
-       public List<Patient> getAppointments() {
+
+    /**
+     * Fetches all appointments from the database.
+     *
+     * @return A list of Patient objects, each holding appointment details.
+     */
+    public List<Patient> getAppointments() {
         List<Patient> patients = new ArrayList<>();
         Connection connection = dbConnection.getConnection();
         String query = "SELECT patientName,doctor FROM appointment";
@@ -211,21 +256,19 @@ public class PatientDao {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                
+
                 String patientName = resultSet.getString("patientName");
-               
+
                 String doctor = resultSet.getString("doctor");
-               
 
                 Patient patient = new Patient();
-                
+
                 patient.setPatientName(patientName);
-               
+
                 patient.setDoctor(doctor);
-              
 
                 patients.add(patient);
-                System.out.println("Patient Name"+ patientName);
+                
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -233,8 +276,5 @@ public class PatientDao {
 
         return patients;
     }
-    
-  
-    
 
 }

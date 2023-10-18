@@ -37,8 +37,10 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 /**
- *
- * @author Dell
+ * /**
+ * This class represents the controller for the Doctor Portal in the
+ * application. It handles all the UI interactions and logic pertaining to the
+ * portal for doctors.
  */
 public class DoctorPortalController implements Initializable {
 
@@ -120,6 +122,16 @@ public class DoctorPortalController implements Initializable {
     @FXML
     private TableColumn<PatientMedicalHistory, String> diagnosisActionCol;
 
+    /**
+     * This method is called by the FXMLLoader when the initialization is
+     * complete. It initializes the services, DAO instances, and sets up the
+     * initial view for the doctor portal.
+     *
+     * @param url The location used to resolve relative paths for the root
+     * object, or null if the location is not known.
+     * @param rb The resources used to localize the root object, or null if the
+     * root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
@@ -147,6 +159,10 @@ public class DoctorPortalController implements Initializable {
         showAppointmentContainer();
     }
 
+    /**
+     * Sets up the table for displaying the list of patients associated with the
+     * logged-in doctor.
+     */
     private void displayDoctorPatientTable() {
         doctorPatientIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         dcotorPatientNameCol.setCellValueFactory(new PropertyValueFactory<>("patientName"));
@@ -175,14 +191,17 @@ public class DoctorPortalController implements Initializable {
         };
         dcotorPatientActionCol.setCellFactory(cellFactory);
     }
-    
-    
+
+    /**
+     * Sets up the table for displaying the medical history of a specific
+     * patient.
+     */
     private void displayPatientHistoryTable() {
         diagnosisDateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
         diagonsisDiagnosisCol.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getDiagnosis().length() > 25
-                        ? cellData.getValue().getDiagnosis().substring(0, 25).replace("\n", "") + "..."
-                        : cellData.getValue().getDiagnosis().replace("\n", "")
+                ? cellData.getValue().getDiagnosis().substring(0, 25).replace("\n", "") + "..."
+                : cellData.getValue().getDiagnosis().replace("\n", "")
         ));
 
         Callback<TableColumn<PatientMedicalHistory, String>, TableCell<PatientMedicalHistory, String>> cellFactory = (TableColumn<PatientMedicalHistory, String> p) -> {
@@ -198,7 +217,7 @@ public class DoctorPortalController implements Initializable {
                         btn.setOnAction((event) -> {
                             UIUtils.alert(
                                     new SimpleDateFormat("dd MMM, yyyy").format(getTableRow().getItem().getDate()),
-                                    getTableRow().getItem().getDiagnosis(), 
+                                    getTableRow().getItem().getDiagnosis(),
                                     Alert.AlertType.INFORMATION);
                         });
                         setGraphic(btn);
@@ -211,23 +230,41 @@ public class DoctorPortalController implements Initializable {
         diagnosisActionCol.setCellFactory(cellFactory);
     }
 
+    /**
+     * Handles the click event of the Appointment Menu. Redirects the user to
+     * the appointments container.
+     *
+     * @param event The action event representing the menu item click.
+     */
     @FXML
     private void handleAppointmentMenu(ActionEvent event) {
         showAppointmentContainer();
     }
 
+    /**
+     * Displays the container related to appointments.
+     */
     private void showAppointmentContainer() {
         hideAllContainer();
         appointmentMenu.setStyle(selectedMenuStyle);
         appointmentContainer.setVisible(true);
     }
 
+    /**
+     * Handles the click event of the Patient Menu. Redirects the user to the
+     * patient list container.
+     *
+     * @param event The action event representing the menu item click.
+     */
     @FXML
     private void handlePatientMenu(ActionEvent event) {
         hideAllContainer();
         showPatientListContainer();
     }
 
+    /**
+     * Displays the container related to the list of patients.
+     */
     private void showPatientListContainer() {
         refreshPatientListTable();
 
@@ -237,23 +274,41 @@ public class DoctorPortalController implements Initializable {
         patientListContainer.setVisible(true);
     }
 
+    /**
+     * Updates the table to display the latest list of patients.
+     */
     private void refreshPatientListTable() {
         observablePatientList.clear();
         observablePatientList.addAll(patientDao.getPatientByDoctor(currentLoggedInUser.getFirstName()));
         dcotorPatientTableView.setItems(observablePatientList);
     }
 
+    /**
+     * Handles the logout action. Redirects the user back to the login page.
+     *
+     * @param event The action event representing the logout button click.
+     */
     @FXML
     private void handleLogout(ActionEvent event) {
         UIUtils.logout();
     }
 
+    /**
+     * Displays detailed information of a selected patient.
+     *
+     * @param patient The patient whose details are to be displayed.
+     */
     private void showPatientInfoContainer(Patient patient) {
         populatePatientInfo(patient);
         hideAllContainer();
         patientInfoContainer.setVisible(true);
     }
 
+    /**
+     * Populates the UI with the information of the provided patient.
+     *
+     * @param patient The patient whose information is to be displayed.
+     */
     private void populatePatientInfo(Patient patient) {
         patientNameLbl.setText(patient.getPatientName());
         patientInfoAddressTF.setText(patient.getAddress());
@@ -272,18 +327,35 @@ public class DoctorPortalController implements Initializable {
         });
     }
 
+    /**
+     * Displays the container that shows the medical history of a patient.
+     *
+     * @param patient The patient whose medical history is to be displayed.
+     */
     private void showMedicalHistoryContainer(Patient patient) {
         refreshMedicalHistoryTable(patient);
         hideAllContainer();
         medicalHistoryContainer.setVisible(true);
     }
 
+    /**
+     * Updates the table to display the latest medical history of the provided
+     * patient.
+     *
+     * @param patient The patient whose medical history is to be displayed.
+     */
     private void refreshMedicalHistoryTable(Patient patient) {
         observableHistoryList.clear();
         observableHistoryList.addAll(patientMedicalHistoryDao.getMedicalHistoryByPatient(patient.getId()));
         diagnosisTV.setItems(observableHistoryList);
     }
-    
+
+    /**
+     * Displays the container that allows the doctor to make a diagnosis for a
+     * patient.
+     *
+     * @param patient The patient for whom the diagnosis is to be made.
+     */
     private void showMakeDiagonsisContainer(Patient patient) {
         hideAllContainer();
         makeDiagonsisContainer.setVisible(true);
@@ -301,6 +373,10 @@ public class DoctorPortalController implements Initializable {
         });
     }
 
+    /**
+     * Hides all the UI containers to allow for transitioning between different
+     * views.
+     */
     private void hideAllContainer() {
         patientMenu.setStyle(unSelectedMenuStyle);
         appointmentMenu.setStyle(unSelectedMenuStyle);

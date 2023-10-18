@@ -4,10 +4,12 @@ import java.util.Date;
 
 /**
  *
- * @author sudeep_sharma
+ * Model class for patient
  */
 public class Patient {
     
+    
+    //variable for patient
     private int id;
     private String patientName;
     private Date dateOfBirth;
@@ -21,6 +23,8 @@ public class Patient {
     private String selectedTime;
     private String totalCost;
 
+    
+    //getter and setter methods for patient variables
     public int getId() {
         return id;
     }

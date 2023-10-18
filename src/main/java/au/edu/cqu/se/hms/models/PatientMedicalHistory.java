@@ -4,16 +4,18 @@ import java.util.Date;
 
 /**
  *
- * @author sangharshachaulagain
+ * Model for medical history
  */
 public class PatientMedicalHistory {
 
+    //variable for patient medical history
     private int id;
     private Date date;
     private int patientId;
     private int doctorId;
     private String diagnosis;
 
+    //constructors for patient medical history
     public PatientMedicalHistory() {
     }
 
@@ -32,6 +34,8 @@ public class PatientMedicalHistory {
         this.diagnosis = diagnosis;
     }
 
+    
+    //all getter and setter methods for patient medical history
     public int getId() {
         return id;
     }

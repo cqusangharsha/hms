@@ -10,18 +10,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Provides Data Access Object (DAO) functionalities for the Assistant model.
+ * This class is responsible for querying the database for operations related to
+ * assistants.
  *
- * @author sangharshachaulagain
  */
 public class AssistantDao {
 
     private final DBConnection dbConnection;
     private static AssistantDao instance;
 
+    /**
+     * Initializes the AssistantDao with a DBConnection instance.
+     */
     public AssistantDao() {
         dbConnection = DBConnection.getInstance();
     }
 
+    /**
+     * Returns a singleton instance of AssistantDao. If an instance doesn't
+     * exist, a new one is created.
+     *
+     * @return An instance of AssistantDao.
+     */
     public static AssistantDao getInstance() {
         if (instance == null) {
             instance = new AssistantDao();
@@ -29,6 +40,12 @@ public class AssistantDao {
         return instance;
     }
 
+    /**
+     * Adds a new Assistant to the database.
+     *
+     * @param assistant The Assistant object to be added.
+     * @return true if the assistant was added successfully, false otherwise.
+     */
     public boolean addAssistant(Assistant assistant) {
         Connection connection = dbConnection.getConnection();
 
@@ -47,7 +64,12 @@ public class AssistantDao {
             return false;
         }
     }
-    
+
+    /**
+     * Fetches all the assistants from the database.
+     *
+     * @return A list of Assistant objects.
+     */
     public List<Assistant> findAll() {
         Connection connection = dbConnection.getConnection();
         List<Assistant> assistants = new ArrayList<>();

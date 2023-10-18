@@ -38,19 +38,27 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 /**
+ * Represents the controller for the assistant portal interface. The controller
+ * manages the UI events and user interactions within the assistant portal,
+ * including handling patient data, managing appointments, and processing
+ * billings. It has methods to initialize the UI, handle menu selections,
+ * validate form entries, and perform CRUD operations related to patients,
+ * appointments, and billing.
  *
- * @author sudeep_sharma
  */
 public class AssistantPortalController implements Initializable {
 
+    // Define styles for menu selections
     private final String selectedMenuStyle = "-fx-text-fill: #eee; -fx-font-size: 15px; -fx-background-color: #546e7a; -fx-border-color: transparent; -fx-underline: false;";
     private final String unSelectedMenuStyle = "-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;";
 
     private AuthenticationService authService;
 
+    // Service and DAO instances
     private UserDao userDao;
     private PatientDao patientDao;
 
+    // JavaFX annotations for UI components
     @FXML
     private Label nameLbl;
     @FXML
@@ -133,13 +141,23 @@ public class AssistantPortalController implements Initializable {
 
     @FXML
     private TableColumn<Patient, String> doc;
-    
+
     @FXML
     private TableColumn<Patient, String> visit;
 
     @FXML
     private TableColumn<Patient, String> cost;
 
+    /**
+     * This method is called by the FXMLLoader when the initialization is
+     * complete. It initializes the services, DAO instances, and sets up the
+     * initial view for the assistant portal.
+     *
+     * @param url The location used to resolve relative paths for the root
+     * object, or null if the location is not known.
+     * @param rb The resources used to localize the root object, or null if the
+     * root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
@@ -187,6 +205,7 @@ public class AssistantPortalController implements Initializable {
         showPatientListContainer();
     }
 
+    //method to add new patient
     @FXML
     private void handleSavePatientBtn(ActionEvent event) {
 
@@ -213,9 +232,7 @@ public class AssistantPortalController implements Initializable {
         }
 
         patient.setVisitReason(reasonVisit.getText());
-        // userDao.getUserByEmail(availableDoctors.getText());
 
-        //   patient.setDoctor(availableDoctors.getText());
         patientDao.addPatient(patient);
 
         clearNewForm();
@@ -262,6 +279,7 @@ public class AssistantPortalController implements Initializable {
 
     }
 
+    //method to validate .patient form
     private boolean isAddPatientFormValid() {
         return !StringUtils.isEmpty(fName.getText().trim())
                 && !StringUtils.isEmpty(address.getText().trim())
@@ -282,6 +300,7 @@ public class AssistantPortalController implements Initializable {
         showAppointmentContainer();
     }
 
+    //method to add new appointment
     @FXML
     private void handleSaveAppointment(ActionEvent event) {
 
@@ -303,6 +322,7 @@ public class AssistantPortalController implements Initializable {
         showAppointmentContainer();
     }
 
+    //method to show appointment form
     private void showAppointmentContainer() {
         hideAllContainer();
 
@@ -366,36 +386,14 @@ public class AssistantPortalController implements Initializable {
         showBillingListContainer();
     }
 
-    /**
-     * @FXML private void handleSaveBilling(ActionEvent event) {
-     *
-     * TableView<Patient> table = new TableView<>();
-     *
-     * List<Patient> dataList =
-     * patientDao.getPatientBill(checkPatient.getText());
-     * ObservableList<Patient> data =
-     * FXCollections.observableArrayList(dataList);
-     *
-     * TableColumn<Patient, String> ptName = new TableColumn<>("Patient Name");
-     * ptName.setCellValueFactory(new PropertyValueFactory<>("name"));
-     *
-     * TableColumn<Patient, String> cost = new TableColumn<>("Cost");
-     * cost.setCellValueFactory(new PropertyValueFactory<>("cost"));
-     *
-     * table.getColumns().addAll(ptName, cost); table.setItems(data);
-     *
-     * System.out.println("Cost" + cost);
-     *
-     * }*
-     */
+    //method to generate billing
     @FXML
     private void handleSaveBilling(ActionEvent event) {
 
-        
         if (doc.getCellValueFactory() == null) {
             doc.setCellValueFactory(new PropertyValueFactory<>("doctor"));
         }
-        
+
         if (visit.getCellValueFactory() == null) {
             visit.setCellValueFactory(new PropertyValueFactory<>("visitReason"));
         }
@@ -409,7 +407,6 @@ public class AssistantPortalController implements Initializable {
 
         table.setItems(data);
 
-        // If you want to print the data for debugging:
         for (Patient patient : data) {
             System.out.println("Name: " + patient.getPatientName() + ", Cost: " + patient.getTotalCost());
         }

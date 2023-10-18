@@ -2,7 +2,7 @@ package au.edu.cqu.se.hms.utils;
 
 /**
  *
- * @author sangharshachaulagain
+ * Class to generate the necessary create tables and insert initial values
  */
 public class Queries {
 
@@ -29,7 +29,8 @@ public class Queries {
     public static final String CREATE_SPECIALIZATION = """
                                                         CREATE TABLE specializations (
                                                             id INT AUTO_INCREMENT PRIMARY KEY,
-                                                            name VARCHAR(255) NOT NULL
+                                                            name VARCHAR(255) NOT NULL,
+                                                            checkupCost VARCHAR(50) NOT NULL
                                                         )
                                                         """;
     
@@ -100,10 +101,5 @@ public class Queries {
                                                                 doctor VARCHAR(255),
                                                                 visitReason varchar(255));
                                                           """;
-     
-     public static String ADD_CHECKUP_COST_TO_SPECIALIZATION = """
-                                                               ALTER TABLE specializations 
-                                                               ADD COLUMN checkupCost VARCHAR(255) NOT NULL;
-                                                               """; 
-
+ 
 }

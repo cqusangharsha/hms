@@ -4,17 +4,19 @@ import au.edu.cqu.se.hms.daos.UserDao;
 
 /**
  *
- * @author sudeep_sharma
+ * Model class for doctors
  */
 public class Doctor extends User {
+
+    //variables for Doctor
     private int Id;
 
     private int userId;
-    
+
     private User user;
 
     private String specialization;
-    
+
     private UserDao userDao = UserDao.getInstance();
 
     public Doctor() {
@@ -25,6 +27,7 @@ public class Doctor extends User {
         this.specialization = specialization;
     }
 
+    //getter and setter methods for doctor variables
     public int getId() {
         return Id;
     }
@@ -32,7 +35,7 @@ public class Doctor extends User {
     public void setId(int Id) {
         this.Id = Id;
     }
-    
+
     public int getUserId() {
         return userId;
     }
@@ -53,7 +56,7 @@ public class Doctor extends User {
     public void setUser(User user) {
         this.user = user;
     }
-    
+
     public User getUser() {
         return this.user == null ? new User() : this.user;
     }

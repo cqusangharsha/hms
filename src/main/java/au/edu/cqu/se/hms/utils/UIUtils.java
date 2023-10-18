@@ -7,10 +7,21 @@ import javafx.scene.control.Alert;
 
 /**
  *
- * @author sangharshachaulagain
+ * This class provides utility methods for common user interface
+ * operations in the application. This class centralizes UI-related functionalities
+ * like alerting users and managing application sessions.
+ * 
  */
 public class UIUtils {
 
+    
+    /**
+     * Displays an alert dialog box with the given parameters.
+     *
+     * @param title the title of the alert box
+     * @param msg the message content of the alert
+     * @param type the type of the alert (e.g., INFO, ERROR)
+     */
     public static void alert(String title, String msg, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -18,6 +29,11 @@ public class UIUtils {
         alert.showAndWait();
     }
 
+    
+     /**
+     * Logs out the current user session and navigates to the sign-in page.
+     * If any error occurs during the transition, an alert box is displayed.
+     */
     public static void logout() {
         Session.getInstance().clear();
         try {

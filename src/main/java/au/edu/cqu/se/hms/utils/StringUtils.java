@@ -1,8 +1,12 @@
 package au.edu.cqu.se.hms.utils;
 
 /**
- *
- * @author sangharshachaulagain
+**
+ * This class provides utility methods for performing common
+ * string operations. 
+ * This class is designed to centralize and simplify string
+ * handling operations throughout the application.
+ * 
  */
 public class StringUtils {
 

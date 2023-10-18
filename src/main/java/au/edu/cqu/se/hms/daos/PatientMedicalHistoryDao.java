@@ -12,18 +12,30 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * This class provides the Data Access Object (DAO) functionalities for managing
+ * the medical history of patients. It enables database operations like adding
+ * new medical histories and fetching historical medical records of a specific
+ * patient.
  *
- * @author sangharshachaulagain
  */
 public class PatientMedicalHistoryDao {
 
     private final DBConnection dbConnection;
     private static PatientMedicalHistoryDao instance;
 
+    /**
+     * Constructor initializing the DBConnection instance.
+     */
     public PatientMedicalHistoryDao() {
         dbConnection = DBConnection.getInstance();
     }
 
+    /**
+     * Returns a singleton instance of PatientMedicalHistoryDao. If an instance
+     * doesn't exist, it creates a new one.
+     *
+     * @return An instance of PatientMedicalHistoryDao.
+     */
     public static PatientMedicalHistoryDao getInstance() {
         if (instance == null) {
             instance = new PatientMedicalHistoryDao();
@@ -31,6 +43,12 @@ public class PatientMedicalHistoryDao {
         return instance;
     }
 
+    /**
+     * Inserts a new medical history record into the database.
+     *
+     * @param history The PatientMedicalHistory object to be inserted.
+     * @return true if the record was added successfully, false otherwise.
+     */
     public boolean addPatientMedicalHistory(PatientMedicalHistory history) {
         Connection connection = dbConnection.getConnection();
 
@@ -52,6 +70,13 @@ public class PatientMedicalHistoryDao {
         }
     }
 
+    /**
+     * Fetches all the medical history records associated with a specific
+     * patient from the database.
+     *
+     * @param patientId The ID of the patient whose records are to be fetched.
+     * @return A list of PatientMedicalHistory objects.
+     */
     public List<PatientMedicalHistory> getMedicalHistoryByPatient(int patientId) {
         List<PatientMedicalHistory> historyList = new ArrayList<>();
         Connection connection = dbConnection.getConnection();

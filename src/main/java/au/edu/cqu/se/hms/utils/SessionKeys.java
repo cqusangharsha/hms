@@ -2,7 +2,7 @@ package au.edu.cqu.se.hms.utils;
 
 /**
  *
- * @author sangharshachaulagain
+ * class for specifying the current user
  */
 public class SessionKeys {
 

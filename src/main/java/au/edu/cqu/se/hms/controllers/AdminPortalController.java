@@ -47,25 +47,30 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 
 /**
+ * The AdminPortalController class provides functionality for the admin portal,
+ * allowing admins to manage and view various resources such as doctors,
+ * assistants, specializations, and other admin users.
  *
- * @author sangharshachaulagain
  */
 public class AdminPortalController implements Initializable {
 
+    // Define styles for menu selections
     private final String selectedMenuStyle = "-fx-text-fill: #eee; -fx-font-size: 15px; -fx-background-color: #546e7a; -fx-border-color: transparent; -fx-underline: false;";
     private final String unSelectedMenuStyle = "-fx-text-fill: #546e7a; -fx-font-size: 15px; -fx-border-color: transparent; -fx-underline: false;";
 
+    // Service and DAO instances
     private AuthenticationService authService;
     private SpecializationDao specializationDao;
     private UserDao userDao;
     private DoctorDao doctorDao;
     private AssistantDao assistantDao;
-       private PatientDao patientDao;
+    private PatientDao patientDao;
 
+    // ObservableLists for managing list data
     private final ObservableList<Doctor> observableDoctorList = FXCollections.observableArrayList();
-    
+
     private final ObservableList<Assistant> observableAssistantList = FXCollections.observableArrayList();
-    
+
     private final ObservableList<Specialization> observableSpecializationList = FXCollections.observableArrayList();
     private int specializationListPage = 0;
     private final int speciailzationListPageSize = 5;
@@ -74,6 +79,7 @@ public class AdminPortalController implements Initializable {
     private int adminListPage = 0;
     private final int adminListPageSize = 5;
 
+    // JavaFX annotations for UI components
     @FXML
     private Label nameLbl;
     @FXML
@@ -104,7 +110,7 @@ public class AdminPortalController implements Initializable {
     private Pane adminListContainer;
     @FXML
     private Hyperlink specializationMenu;
-    
+
     @FXML
     private Hyperlink analyticsMenu;
     @FXML
@@ -169,7 +175,7 @@ public class AdminPortalController implements Initializable {
     private Button adminNextBtn;
     @FXML
     private Label adminPaginationLbl;
-    
+
     @FXML
     private Pane analyticsListContainer;
     @FXML
@@ -264,10 +270,20 @@ public class AdminPortalController implements Initializable {
 
     @FXML
     private PieChart doctorPieChart;
-    
-     @FXML
+
+    @FXML
     private PieChart specializationPieChart;
 
+    /**
+     * This method is called by the FXMLLoader when the initialization is
+     * complete. It initializes the services, DAO instances, and sets up the
+     * initial view for the admin portal.
+     *
+     * @param url The location used to resolve relative paths for the root
+     * object, or null if the location is not known.
+     * @param rb The resources used to localize the root object, or null if the
+     * root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         authService = new AuthenticationService();
@@ -275,7 +291,7 @@ public class AdminPortalController implements Initializable {
         doctorDao = DoctorDao.getInstance();
         assistantDao = AssistantDao.getInstance();
         userDao = UserDao.getInstance();
-        patientDao= PatientDao.getInstance();
+        patientDao = PatientDao.getInstance();
 
         User user = authService.getCurrentUser();
         if (user == null) {
@@ -297,26 +313,40 @@ public class AdminPortalController implements Initializable {
 
     }
 
+    /**
+     * Handle the logout action. It logs the user out and redirects them to the
+     * login page.
+     */
     @FXML
     private void handleLogout(ActionEvent event) {
         UIUtils.logout();
     }
 
+    /**
+     * Display the doctor management container.
+     */
     @FXML
     private void handleDoctorMenu(ActionEvent event) {
         showDoctorContainer();
     }
 
+    /**
+     * Handles add doctor event
+     */
     @FXML
     private void handleAddDoctor(ActionEvent event) {
         showAddDoctorContainer();
     }
 
+    //method for taking user back to the dashboard
     @FXML
     private void handleDoctorBackBtn(ActionEvent event) {
         showDoctorListContainer();
     }
 
+    /**
+     * method to add new doctor
+     */
     @FXML
     private void handleSaveDoctorBtn(ActionEvent event) {
 
@@ -357,6 +387,9 @@ public class AdminPortalController implements Initializable {
         showDoctorContainer();
     }
 
+    /**
+     * method to clear the values of the form
+     */
     private void clearNewForm() {
         fName.setText("");
         lName.setText("");
@@ -369,6 +402,9 @@ public class AdminPortalController implements Initializable {
 
     }
 
+    /**
+     * method to clear the assistant form values
+     */
     private void clearNewAssistForm() {
         fName.setText("");
         lName.setText("");
@@ -381,6 +417,9 @@ public class AdminPortalController implements Initializable {
 
     }
 
+    /**
+     * Display the doctor container
+     */
     private void showDoctorContainer() {
         hideAllContainer();
 
@@ -390,13 +429,18 @@ public class AdminPortalController implements Initializable {
         showDoctorListContainer();
     }
 
+    /**
+     * Display the list of doctors
+     */
     private void showDoctorListContainer() {
         refreshDoctorTable();
         saveDoctorCotaniner.setVisible(false);
         doctorListContainer.setVisible(true);
     }
-    
-    
+
+    /**
+     * Display the available doctors in a table
+     */
     private void displayDoctorTable() {
         adminDoctorIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         adminDoctorNameCol.setCellValueFactory(
@@ -408,12 +452,18 @@ public class AdminPortalController implements Initializable {
         );
     }
 
+    /**
+     * method to refresh the doctor table
+     */
     private void refreshDoctorTable() {
         observableDoctorList.clear();
         observableDoctorList.addAll(doctorDao.findAll());
         adminDoctorTV.setItems(observableDoctorList);
     }
-    
+
+    /**
+     * method to show add doctor form
+     */
     private void showAddDoctorContainer() {
         saveDoctorCotaniner.setVisible(true);
         doctorListContainer.setVisible(false);
@@ -426,6 +476,9 @@ public class AdminPortalController implements Initializable {
         }
     }
 
+    /**
+     * method to validate add doctor
+     */
     private boolean isAddDoctorFormValid() {
         return !StringUtils.isEmpty(fName.getText().trim())
                 && !StringUtils.isEmpty(lName.getText().trim())
@@ -438,6 +491,9 @@ public class AdminPortalController implements Initializable {
                 && !StringUtils.isEmpty(((TextField) dateOfBirth.getEditor()).getText());
     }
 
+    /**
+     * method to validate assistant form
+     */
     private boolean isAddAssistantFormValid() {
         return !StringUtils.isEmpty(assitFName.getText().trim())
                 && !StringUtils.isEmpty(assitLName.getText().trim())
@@ -450,6 +506,7 @@ public class AdminPortalController implements Initializable {
                 && !StringUtils.isEmpty(((TextField) assistDateOfBirth.getEditor()).getText());
     }
 
+    // methods to handle assitant containers
     @FXML
     private void handleAssistantMenu(ActionEvent event) {
         showAssistantContainer();
@@ -465,6 +522,9 @@ public class AdminPortalController implements Initializable {
         showAssistantListContainer();
     }
 
+    /**
+     * method to add new assistant
+     */
     @FXML
     private void handleSaveAssistant(ActionEvent event) {
 
@@ -504,6 +564,9 @@ public class AdminPortalController implements Initializable {
         showAssistantContainer();
     }
 
+    /**
+     * Display the assistant container
+     */
     private void showAssistantContainer() {
         hideAllContainer();
 
@@ -526,8 +589,10 @@ public class AdminPortalController implements Initializable {
         addAssistantContainer.setVisible(false);
         assistantListContainer.setVisible(true);
     }
-    
-    
+
+    /**
+     * Display the available assistants
+     */
     private void displayAssistantTable() {
         adminAssistantIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         adminAssistantNameCol.setCellValueFactory(
@@ -538,7 +603,7 @@ public class AdminPortalController implements Initializable {
                 cellData -> new SimpleStringProperty(cellData.getValue().getUser().getContactNumber())
         );
     }
-    
+
     private void refreshAssistantTable() {
         observableAssistantList.clear();
         observableAssistantList.addAll(assistantDao.findAll());
@@ -565,6 +630,7 @@ public class AdminPortalController implements Initializable {
         showAdminListContainer();
     }
 
+    //method to add new admin 
     @FXML
     private void handleSaveAdmin(ActionEvent event) {
         if (!isAddAdminFormValid()) {
@@ -589,6 +655,7 @@ public class AdminPortalController implements Initializable {
         showAdminListContainer();
     }
 
+    // method to check the validation of admin
     private boolean isAddAdminFormValid() {
         return !StringUtils.isEmpty(adminFirstNameTF.getText().trim())
                 && !StringUtils.isEmpty(adminLastNameTF.getText().trim())
@@ -621,6 +688,7 @@ public class AdminPortalController implements Initializable {
         adminListContainer.setVisible(false);
     }
 
+    //method to display available admin
     private void displayAdminTable() {
         adminIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         adminNameCol.setCellValueFactory(
@@ -631,6 +699,7 @@ public class AdminPortalController implements Initializable {
         adminAddressCol.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
     }
 
+    //method to refresh admin table
     private void refreshAdminTable() {
         observableAdminList.clear();
         List<User> userList;
@@ -641,6 +710,7 @@ public class AdminPortalController implements Initializable {
         handleAdminPaginationView();
     }
 
+    //method to handle the pagination of admin table
     private void handleAdminPaginationView() {
         List<User> totalAdmin;
         totalAdmin = userDao.getUsersByRole(Role.ADMIN);
@@ -680,6 +750,7 @@ public class AdminPortalController implements Initializable {
         refreshAdminTable();
     }
 
+    //method to clear the value of admin form
     private void clearAdminForm() {
         adminFirstNameTF.setText("");
         adminLastNameTF.setText("");
@@ -697,8 +768,8 @@ public class AdminPortalController implements Initializable {
     private void handleSpecializationMenu(ActionEvent event) {
         showSpecializationContainer();
     }
-    
-     @FXML
+
+    @FXML
     private void handleAnalyticsMenu(ActionEvent event) {
         showAnalyticsContainer();
     }
@@ -713,6 +784,7 @@ public class AdminPortalController implements Initializable {
         showSpecializationListContainer();
     }
 
+    //method to save new specialization
     @FXML
     private void handleSaveSpecialization(ActionEvent event) {
         if (!isAddSpecializaitonFormValid()) {
@@ -728,6 +800,7 @@ public class AdminPortalController implements Initializable {
         showSpecializationListContainer();
     }
 
+    //method to list the specialization
     private void showSpecializationContainer() {
         hideAllContainer();
 
@@ -736,7 +809,8 @@ public class AdminPortalController implements Initializable {
 
         showSpecializationListContainer();
     }
-    
+
+    //method to show the analytics container
     private void showAnalyticsContainer() {
         hideAllContainer();
 
@@ -751,9 +825,9 @@ public class AdminPortalController implements Initializable {
         addSpecializationContainer.setVisible(false);
         specializationListContainer.setVisible(true);
     }
-    
+
     private void showAnalyticsListContainer() {
-        
+
         addAnalyticsContainer.setVisible(false);
         analyticsListContainer.setVisible(true);
     }
@@ -827,6 +901,7 @@ public class AdminPortalController implements Initializable {
     @FXML
     private TableColumn<Patient, String> doctorColumn;
 
+    //method to load the analytics report
     @FXML
     public void loadAppointmentsToPieChart() {
         List<Patient> appointments = patientDao.getAppointments();
@@ -834,7 +909,7 @@ public class AdminPortalController implements Initializable {
 
         for (Patient appointment : appointments) {
             doctorCount.put(appointment.getDoctor(), doctorCount.getOrDefault(appointment.getDoctor(), 0) + 1);
-           
+
         }
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
@@ -843,35 +918,33 @@ public class AdminPortalController implements Initializable {
             pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
         }
         loadSpecializationToPieChart();
-      //  System.out.println(pieChartData);
+        
         doctorPieChart.setData(pieChartData);
         doctorPieChart.setTitle("Doctor appoinments");
         doctorPieChart.layout();
     }
-    
-    
+
+    //method to load the specialization for analytics report
     @FXML
     public void loadSpecializationToPieChart() {
-         List<Specialization> specializations = specializationDao.getAllSpecializations();
+        List<Specialization> specializations = specializationDao.getAllSpecializations();
 
-    
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
-    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for (Specialization special : specializations) {
 
-    for (Specialization special : specializations) {
-       
-        pieChartData.add(new PieChart.Data(special.getName(), Double.parseDouble(special.getCostCheckup())));
-    }
-        System.out.println(pieChartData);
-   
+            pieChartData.add(new PieChart.Data(special.getName(), Double.parseDouble(special.getCostCheckup())));
+        }
+        
+
         specializationPieChart.setData(pieChartData);
-         specializationPieChart.setLabelLineLength(20); 
+        specializationPieChart.setLabelLineLength(20);
         specializationPieChart.setLegendVisible(true);
         specializationPieChart.setLabelsVisible(true);
-       
+
         specializationPieChart.setTitle("Specialization Costs");
         specializationPieChart.layout();
-    
+
     }
 
     private boolean isAddSpecializaitonFormValid() {
@@ -884,6 +957,7 @@ public class AdminPortalController implements Initializable {
         specializationCost.setText("");
     }
 
+    //method to hide all containers
     private void hideAllContainer() {
         doctorMenu.setStyle(unSelectedMenuStyle);
         assistantMenu.setStyle(unSelectedMenuStyle);

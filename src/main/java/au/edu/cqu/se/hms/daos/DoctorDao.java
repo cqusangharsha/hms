@@ -11,18 +11,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Provides Data Access Object (DAO) functionalities for the Doctor model. This
+ * class handles database operations related to doctors such as fetching,
+ * adding, and finding specific doctors by their user ID.
  *
- * @author sangharshachaulagain
  */
 public class DoctorDao {
 
     private final DBConnection dbConnection;
     private static DoctorDao instance;
 
+    /**
+     * Initializes the DoctorDao with a DBConnection instance.
+     */
     public DoctorDao() {
         dbConnection = DBConnection.getInstance();
     }
 
+    /**
+     * Returns a singleton instance of DoctorDao. If an instance doesn't exist,
+     * a new one is created.
+     *
+     * @return An instance of DoctorDao.
+     */
     public static DoctorDao getInstance() {
         if (instance == null) {
             instance = new DoctorDao();
@@ -30,6 +41,11 @@ public class DoctorDao {
         return instance;
     }
 
+    /**
+     * Fetches all the doctors from the database.
+     *
+     * @return A list of Doctor objects.
+     */
     public List<Doctor> findAll() {
         List<Doctor> doctorList = new ArrayList<>();
         Connection connection = dbConnection.getConnection();
@@ -54,6 +70,12 @@ public class DoctorDao {
 
     }
 
+    /**
+     * Adds a new Doctor to the database.
+     *
+     * @param doctor The Doctor object to be added.
+     * @return true if the doctor was added successfully, false otherwise.
+     */
     public boolean addDoctor(Doctor doctor) {
         Connection connection = dbConnection.getConnection();
 
@@ -73,6 +95,12 @@ public class DoctorDao {
         }
     }
 
+    /**
+     * Fetches a Doctor object from the database using the provided user ID.
+     *
+     * @param userId The user ID to search for.
+     * @return A Doctor object if found, null otherwise.
+     */
     public Doctor findDoctorByUserId(int userId) {
         Connection connection = dbConnection.getConnection();
         String query = "SELECT * FROM doctor WHERE user_id = ?";
